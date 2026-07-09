@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    /* Paths & Architecture */
+    "paths": {
+      "@pages/*": ["./pages/*"],
+      "@tests/*": ["./tests/*"]
+    },
+
+    /* Strictness & Safety */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+
+    /* Interop & Isolation */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*", "tests/**/*", "pages/**/*", "playwright.config.ts"]
+}
