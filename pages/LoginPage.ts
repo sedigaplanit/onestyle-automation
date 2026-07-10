@@ -1,5 +1,6 @@
 import BasePage from '@pages/BasePage'
-import LandingPage from '@pages/LandingPage'
+import type LandingPage from '@pages/LandingPage'
+import SignUpPage from '@pages/SignUpPage'
 
 export default class LoginPage extends BasePage {
   public async init(): Promise<this> {
@@ -21,6 +22,12 @@ export default class LoginPage extends BasePage {
 
   public async clickLogin(): Promise<LandingPage> {
     await this.page.getByRole('button', { name: 'Login' }).last().click()
-    return new LandingPage(this.page).init()
+    const { default: LandingPageClass } = await import('@pages/LandingPage')
+    return new LandingPageClass(this.page).init()
+  }
+
+  public async navigateToSignUp(): Promise<SignUpPage> {
+    await this.page.locator('.loginsignup-switch span').click()
+    return new SignUpPage(this.page).init()
   }
 }

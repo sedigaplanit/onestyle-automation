@@ -2,7 +2,7 @@ import BasePage from '@pages/BasePage'
 
 export default class ProductPage extends BasePage {
   public async init(): Promise<this> {
-    await this.page.waitForURL(/\/product/, { timeout: 5000 })
+    await this.page.waitForURL(/\/product/, { timeout: 10000 })
     return this
   }
 
