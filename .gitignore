@@ -10,5 +10,3 @@ node_modules/
 #Environments and secrets
 .env
 .auth/
-
-manual-tests/
