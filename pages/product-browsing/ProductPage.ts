@@ -18,7 +18,7 @@ export default class ProductPage extends BasePage {
 
   public async navigateToCartPage() {
     await this.page.locator('img[alt="Cart Icon"]').click()
-    const { default: CartPageClass } = await import('@pages/CartPage')
+    const { default: CartPageClass } = await import('@pages/cart/CartPage')
     return new CartPageClass(this.page).init()
   }
 }

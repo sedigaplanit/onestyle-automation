@@ -1,6 +1,5 @@
 import BasePage from '@pages/BasePage'
-import ProductPage from '@pages/ProductPage'
-import { TIMEOUT } from 'dns'
+import ProductPage from '@pages/product-browsing/ProductPage'
 
 export default class MensProducts extends BasePage {
   public async init(): Promise<this> {
