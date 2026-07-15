@@ -1,5 +1,6 @@
 import BasePage from '@pages/BasePage'
 import ProductPage from '@pages/product-browsing/ProductPage'
+import WomensProducts from '@pages/product-browsing/WomensProducts'
 
 export default class MensProducts extends BasePage {
   public async init(): Promise<this> {
@@ -20,5 +21,10 @@ export default class MensProducts extends BasePage {
     await product.hover({ timeout: 5000 })
     await product.click()
     return new ProductPage(this.page).init()
+  }
+
+  public async navigateToWomensSection(): Promise<WomensProducts> {
+    await this.page.getByRole('link', { name: 'Women', exact: true }).click()
+    return new WomensProducts(this.page).init()
   }
 }

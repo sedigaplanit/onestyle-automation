@@ -33,7 +33,12 @@ Before doing anything else, read `.env` from the workspace root and extract:
 - `USER_NAME` - login email
 - `PASSWORD` - login password
 
-Never hardcode credentials. Always read them from `.env` at runtime.
+**Credential rules (strictly enforced):**
+
+- Never hardcode credential values anywhere — not in test steps, preconditions, notes, or any other section of a test case file.
+- Always reference credentials as `$USER_NAME` and `$PASSWORD` in test case files (e.g. "Enter `$USER_NAME` in the Email field").
+- `BASE_URL` must also be referenced symbolically as `$BASE_URL` rather than repeating the raw URL in every step. Use the full URL only once in the Preconditions section in the form: `Navigate to $BASE_URL`.
+- Any test case that violates these rules must be treated as a defect in the generated output and corrected before saving.
 
 ### User Stories Source
 
@@ -195,6 +200,15 @@ Perform the following in order:
    - Boundary conditions (very long inputs, special characters)
    - Edge cases (add same product twice, navigate away from cart and back, add from listing vs product page)
    - End-to-end user journeys (Register then Browse then Add to Cart then Checkout flow)
+
+   **Negative and edge case requirement:** For every feature area covered, you MUST generate at least the following negative and edge case types where applicable:
+   - Invalid / missing inputs that should be rejected (form validations, empty required fields)
+   - Boundary inputs (maximum length strings, special characters, whitespace-only values)
+   - Concurrent / race condition scenarios (rapid repeated clicks, simultaneous actions)
+   - State consistency across navigation (e.g. add item, navigate away, navigate back — state must be preserved)
+   - Unauthenticated access to protected or ambiguous features
+   - Direct URL access (bypassing normal navigation flow)
+   - All negative and edge case test cases must be marked with a `Regression` tag in the Notes and Assumptions section so they can be identified for regression suites.
 
 6. **Flag unverified workflows** - for functionality that exists in the UI but whose outcome is unknown (checkout, Buy Now, Wishlist, Profile, My Orders), document expected behaviour and mark as Unverified / Defect Opportunity.
 
