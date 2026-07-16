@@ -1,12 +1,8 @@
-import BasePage from '@pages/BasePage'
+import CategoryPage from '@pages/product-browsing/CategoryPage'
 
-export default class KidsProducts extends BasePage {
+export default class KidsProducts extends CategoryPage {
   public async init(): Promise<this> {
     await this.page.waitForURL(/\/kids/, { timeout: 5000 })
     return this
-  }
-
-  public async hasProductListings(): Promise<boolean> {
-    return (await this.page.locator('.item').count()) > 0
   }
 }
