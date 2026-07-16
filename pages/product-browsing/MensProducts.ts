@@ -1,18 +1,11 @@
-import BasePage from '@pages/BasePage'
+import CategoryPage from '@pages/product-browsing/CategoryPage'
 import ProductPage from '@pages/product-browsing/ProductPage'
-import WomensProducts from '@pages/product-browsing/WomensProducts'
+import type WomensProducts from '@pages/product-browsing/WomensProducts'
 
-export default class MensProducts extends BasePage {
+export default class MensProducts extends CategoryPage {
   public async init(): Promise<this> {
-    const urlIncludesMens = this.page.url().includes('/mens')
-    if (!urlIncludesMens) {
-      throw new Error('Not on the Mens Products page')
-    }
+    await this.page.waitForURL(/\/mens/, { timeout: 5000 })
     return this
-  }
-
-  public async hasProductListings(): Promise<boolean> {
-    return (await this.page.locator('.item').count()) > 0
   }
 
   public async selectProductByName(productName: string): Promise<ProductPage> {
@@ -25,6 +18,7 @@ export default class MensProducts extends BasePage {
 
   public async navigateToWomensSection(): Promise<WomensProducts> {
     await this.page.getByRole('link', { name: 'Women', exact: true }).click()
-    return new WomensProducts(this.page).init()
+    const { default: WomensProductsClass } = await import('@pages/product-browsing/WomensProducts')
+    return new WomensProductsClass(this.page).init()
   }
 }
