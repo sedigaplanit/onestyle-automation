@@ -1,0 +1,53 @@
+{
+  "appName": "OneStyle",
+  "baseUrl": "https://sedigaplanit.github.io/AI-R-D---Github-copilot",
+  "title": "E-Commerce App",
+  "framework": "React (GitHub Pages SPA)",
+  "routes": {
+    "/": { "page": "Landing / Home", "auth": "both", "file": "pages/01-landing" },
+    "/login": {
+      "page": "Login",
+      "auth": "unauthenticated (redirects if auth)",
+      "file": "pages/02-login"
+    },
+    "/womens": { "page": "Women's Category", "auth": "both", "file": "pages/03-category" },
+    "/mens": { "page": "Men's Category", "auth": "both", "file": "pages/03-category" },
+    "/kids": { "page": "Kids' Category", "auth": "both", "file": "pages/03-category" },
+    "/product/{id}": { "page": "Product Detail", "auth": "both", "file": "pages/04-product" },
+    "/cart": { "page": "Cart", "auth": "both (different UX)", "file": "pages/05-cart" },
+    "/profile": { "page": "Profile", "auth": "authenticated", "file": "pages/07-profile" },
+    "/orders": {
+      "page": "My Orders (Order History)",
+      "auth": "authenticated",
+      "file": "pages/08-orders"
+    },
+    "/wishlist": { "page": "Wishlist", "auth": "both", "file": "pages/09-wishlist" }
+  },
+  "transitions": [
+    { "from": "/", "to": "/login", "trigger": "Click Login button (unauthenticated)" },
+    { "from": "/login", "to": "/", "trigger": "Successful login" },
+    { "from": "/", "to": "/mens", "trigger": "Click Men nav link" },
+    { "from": "/", "to": "/womens", "trigger": "Click Women nav link" },
+    { "from": "/", "to": "/kids", "trigger": "Click Kids nav link" },
+    {
+      "from": "/womens or /mens or /kids",
+      "to": "/product/{id}",
+      "trigger": "Click product card image"
+    },
+    { "from": "/product/{id}", "to": "/cart", "trigger": "Click '✓ In Cart — View Cart'" },
+    { "from": "/cart", "to": "/cart (modal)", "trigger": "Click Proceed to Checkout" },
+    { "from": "/cart (modal step2)", "to": "/cart (modal step1)", "trigger": "Click ← or ← Back" },
+    { "from": "/cart (modal)", "to": "/cart", "trigger": "Click Cancel or ✕" },
+    { "from": "any", "to": "/cart", "trigger": "Click Cart icon" },
+    { "from": "any", "to": "/", "trigger": "Click Logout" },
+    { "from": "/cart (guest)", "to": "/login", "trigger": "Click Sign Up / Login" }
+  ],
+  "authStateChanges": {
+    "unauthenticatedNav": ["Login button", "Wishlist", "Cart icon"],
+    "authenticatedNav": ["Profile", "My Orders", "Logout", "Wishlist", "Cart icon"],
+    "authMarker": { "role": "button", "name": "My Orders" },
+    "unauthMarker": { "role": "button", "name": "Login" }
+  },
+  "currencies": "LKR (Sri Lankan Rupee)",
+  "productIdsObserved": [1, 2, 3, 4, 8, 12, 13, 14, 15, 17, 28, 35]
+}

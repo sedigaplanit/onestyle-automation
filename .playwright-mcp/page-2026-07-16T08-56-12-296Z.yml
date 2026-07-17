@@ -1,0 +1,48 @@
+- generic [ref=f21e3]:
+  - generic [ref=f21e4]:
+    - link [ref=f21e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f21e6]
+      - paragraph [ref=f21e7]: OneStyle
+    - list [ref=f21e9]:
+      - listitem [ref=f21e10] [cursor=pointer]:
+        - link "Shop" [ref=f21e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f21e12]
+      - listitem [ref=f21e13] [cursor=pointer]:
+        - link "Men" [ref=f21e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f21e15] [cursor=pointer]:
+        - link "Women" [ref=f21e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f21e17] [cursor=pointer]:
+        - link "Kids" [ref=f21e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f21e19]:
+      - link [ref=f21e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/login
+        - button "Login" [ref=f21e21]
+      - link "♡" [ref=f21e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f21e24] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f21e25]
+      - generic [ref=f21e26]: "0"
+  - generic [ref=f21e28]:
+    - heading "Login" [level=1] [ref=f21e29]
+    - generic [ref=f21e30]:
+      - generic [ref=f21e31]:
+        - textbox "Email Address" [ref=f21e32]
+        - textbox "Password" [ref=f21e33]
+      - button "Login" [ref=f21e34] [cursor=pointer]
+    - paragraph [ref=f21e35]: Don't have an account? Sign Up
+  - generic [ref=f21e36]:
+    - list [ref=f21e38]:
+      - listitem [ref=f21e39] [cursor=pointer]: Company
+      - listitem [ref=f21e40] [cursor=pointer]: Products
+      - listitem [ref=f21e41] [cursor=pointer]: Offices
+      - listitem [ref=f21e42] [cursor=pointer]: About
+      - listitem [ref=f21e43] [cursor=pointer]: Contact
+    - generic [ref=f21e48]:
+      - separator [ref=f21e49]
+      - paragraph [ref=f21e50]: Copyright @ 2024 - All Rights Reserved

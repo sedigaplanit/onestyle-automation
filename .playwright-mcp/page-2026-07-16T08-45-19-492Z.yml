@@ -1,0 +1,79 @@
+- generic [ref=f10e3]:
+  - generic [ref=f10e4]:
+    - link [ref=f10e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f10e6]
+      - paragraph [ref=f10e7]: OneStyle
+    - list [ref=f10e9]:
+      - listitem [ref=f10e10] [cursor=pointer]:
+        - link "Shop" [ref=f10e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f10e12]
+      - listitem [ref=f10e13] [cursor=pointer]:
+        - link "Men" [ref=f10e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f10e15] [cursor=pointer]:
+        - link "Women" [ref=f10e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f10e17] [cursor=pointer]:
+        - link "Kids" [ref=f10e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f10e19]:
+      - link [ref=f10e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f10e21]
+      - link [ref=f10e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f10e23]
+      - button "Logout" [ref=f10e24] [cursor=pointer]
+      - link "♡" [ref=f10e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f10e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f10e28]
+      - generic [ref=f10e29]: "1"
+  - generic [ref=f10e31]:
+    - generic [ref=f10e32]:
+      - paragraph [ref=f10e33]: Products
+      - paragraph [ref=f10e34]: Title
+      - paragraph [ref=f10e35]: Price
+      - paragraph [ref=f10e36]: Quantity
+      - paragraph [ref=f10e37]: Total
+      - paragraph [ref=f10e38]: Remove
+    - separator [ref=f10e39]
+    - generic [ref=f10e51]:
+      - generic [ref=f10e52]:
+        - paragraph [ref=f10e53]: Elegant Overlap Collar Top
+        - paragraph [ref=f10e54]: LKR 85
+        - generic [ref=f10e55]:
+          - button "-" [ref=f10e56] [cursor=pointer]
+          - generic [ref=f10e57]: "1"
+          - button "+" [ref=f10e58] [cursor=pointer]
+        - paragraph [ref=f10e59]: LKR 85
+        - img "Remove" [ref=f10e60] [cursor=pointer]
+      - separator [ref=f10e61]
+    - generic [ref=f10e63]:
+      - heading "Cart Totals" [level=1] [ref=f10e64]
+      - generic [ref=f10e65]:
+        - generic [ref=f10e66]:
+          - paragraph [ref=f10e67]: "Sub Total:"
+          - paragraph [ref=f10e68]: LKR 85
+        - separator [ref=f10e69]
+        - generic [ref=f10e70]:
+          - paragraph [ref=f10e71]: Shipping Free
+          - paragraph [ref=f10e72]: Free
+        - separator [ref=f10e73]
+        - generic [ref=f10e74]:
+          - heading "Total:" [level=3] [ref=f10e75]
+          - heading "LKR 85" [level=3] [ref=f10e95]
+      - button "Proceed to Checkout" [ref=f10e77] [cursor=pointer]
+  - generic [ref=f10e78]:
+    - list [ref=f10e80]:
+      - listitem [ref=f10e81] [cursor=pointer]: Company
+      - listitem [ref=f10e82] [cursor=pointer]: Products
+      - listitem [ref=f10e83] [cursor=pointer]: Offices
+      - listitem [ref=f10e84] [cursor=pointer]: About
+      - listitem [ref=f10e85] [cursor=pointer]: Contact
+    - generic [ref=f10e90]:
+      - separator [ref=f10e91]
+      - paragraph [ref=f10e92]: Copyright @ 2024 - All Rights Reserved

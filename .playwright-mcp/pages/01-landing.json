@@ -1,0 +1,81 @@
+{
+  "page": "Landing / Home",
+  "url": {
+    "pattern": "/",
+    "full": "https://sedigaplanit.github.io/AI-R-D---Github-copilot/",
+    "title": "E-Commerce App",
+    "appName": "OneStyle"
+  },
+  "nav": {
+    "unauthenticated": {
+      "brandLogo": { "role": "link", "name": "OneStyle Logo OneStyle", "href": "/" },
+      "categories": [
+        { "role": "link", "name": "Shop", "href": "/" },
+        { "role": "link", "name": "Men", "href": "/mens" },
+        { "role": "link", "name": "Women", "href": "/womens" },
+        { "role": "link", "name": "Kids", "href": "/kids" }
+      ],
+      "loginButton": { "role": "button", "name": "Login", "insideLinkHref": "/login" },
+      "wishlist": { "role": "link", "name": "♡", "href": "/wishlist" },
+      "cartIcon": { "role": "img", "name": "Cart Icon", "insideLinkHref": "/cart" },
+      "cartCount": { "css": ".nav-cart-count", "defaultValue": "0" }
+    },
+    "authenticated": {
+      "profileButton": { "role": "button", "name": "Profile", "insideLinkHref": "/profile" },
+      "myOrdersButton": { "role": "button", "name": "My Orders", "insideLinkHref": "/orders" },
+      "logoutButton": { "role": "button", "name": "Logout" },
+      "wishlist": { "role": "link", "name": "♡", "href": "/wishlist" },
+      "cartIcon": { "role": "img", "name": "Cart Icon", "insideLinkHref": "/cart" },
+      "cartCount": { "css": ".nav-cart-count", "updatesOnAddToCart": true }
+    }
+  },
+  "sections": {
+    "hero": {
+      "heading1": { "role": "heading", "level": 2, "name": "Welcome to Our Store" },
+      "heading2": { "role": "heading", "level": 1, "name": "Discover New Collections" },
+      "tagline": "Explore the latest trends designed for everyone.",
+      "shopNowButton": { "role": "button", "name": "Shop Now" },
+      "signUpButton": { "role": "button", "name": "Sign Up", "visibleWhen": "unauthenticated" },
+      "learnMoreButton": { "role": "button", "name": "Learn More" },
+      "features": ["Free Shipping", "Easy Returns", "Secure Payment"],
+      "heroImage": { "role": "img", "name": "Hero" }
+    },
+    "popularInWomen": {
+      "heading": { "role": "heading", "level": 1, "name": "POPULAR IN WOMEN" },
+      "productCount": 4
+    },
+    "exclusiveOffers": {
+      "heading": "Exclusive",
+      "subheading": "Offers For You",
+      "description": "ONLY ON BEST SELLERS PRODUCT",
+      "ctaButton": { "role": "button", "name": "Check Now!" }
+    },
+    "newCollections": {
+      "heading": { "role": "heading", "level": 1, "name": "New Collections" },
+      "productCount": 8
+    },
+    "newsletter": {
+      "heading": "Get Exclusive Offers On Your Email",
+      "emailInput": { "role": "textbox", "name": "Your Email Id" },
+      "subscribeButton": { "role": "button", "name": "Subscribe" }
+    },
+    "footer": {
+      "navItems": ["Company", "Products", "Offices", "About", "Contact"],
+      "copyright": "Copyright @ 2024 - All Rights Reserved"
+    }
+  },
+  "productCardStructure": {
+    "productLink": { "role": "link", "href": "/product/{id}" },
+    "wishlistButton": { "role": "button", "name": "♡" },
+    "productName": "paragraph",
+    "salePrice": "generic (first price, lower value)",
+    "originalPrice": "generic (second price, higher value, struck through)",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "addToCartButton": { "role": "button", "name": "Add to Cart" }
+  },
+  "authMarkers": {
+    "authenticated": { "role": "button", "name": "My Orders", "visible": true },
+    "unauthenticated": { "role": "button", "name": "Login", "visible": true }
+  },
+  "screenshots": ["snapshots/01-landing.png", "snapshots/01-landing-authenticated.png"]
+}

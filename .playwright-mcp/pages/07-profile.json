@@ -1,0 +1,41 @@
+{
+  "page": "Profile",
+  "url": {
+    "pattern": "/profile",
+    "full": "https://sedigaplanit.github.io/AI-R-D---Github-copilot/profile",
+    "title": "E-Commerce App",
+    "authRequired": true
+  },
+  "elements": {
+    "heading": { "role": "heading", "level": 1, "name": "My Profile" },
+    "avatarInitial": {
+      "description": "Generic element showing first letter of email, e.g. 'T' for test@test.com"
+    },
+    "emailDisplay": { "text": "test@test.com", "locator": "getByText('test@test.com')" },
+    "fullNameInput": {
+      "label": "Full Name",
+      "role": "textbox",
+      "locator": "getByRole('textbox').first()",
+      "prefilledValue": "test user"
+    },
+    "genderSelect": {
+      "label": "Gender",
+      "role": "combobox",
+      "options": ["Select gender", "Male", "Female", "Other", "Prefer not to say"],
+      "prefilledValue": "Male"
+    },
+    "mobileNumberInput": {
+      "label": "Mobile Number",
+      "role": "textbox",
+      "placeholder": "+94 77 000 0000",
+      "prefilledValue": "1212121212"
+    },
+    "addressInput": {
+      "label": "Address (optional)",
+      "role": "textbox",
+      "placeholder": "Your delivery address"
+    },
+    "saveChangesButton": { "role": "button", "name": "Save Changes" }
+  },
+  "screenshot": "snapshots/08-profile.png"
+}

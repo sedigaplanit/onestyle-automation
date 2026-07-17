@@ -1,0 +1,277 @@
+- generic [ref=f21e3]:
+  - generic [ref=f21e4]:
+    - link [ref=f21e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f21e6]
+      - paragraph [ref=f21e7]: OneStyle
+    - list [ref=f21e9]:
+      - listitem [ref=f21e10] [cursor=pointer]:
+        - link "Shop" [ref=f21e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f21e12]
+      - listitem [ref=f21e13] [cursor=pointer]:
+        - link "Men" [ref=f21e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f21e15] [cursor=pointer]:
+        - link "Women" [ref=f21e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f21e17] [cursor=pointer]:
+        - link "Kids" [ref=f21e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f21e19]:
+      - link [ref=f21e51] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f21e52]
+      - link [ref=f21e53] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f21e54]
+      - button "Logout" [ref=f21e55] [cursor=pointer]
+      - link "♡" [ref=f21e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f21e24] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f21e25]
+      - generic [ref=f21e26]: "0"
+  - generic [ref=f21e56]:
+    - generic [ref=f21e57]:
+      - generic [ref=f21e58]:
+        - heading "Welcome to Our Store" [level=2] [ref=f21e59]
+        - heading "Discover New Collections" [level=1] [ref=f21e60]
+        - paragraph [ref=f21e61]: Explore the latest trends designed for everyone.
+        - generic [ref=f21e62]:
+          - button "Shop Now" [ref=f21e63] [cursor=pointer]
+          - button [ref=f21e64] [cursor=pointer]:
+            - text: Learn More
+            - img "arrow icon" [ref=f21e65]
+        - generic [ref=f21e66]:
+          - generic [ref=f21e67]:
+            - img "feature icon" [ref=f21e68]
+            - paragraph [ref=f21e69]: Free Shipping
+          - generic [ref=f21e70]:
+            - img "feature icon" [ref=f21e71]
+            - paragraph [ref=f21e72]: Easy Returns
+          - generic [ref=f21e73]:
+            - img "feature icon" [ref=f21e74]
+            - paragraph [ref=f21e75]: Secure Payment
+      - img "Hero" [ref=f21e77]
+    - generic [ref=f21e78]:
+      - heading "POPULAR IN WOMEN" [level=1] [ref=f21e79]
+      - separator [ref=f21e80]
+      - generic [ref=f21e81]:
+        - generic [ref=f21e82]:
+          - generic [ref=f21e83]:
+            - link [ref=f21e84] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/1
+            - button "♡" [ref=f21e85] [cursor=pointer]
+          - paragraph [ref=f21e86]: Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse
+          - generic [ref=f21e87]:
+            - generic [ref=f21e88]: LKR 50
+            - generic [ref=f21e89]: LKR 80.5
+          - generic [ref=f21e90]:
+            - button "S" [ref=f21e91] [cursor=pointer]
+            - button "M" [ref=f21e92] [cursor=pointer]
+            - button "L" [ref=f21e93] [cursor=pointer]
+            - button "XL" [ref=f21e94] [cursor=pointer]
+            - button "XXL" [ref=f21e95] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e97] [cursor=pointer]
+        - generic [ref=f21e98]:
+          - generic [ref=f21e99]:
+            - link [ref=f21e100] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/2
+            - button "♡" [ref=f21e101] [cursor=pointer]
+          - paragraph [ref=f21e102]: Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse
+          - generic [ref=f21e103]:
+            - generic [ref=f21e104]: LKR 85
+            - generic [ref=f21e105]: LKR 120.5
+          - generic [ref=f21e106]:
+            - button "S" [ref=f21e107] [cursor=pointer]
+            - button "M" [ref=f21e108] [cursor=pointer]
+            - button "L" [ref=f21e109] [cursor=pointer]
+            - button "XL" [ref=f21e110] [cursor=pointer]
+            - button "XXL" [ref=f21e111] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e113] [cursor=pointer]
+        - generic [ref=f21e114]:
+          - generic [ref=f21e115]:
+            - link [ref=f21e116] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/3
+            - button "♡" [ref=f21e117] [cursor=pointer]
+          - paragraph [ref=f21e118]: Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse
+          - generic [ref=f21e119]:
+            - generic [ref=f21e120]: LKR 60
+            - generic [ref=f21e121]: LKR 100.5
+          - generic [ref=f21e122]:
+            - button "S" [ref=f21e123] [cursor=pointer]
+            - button "M" [ref=f21e124] [cursor=pointer]
+            - button "L" [ref=f21e125] [cursor=pointer]
+            - button "XL" [ref=f21e126] [cursor=pointer]
+            - button "XXL" [ref=f21e127] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e129] [cursor=pointer]
+        - generic [ref=f21e130]:
+          - generic [ref=f21e131]:
+            - link [ref=f21e132] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/4
+            - button "♡" [ref=f21e133] [cursor=pointer]
+          - paragraph [ref=f21e134]: Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse
+          - generic [ref=f21e135]:
+            - generic [ref=f21e136]: LKR 100
+            - generic [ref=f21e137]: LKR 150
+          - generic [ref=f21e138]:
+            - button "S" [ref=f21e139] [cursor=pointer]
+            - button "M" [ref=f21e140] [cursor=pointer]
+            - button "L" [ref=f21e141] [cursor=pointer]
+            - button "XL" [ref=f21e142] [cursor=pointer]
+            - button "XXL" [ref=f21e143] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e145] [cursor=pointer]
+    - generic [ref=f21e147]:
+      - heading "Exclusive" [level=1] [ref=f21e148]
+      - heading "Offers For You" [level=1] [ref=f21e149]
+      - paragraph [ref=f21e150]: ONLY ON BEST SELLERS PRODUCT
+      - button "Check Now!" [ref=f21e151] [cursor=pointer]
+    - generic [ref=f21e153]:
+      - heading "New Collections" [level=1] [ref=f21e154]
+      - separator [ref=f21e155]
+      - generic [ref=f21e156]:
+        - generic [ref=f21e157]:
+          - generic [ref=f21e158]:
+            - link [ref=f21e159] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/12
+            - button "♡" [ref=f21e160] [cursor=pointer]
+          - paragraph [ref=f21e161]: Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse
+          - generic [ref=f21e162]:
+            - generic [ref=f21e163]: LKR 50
+            - generic [ref=f21e164]: LKR 80.5
+          - generic [ref=f21e165]:
+            - button "S" [ref=f21e166] [cursor=pointer]
+            - button "M" [ref=f21e167] [cursor=pointer]
+            - button "L" [ref=f21e168] [cursor=pointer]
+            - button "XL" [ref=f21e169] [cursor=pointer]
+            - button "XXL" [ref=f21e170] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e172] [cursor=pointer]
+        - generic [ref=f21e173]:
+          - generic [ref=f21e174]:
+            - link [ref=f21e175] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/35
+            - button "♡" [ref=f21e176] [cursor=pointer]
+          - paragraph [ref=f21e177]: Boys Orange Colourblocked Hooded Sweatshirt
+          - generic [ref=f21e178]:
+            - generic [ref=f21e179]: LKR 85
+            - generic [ref=f21e180]: LKR 120.5
+          - generic [ref=f21e181]:
+            - button "S" [ref=f21e182] [cursor=pointer]
+            - button "M" [ref=f21e183] [cursor=pointer]
+            - button "L" [ref=f21e184] [cursor=pointer]
+            - button "XL" [ref=f21e185] [cursor=pointer]
+            - button "XXL" [ref=f21e186] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e188] [cursor=pointer]
+        - generic [ref=f21e189]:
+          - generic [ref=f21e190]:
+            - link [ref=f21e191] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/14
+            - button "♡" [ref=f21e192] [cursor=pointer]
+          - paragraph [ref=f21e193]: Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket
+          - generic [ref=f21e194]:
+            - generic [ref=f21e195]: LKR 60
+            - generic [ref=f21e196]: LKR 100.5
+          - generic [ref=f21e197]:
+            - button "S" [ref=f21e198] [cursor=pointer]
+            - button "M" [ref=f21e199] [cursor=pointer]
+            - button "L" [ref=f21e200] [cursor=pointer]
+            - button "XL" [ref=f21e201] [cursor=pointer]
+            - button "XXL" [ref=f21e202] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e204] [cursor=pointer]
+        - generic [ref=f21e205]:
+          - generic [ref=f21e206]:
+            - link [ref=f21e207] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/8
+            - button "♡" [ref=f21e208] [cursor=pointer]
+          - paragraph [ref=f21e209]: Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse
+          - generic [ref=f21e210]:
+            - generic [ref=f21e211]: LKR 100
+            - generic [ref=f21e212]: LKR 150
+          - generic [ref=f21e213]:
+            - button "S" [ref=f21e214] [cursor=pointer]
+            - button "M" [ref=f21e215] [cursor=pointer]
+            - button "L" [ref=f21e216] [cursor=pointer]
+            - button "XL" [ref=f21e217] [cursor=pointer]
+            - button "XXL" [ref=f21e218] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e220] [cursor=pointer]
+        - generic [ref=f21e221]:
+          - generic [ref=f21e222]:
+            - link [ref=f21e223] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/15
+            - button "♡" [ref=f21e224] [cursor=pointer]
+          - paragraph [ref=f21e225]: Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket
+          - generic [ref=f21e226]:
+            - generic [ref=f21e227]: LKR 50
+            - generic [ref=f21e228]: LKR 80.5
+          - generic [ref=f21e229]:
+            - button "S" [ref=f21e230] [cursor=pointer]
+            - button "M" [ref=f21e231] [cursor=pointer]
+            - button "L" [ref=f21e232] [cursor=pointer]
+            - button "XL" [ref=f21e233] [cursor=pointer]
+            - button "XXL" [ref=f21e234] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e236] [cursor=pointer]
+        - generic [ref=f21e237]:
+          - generic [ref=f21e238]:
+            - link [ref=f21e239] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/2
+            - button "♡" [ref=f21e240] [cursor=pointer]
+          - paragraph [ref=f21e241]: Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse
+          - generic [ref=f21e242]:
+            - generic [ref=f21e243]: LKR 85
+            - generic [ref=f21e244]: LKR 120.5
+          - generic [ref=f21e245]:
+            - button "S" [ref=f21e246] [cursor=pointer]
+            - button "M" [ref=f21e247] [cursor=pointer]
+            - button "L" [ref=f21e248] [cursor=pointer]
+            - button "XL" [ref=f21e249] [cursor=pointer]
+            - button "XXL" [ref=f21e250] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e252] [cursor=pointer]
+        - generic [ref=f21e253]:
+          - generic [ref=f21e254]:
+            - link [ref=f21e255] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/17
+            - button "♡" [ref=f21e256] [cursor=pointer]
+          - paragraph [ref=f21e257]: Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket
+          - generic [ref=f21e258]:
+            - generic [ref=f21e259]: LKR 60
+            - generic [ref=f21e260]: LKR 100.5
+          - generic [ref=f21e261]:
+            - button "S" [ref=f21e262] [cursor=pointer]
+            - button "M" [ref=f21e263] [cursor=pointer]
+            - button "L" [ref=f21e264] [cursor=pointer]
+            - button "XL" [ref=f21e265] [cursor=pointer]
+            - button "XXL" [ref=f21e266] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e268] [cursor=pointer]
+        - generic [ref=f21e269]:
+          - generic [ref=f21e270]:
+            - link [ref=f21e271] [cursor=pointer]:
+              - /url: /AI-R-D---Github-copilot/product/28
+            - button "♡" [ref=f21e272] [cursor=pointer]
+          - paragraph [ref=f21e273]: Boys Orange Colourblocked Hooded Sweatshirt
+          - generic [ref=f21e274]:
+            - generic [ref=f21e275]: LKR 100
+            - generic [ref=f21e276]: LKR 150
+          - generic [ref=f21e277]:
+            - button "S" [ref=f21e278] [cursor=pointer]
+            - button "M" [ref=f21e279] [cursor=pointer]
+            - button "L" [ref=f21e280] [cursor=pointer]
+            - button "XL" [ref=f21e281] [cursor=pointer]
+            - button "XXL" [ref=f21e282] [cursor=pointer]
+          - button "Add to Cart" [ref=f21e284] [cursor=pointer]
+    - generic [ref=f21e285]:
+      - heading "Get Exclusive Offers On Your Email" [level=1] [ref=f21e286]
+      - paragraph [ref=f21e287]: Subscribe to our newsletter and stay updated!
+      - generic [ref=f21e288]:
+        - textbox "Your Email Id" [ref=f21e289]
+        - button "Subscribe" [ref=f21e290] [cursor=pointer]
+  - generic [ref=f21e36]:
+    - list [ref=f21e38]:
+      - listitem [ref=f21e39] [cursor=pointer]: Company
+      - listitem [ref=f21e40] [cursor=pointer]: Products
+      - listitem [ref=f21e41] [cursor=pointer]: Offices
+      - listitem [ref=f21e42] [cursor=pointer]: About
+      - listitem [ref=f21e43] [cursor=pointer]: Contact
+    - generic [ref=f21e48]:
+      - separator [ref=f21e49]
+      - paragraph [ref=f21e50]: Copyright @ 2024 - All Rights Reserved

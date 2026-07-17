@@ -20,7 +20,11 @@ setup('Authenticate and save session storage', async ({ page }) => {
   await page.locator('input[name="password"]').fill(process.env.PASSWORD || '')
   await page.getByRole('button', { name: 'Login' }).last().click()
 
-  await expect(page.getByRole('button', { name: 'My Orders' })).toBeVisible()
+  // Explicit timeout: login API is hosted on Render.com free tier.
+  // Cold-start can delay the authenticated nav from appearing by up to 30s.
+  await page
+    .getByRole('button', { name: 'My Orders' })
+    .waitFor({ state: 'visible', timeout: 30_000 })
 
   fs.mkdirSync(path.dirname(authFile), { recursive: true })
   await page.context().storageState({ path: authFile })

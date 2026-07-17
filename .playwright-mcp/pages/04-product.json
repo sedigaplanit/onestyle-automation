@@ -1,0 +1,140 @@
+{
+  "page": "Product Detail",
+  "url": {
+    "pattern": "/product/{id}",
+    "examples": ["/product/1", "/product/2", "/product/3"]
+  },
+  "breadcrumb": "HOME → SHOP → {category} → {productName}",
+  "elements": {
+    "productImages": {
+      "mainImage": {
+        "role": "img",
+        "name": "Product",
+        "locator": "getByRole('img', { name: 'Product' }).first()"
+      },
+      "thumbnail1": {
+        "role": "img",
+        "name": "Product",
+        "locator": "getByRole('img', { name: 'Product' }).nth(1)"
+      },
+      "thumbnail2": {
+        "role": "img",
+        "name": "Product",
+        "locator": "getByRole('img', { name: 'Product' }).nth(2)"
+      },
+      "thumbnail3": {
+        "role": "img",
+        "name": "Product",
+        "locator": "getByRole('img', { name: 'Product' }).nth(3)"
+      }
+    },
+    "productInfo": {
+      "name": { "role": "heading", "level": 1 },
+      "stars": { "role": "img", "name": "Star", "count": 5 },
+      "reviewCount": { "text": "(15 Reviews)" },
+      "originalPrice": "first generic in price row (higher value)",
+      "salePrice": "second generic in price row (lower value, prominent)",
+      "description": "paragraph element",
+      "categoryBadge": "getByText('Category: {category}')"
+    },
+    "sizeSelector": {
+      "heading": {
+        "default": { "role": "heading", "name": "Select Size" },
+        "error": { "role": "heading", "name": "Select Size — required" }
+      },
+      "note": "Size options are <div>/generic elements, NOT <button> — use getByText with { exact: true }",
+      "options": {
+        "S": { "locator": "getByText('S', { exact: true })" },
+        "M": { "locator": "getByText('M', { exact: true })" },
+        "L": { "locator": "getByText('L', { exact: true })" },
+        "XL": { "locator": "getByText('XL', { exact: true })" },
+        "XXL": { "locator": "getByText('XXL', { exact: true })" }
+      }
+    },
+    "quantitySelector": {
+      "heading": { "role": "heading", "name": "Quantity" },
+      "decrementButton": {
+        "role": "button",
+        "name": "−",
+        "note": "Unicode minus (−) U+2212, not ASCII hyphen (-)"
+      },
+      "value": "generic element, default '1'",
+      "incrementButton": { "role": "button", "name": "+" }
+    },
+    "actionButtons": {
+      "addToCart": {
+        "role": "button",
+        "name": "Add to Cart",
+        "visibleWhen": "product NOT already in cart"
+      },
+      "inCartViewCart": {
+        "role": "button",
+        "name": "✓ In Cart — View Cart",
+        "locator": "getByRole('button', { name: /In Cart.*View Cart/ })",
+        "visibleWhen": "product already in cart",
+        "navigatesTo": "/cart"
+      },
+      "buyNow": {
+        "role": "button",
+        "name": "Buy Now",
+        "visibleWhen": "always"
+      }
+    }
+  },
+  "states": {
+    "noSizeSelected": {
+      "sizeHeading": "Select Size",
+      "errorVisible": false
+    },
+    "sizeSelected": {
+      "sizeHeading": "Select Size",
+      "selectedOption": "highlighted visually",
+      "errorVisible": false
+    },
+    "sizeRequiredError": {
+      "sizeHeading": "Select Size — required",
+      "trigger": "clicked Add to Cart without selecting a size",
+      "locator": "getByRole('heading', { name: 'Select Size — required' })"
+    },
+    "inCart": {
+      "addToCartVisible": false,
+      "inCartButtonVisible": true,
+      "cartCounterIncremented": true,
+      "locator": "getByRole('button', { name: /In Cart.*View Cart/ })"
+    }
+  },
+  "products": [
+    {
+      "id": 1,
+      "name": "Casual Striped Blouse with Peplum Hem",
+      "salePrice": "LKR 50",
+      "originalPrice": "LKR 80.5",
+      "category": "women"
+    },
+    {
+      "id": 2,
+      "name": "Elegant Overlap Collar Top",
+      "salePrice": "LKR 85",
+      "originalPrice": "LKR 120.5",
+      "category": "women"
+    },
+    {
+      "id": 3,
+      "name": "Striped Summer Flutter Blouse",
+      "salePrice": "LKR 60",
+      "originalPrice": "LKR 100.5",
+      "category": "women"
+    }
+  ],
+  "navigation": {
+    "inCartButton": "/cart",
+    "breadcrumbCategory": "/womens or /mens or /kids",
+    "breadcrumbShop": "/"
+  },
+  "screenshots": [
+    "snapshots/04-product-no-size.png",
+    "snapshots/04-product-size-selected.png",
+    "snapshots/04-product-no-size-error.png",
+    "snapshots/04-product-in-cart.png"
+  ]
+}

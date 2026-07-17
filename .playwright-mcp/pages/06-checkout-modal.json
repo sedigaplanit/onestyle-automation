@@ -1,0 +1,132 @@
+{
+  "page": "Checkout Modal",
+  "url": {
+    "pattern": "/cart (modal overlay — no URL change)",
+    "trigger": "Click 'Proceed to Checkout' on cart page",
+    "authRequired": true
+  },
+  "step1": {
+    "name": "Payment Method Selection",
+    "elements": {
+      "heading": {
+        "role": "heading",
+        "level": 2,
+        "name": "Checkout",
+        "useAs": "modal ready marker"
+      },
+      "closeButton": { "role": "button", "name": "✕", "behavior": "closes modal, stays on /cart" },
+      "totalDisplay": { "locator": "getByText(/Total:.*LKR/)", "format": "Total: LKR X.XX" },
+      "paymentLabel": { "text": "Select Payment Method" },
+      "paymentOptions": {
+        "creditDebitCard": {
+          "locator": "getByText('💳Credit / Debit Card')",
+          "elementType": "generic/div (not button)"
+        },
+        "paypal": {
+          "locator": "getByText('🅿️PayPal')",
+          "elementType": "generic/div (not button)"
+        },
+        "cashOnDelivery": {
+          "locator": "getByText('💵Cash on Delivery')",
+          "elementType": "generic/div (not button)"
+        }
+      },
+      "continueButton": { "role": "button", "name": "Continue →" },
+      "cancelButton": {
+        "role": "button",
+        "name": "Cancel",
+        "behavior": "closes modal, stays on /cart"
+      }
+    }
+  },
+  "step2_creditCard": {
+    "name": "Credit / Debit Card Form",
+    "trigger": "Step 1 → select Credit/Debit Card → Continue →",
+    "elements": {
+      "heading": { "role": "heading", "level": 2, "name": "💳 Credit / Debit Card" },
+      "backHeaderButton": { "role": "button", "name": "←", "behavior": "returns to Step 1" },
+      "amountDisplay": {
+        "locator": "getByText(/Amount to pay:.*LKR/)",
+        "format": "Amount to pay: LKR X.XX"
+      },
+      "deliveryAddress": {
+        "streetAddress": { "role": "textbox", "placeholder": "No. 12, Main Street" },
+        "city": { "role": "textbox", "placeholder": "Colombo" },
+        "phone": { "role": "textbox", "placeholder": "+94 77 000 0000" }
+      },
+      "cardDetails": {
+        "cardholderName": { "role": "textbox", "placeholder": "John Doe" },
+        "cardNumber": { "role": "textbox", "placeholder": "1234 5678 9012 3456" },
+        "expiryDate": { "role": "textbox", "placeholder": "MM/YY" },
+        "cvv": { "role": "textbox", "placeholder": "123" }
+      },
+      "payButton": {
+        "role": "button",
+        "name": "Pay LKR {amount}",
+        "locator": "getByRole('button', { name: /Pay LKR/ })"
+      },
+      "backBottomButton": { "role": "button", "name": "← Back", "behavior": "returns to Step 1" }
+    }
+  },
+  "step2_paypal": {
+    "name": "PayPal",
+    "trigger": "Step 1 → select PayPal → Continue →",
+    "elements": {
+      "heading": { "role": "heading", "level": 2, "name": "🅿️ PayPal" },
+      "backHeaderButton": { "role": "button", "name": "←", "behavior": "returns to Step 1" },
+      "amountDisplay": {
+        "locator": "getByText(/Amount to pay:.*LKR/)",
+        "format": "Amount to pay: LKR X.XX"
+      },
+      "deliveryAddress": {
+        "streetAddress": { "role": "textbox", "placeholder": "No. 12, Main Street" },
+        "city": { "role": "textbox", "placeholder": "Colombo" },
+        "phone": { "role": "textbox", "placeholder": "+94 77 000 0000" }
+      },
+      "redirectNotice": {
+        "text": "You will be redirected to PayPal to complete your payment securely."
+      },
+      "proceedToPaypalButton": { "role": "button", "name": "Proceed to PayPal" },
+      "backBottomButton": { "role": "button", "name": "← Back", "behavior": "returns to Step 1" }
+    },
+    "screenshot": "snapshots/06-checkout-modal-step2-paypal.png"
+  },
+  "step2_cashOnDelivery": {
+    "name": "Cash on Delivery",
+    "trigger": "Step 1 → select Cash on Delivery → Continue →",
+    "elements": {
+      "heading": { "role": "heading", "level": 2, "name": "💵 Cash on Delivery" },
+      "backHeaderButton": { "role": "button", "name": "←", "behavior": "returns to Step 1" },
+      "amountDisplay": {
+        "locator": "getByText(/Amount to pay:.*LKR/)",
+        "format": "Amount to pay: LKR X.XX"
+      },
+      "deliveryAddress": {
+        "streetAddress": { "role": "textbox", "placeholder": "No. 12, Main Street" },
+        "city": { "role": "textbox", "placeholder": "Colombo" },
+        "phone": { "role": "textbox", "placeholder": "+94 77 000 0000" }
+      },
+      "confirmOrderButton": { "role": "button", "name": "Confirm Order" },
+      "backBottomButton": { "role": "button", "name": "← Back", "behavior": "returns to Step 1" }
+    },
+    "note": "No card fields — only delivery address + Confirm Order button",
+    "screenshot": "snapshots/06-checkout-modal-step2-cod.png"
+  },
+  "behavior": {
+    "closeX": "modal closes, URL stays /cart",
+    "cancel": "modal closes, URL stays /cart",
+    "backHeaderStep2": "returns to Step 1",
+    "backBottomStep2": "returns to Step 1",
+    "urlChange": false
+  },
+  "notes": [
+    "Modal is rendered below the cart table in the DOM",
+    "May require scrolling on smaller viewports to reach Step 2 buttons",
+    "Modal total uses 2 decimal places (LKR 50.00) vs cart totals use integers (LKR 50)"
+  ],
+  "screenshots": [
+    "snapshots/06-checkout-modal-step1.png",
+    "snapshots/06-checkout-modal-step2-card.png",
+    "snapshots/06-checkout-modal-step2-card-fullpage.png"
+  ]
+}

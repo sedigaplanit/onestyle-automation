@@ -1,0 +1,253 @@
+- generic [ref=f29e3]:
+  - generic [ref=f29e4]:
+    - link [ref=f29e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f29e6]
+      - paragraph [ref=f29e7]: OneStyle
+    - list [ref=f29e9]:
+      - listitem [ref=f29e10] [cursor=pointer]:
+        - link "Shop" [ref=f29e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f29e12]
+      - listitem [ref=f29e13] [cursor=pointer]:
+        - link "Men" [ref=f29e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f29e15] [cursor=pointer]:
+        - link "Women" [ref=f29e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f29e17] [cursor=pointer]:
+        - link "Kids" [ref=f29e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f29e19]:
+      - link [ref=f29e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f29e21]
+      - link [ref=f29e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f29e23]
+      - button "Logout" [ref=f29e24] [cursor=pointer]
+      - link "♡" [ref=f29e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f29e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f29e28]
+      - generic [ref=f29e29]: "1"
+  - generic [ref=f29e30]:
+    - paragraph [ref=f29e32]:
+      - generic [ref=f29e33]: Showing 12
+      - text: products
+    - generic [ref=f29e34]:
+      - textbox "Search products..." [ref=f29e35]
+      - combobox [ref=f29e36]:
+        - option "All Prices" [selected]
+        - option "Under LKR 100"
+        - option "LKR 100 – 200"
+        - option "Above LKR 200"
+      - combobox [ref=f29e37]:
+        - option "Sort By" [selected]
+        - 'option "Price: Low to High"'
+        - 'option "Price: High to Low"'
+        - 'option "Name: A – Z"'
+    - generic [ref=f29e38]:
+      - generic [ref=f29e39]:
+        - generic [ref=f29e40]:
+          - link [ref=f29e41] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/25
+          - button "♡" [ref=f29e42] [cursor=pointer]
+        - paragraph [ref=f29e43]: Orange Colourblocked Sweatshirt
+        - generic [ref=f29e44]:
+          - generic [ref=f29e45]: LKR 85
+          - generic [ref=f29e46]: LKR 120.5
+        - generic [ref=f29e47]:
+          - button "S" [ref=f29e48] [cursor=pointer]
+          - button "M" [ref=f29e49] [cursor=pointer]
+          - button "L" [ref=f29e50] [cursor=pointer]
+          - button "XL" [ref=f29e51] [cursor=pointer]
+          - button "XXL" [ref=f29e52] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e54] [cursor=pointer]
+      - generic [ref=f29e55]:
+        - generic [ref=f29e56]:
+          - link [ref=f29e57] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/26
+          - button "♡" [ref=f29e58] [cursor=pointer]
+        - paragraph [ref=f29e59]: Vivid Orange Hooded Sweatshirt
+        - generic [ref=f29e60]:
+          - generic [ref=f29e61]: LKR 85
+          - generic [ref=f29e62]: LKR 120.5
+        - generic [ref=f29e63]:
+          - button "S" [ref=f29e64] [cursor=pointer]
+          - button "M" [ref=f29e65] [cursor=pointer]
+          - button "L" [ref=f29e66] [cursor=pointer]
+          - button "XL" [ref=f29e67] [cursor=pointer]
+          - button "XXL" [ref=f29e68] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e70] [cursor=pointer]
+      - generic [ref=f29e71]:
+        - generic [ref=f29e72]:
+          - link [ref=f29e73] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/27
+          - button "♡" [ref=f29e74] [cursor=pointer]
+        - paragraph [ref=f29e75]: Trendy Boys' Sweatshirt
+        - generic [ref=f29e76]:
+          - generic [ref=f29e77]: LKR 85
+          - generic [ref=f29e78]: LKR 120.5
+        - generic [ref=f29e79]:
+          - button "S" [ref=f29e80] [cursor=pointer]
+          - button "M" [ref=f29e81] [cursor=pointer]
+          - button "L" [ref=f29e82] [cursor=pointer]
+          - button "XL" [ref=f29e83] [cursor=pointer]
+          - button "XXL" [ref=f29e84] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e86] [cursor=pointer]
+      - generic [ref=f29e87]:
+        - generic [ref=f29e88]:
+          - link [ref=f29e89] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/28
+          - button "♡" [ref=f29e90] [cursor=pointer]
+        - paragraph [ref=f29e91]: Hooded Colourblocked Sweatshirt
+        - generic [ref=f29e92]:
+          - generic [ref=f29e93]: LKR 85
+          - generic [ref=f29e94]: LKR 120.5
+        - generic [ref=f29e95]:
+          - button "S" [ref=f29e96] [cursor=pointer]
+          - button "M" [ref=f29e97] [cursor=pointer]
+          - button "L" [ref=f29e98] [cursor=pointer]
+          - button "XL" [ref=f29e99] [cursor=pointer]
+          - button "XXL" [ref=f29e100] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e102] [cursor=pointer]
+      - generic [ref=f29e103]:
+        - generic [ref=f29e104]:
+          - link [ref=f29e105] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/29
+          - button "♡" [ref=f29e106] [cursor=pointer]
+        - paragraph [ref=f29e107]: Bold Orange Sweatshirt
+        - generic [ref=f29e108]:
+          - generic [ref=f29e109]: LKR 85
+          - generic [ref=f29e110]: LKR 120.5
+        - generic [ref=f29e111]:
+          - button "S" [ref=f29e112] [cursor=pointer]
+          - button "M" [ref=f29e113] [cursor=pointer]
+          - button "L" [ref=f29e114] [cursor=pointer]
+          - button "XL" [ref=f29e115] [cursor=pointer]
+          - button "XXL" [ref=f29e116] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e118] [cursor=pointer]
+      - generic [ref=f29e119]:
+        - generic [ref=f29e120]:
+          - link [ref=f29e121] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/30
+          - button "♡" [ref=f29e122] [cursor=pointer]
+        - paragraph [ref=f29e123]: Stylish Kids' Sweatshirt
+        - generic [ref=f29e124]:
+          - generic [ref=f29e125]: LKR 85
+          - generic [ref=f29e126]: LKR 120.5
+        - generic [ref=f29e127]:
+          - button "S" [ref=f29e128] [cursor=pointer]
+          - button "M" [ref=f29e129] [cursor=pointer]
+          - button "L" [ref=f29e130] [cursor=pointer]
+          - button "XL" [ref=f29e131] [cursor=pointer]
+          - button "XXL" [ref=f29e132] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e134] [cursor=pointer]
+      - generic [ref=f29e135]:
+        - generic [ref=f29e136]:
+          - link [ref=f29e137] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/31
+          - button "♡" [ref=f29e138] [cursor=pointer]
+        - paragraph [ref=f29e139]: Playful Boys' Orange Hoodie
+        - generic [ref=f29e140]:
+          - generic [ref=f29e141]: LKR 85
+          - generic [ref=f29e142]: LKR 120.5
+        - generic [ref=f29e143]:
+          - button "S" [ref=f29e144] [cursor=pointer]
+          - button "M" [ref=f29e145] [cursor=pointer]
+          - button "L" [ref=f29e146] [cursor=pointer]
+          - button "XL" [ref=f29e147] [cursor=pointer]
+          - button "XXL" [ref=f29e148] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e150] [cursor=pointer]
+      - generic [ref=f29e151]:
+        - generic [ref=f29e152]:
+          - link [ref=f29e153] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/32
+          - button "♡" [ref=f29e154] [cursor=pointer]
+        - paragraph [ref=f29e155]: Vibrant Colourblocked Hoodie
+        - generic [ref=f29e156]:
+          - generic [ref=f29e157]: LKR 85
+          - generic [ref=f29e158]: LKR 120.5
+        - generic [ref=f29e159]:
+          - button "S" [ref=f29e160] [cursor=pointer]
+          - button "M" [ref=f29e161] [cursor=pointer]
+          - button "L" [ref=f29e162] [cursor=pointer]
+          - button "XL" [ref=f29e163] [cursor=pointer]
+          - button "XXL" [ref=f29e164] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e166] [cursor=pointer]
+      - generic [ref=f29e167]:
+        - generic [ref=f29e168]:
+          - link [ref=f29e169] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/33
+          - button "♡" [ref=f29e170] [cursor=pointer]
+        - paragraph [ref=f29e171]: Orange Sweatshirt for Boys
+        - generic [ref=f29e172]:
+          - generic [ref=f29e173]: LKR 85
+          - generic [ref=f29e174]: LKR 120.5
+        - generic [ref=f29e175]:
+          - button "S" [ref=f29e176] [cursor=pointer]
+          - button "M" [ref=f29e177] [cursor=pointer]
+          - button "L" [ref=f29e178] [cursor=pointer]
+          - button "XL" [ref=f29e179] [cursor=pointer]
+          - button "XXL" [ref=f29e180] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e182] [cursor=pointer]
+      - generic [ref=f29e183]:
+        - generic [ref=f29e184]:
+          - link [ref=f29e185] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/34
+          - button "♡" [ref=f29e186] [cursor=pointer]
+        - paragraph [ref=f29e187]: Sporty Kids' Orange Hoodie
+        - generic [ref=f29e188]:
+          - generic [ref=f29e189]: LKR 85
+          - generic [ref=f29e190]: LKR 120.5
+        - generic [ref=f29e191]:
+          - button "S" [ref=f29e192] [cursor=pointer]
+          - button "M" [ref=f29e193] [cursor=pointer]
+          - button "L" [ref=f29e194] [cursor=pointer]
+          - button "XL" [ref=f29e195] [cursor=pointer]
+          - button "XXL" [ref=f29e196] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e198] [cursor=pointer]
+      - generic [ref=f29e199]:
+        - generic [ref=f29e200]:
+          - link [ref=f29e201] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/35
+          - button "♡" [ref=f29e202] [cursor=pointer]
+        - paragraph [ref=f29e203]: Dynamic Boys' Sweatshirt
+        - generic [ref=f29e204]:
+          - generic [ref=f29e205]: LKR 85
+          - generic [ref=f29e206]: LKR 120.5
+        - generic [ref=f29e207]:
+          - button "S" [ref=f29e208] [cursor=pointer]
+          - button "M" [ref=f29e209] [cursor=pointer]
+          - button "L" [ref=f29e210] [cursor=pointer]
+          - button "XL" [ref=f29e211] [cursor=pointer]
+          - button "XXL" [ref=f29e212] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e214] [cursor=pointer]
+      - generic [ref=f29e215]:
+        - generic [ref=f29e216]:
+          - link [ref=f29e217] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/36
+          - button "♡" [ref=f29e218] [cursor=pointer]
+        - paragraph [ref=f29e219]: Chic Colourblocked Hoodie
+        - generic [ref=f29e220]:
+          - generic [ref=f29e221]: LKR 85
+          - generic [ref=f29e222]: LKR 120.5
+        - generic [ref=f29e223]:
+          - button "S" [ref=f29e224] [cursor=pointer]
+          - button "M" [ref=f29e225] [cursor=pointer]
+          - button "L" [ref=f29e226] [cursor=pointer]
+          - button "XL" [ref=f29e227] [cursor=pointer]
+          - button "XXL" [ref=f29e228] [cursor=pointer]
+        - button "Add to Cart" [ref=f29e230] [cursor=pointer]
+  - generic [ref=f29e231]:
+    - list [ref=f29e233]:
+      - listitem [ref=f29e234] [cursor=pointer]: Company
+      - listitem [ref=f29e235] [cursor=pointer]: Products
+      - listitem [ref=f29e236] [cursor=pointer]: Offices
+      - listitem [ref=f29e237] [cursor=pointer]: About
+      - listitem [ref=f29e238] [cursor=pointer]: Contact
+    - generic [ref=f29e243]:
+      - separator [ref=f29e244]
+      - paragraph [ref=f29e245]: Copyright @ 2024 - All Rights Reserved

@@ -1,0 +1,51 @@
+- generic [ref=f27e3]:
+  - generic [ref=f27e4]:
+    - link [ref=f27e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f27e6]
+      - paragraph [ref=f27e7]: OneStyle
+    - list [ref=f27e9]:
+      - listitem [ref=f27e10] [cursor=pointer]:
+        - link "Shop" [ref=f27e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f27e12]
+      - listitem [ref=f27e13] [cursor=pointer]:
+        - link "Men" [ref=f27e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f27e15] [cursor=pointer]:
+        - link "Women" [ref=f27e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f27e17] [cursor=pointer]:
+        - link "Kids" [ref=f27e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f27e19]:
+      - link [ref=f27e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f27e21]
+      - link [ref=f27e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f27e23]
+      - button "Logout" [ref=f27e24] [cursor=pointer]
+      - link "♡" [ref=f27e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f27e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f27e28]
+      - generic [ref=f27e29]: "1"
+  - generic [ref=f27e30]:
+    - generic [ref=f27e31]: ♡
+    - heading "Your wishlist is empty" [level=2] [ref=f27e32]
+    - paragraph [ref=f27e33]: Save items you love by clicking the heart on any product.
+    - link [ref=f27e34] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - button "Start Shopping" [ref=f27e35]
+  - generic [ref=f27e36]:
+    - list [ref=f27e38]:
+      - listitem [ref=f27e39] [cursor=pointer]: Company
+      - listitem [ref=f27e40] [cursor=pointer]: Products
+      - listitem [ref=f27e41] [cursor=pointer]: Offices
+      - listitem [ref=f27e42] [cursor=pointer]: About
+      - listitem [ref=f27e43] [cursor=pointer]: Contact
+    - generic [ref=f27e48]:
+      - separator [ref=f27e49]
+      - paragraph [ref=f27e50]: Copyright @ 2024 - All Rights Reserved

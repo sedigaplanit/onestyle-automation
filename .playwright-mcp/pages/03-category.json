@@ -1,0 +1,98 @@
+{
+  "page": "Category (Product Listing)",
+  "urls": {
+    "womens": "/womens",
+    "mens": "/mens",
+    "kids": "/kids",
+    "shop": "/"
+  },
+  "note": "All category pages share the same structure; only product data differs.",
+  "filters": {
+    "productCount": {
+      "locator": "getByText(/Showing \\d+ products/)",
+      "example": "Showing 12 products"
+    },
+    "searchBox": {
+      "role": "textbox",
+      "name": "Search products...",
+      "behavior": "filters product list in-place"
+    },
+    "priceFilter": {
+      "role": "combobox",
+      "locator": "getByRole('combobox').first()",
+      "options": ["All Prices", "Under LKR 100", "LKR 100 – 200", "Above LKR 200"],
+      "defaultSelected": "All Prices"
+    },
+    "sortDropdown": {
+      "role": "combobox",
+      "locator": "getByRole('combobox').nth(1)",
+      "options": ["Sort By", "Price: Low to High", "Price: High to Low", "Name: A – Z"],
+      "defaultSelected": "Sort By"
+    }
+  },
+  "productCard": {
+    "productLink": { "role": "link", "href": "/product/{id}" },
+    "wishlistButton": { "role": "button", "name": "♡" },
+    "productName": "paragraph element",
+    "salePrice": "first generic in price container",
+    "originalPrice": "second generic in price container",
+    "sizes": {
+      "S": { "role": "button", "name": "S" },
+      "M": { "role": "button", "name": "M" },
+      "L": { "role": "button", "name": "L" },
+      "XL": { "role": "button", "name": "XL" },
+      "XXL": { "role": "button", "name": "XXL" }
+    },
+    "addToCartButton": { "role": "button", "name": "Add to Cart" },
+    "note": "Sizes on category page are <button> elements (unlike product page where they are <generic>/div)"
+  },
+  "knownProducts": {
+    "womens": [
+      {
+        "id": 1,
+        "name": "Casual Striped Blouse with Peplum Hem",
+        "salePrice": "LKR 50",
+        "originalPrice": "LKR 80.5"
+      },
+      {
+        "id": 2,
+        "name": "Elegant Overlap Collar Top",
+        "salePrice": "LKR 85",
+        "originalPrice": "LKR 120.5"
+      },
+      {
+        "id": 3,
+        "name": "Striped Summer Flutter Blouse",
+        "salePrice": "LKR 60",
+        "originalPrice": "LKR 100.5"
+      },
+      {
+        "id": 4,
+        "name": "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
+        "salePrice": "LKR 100",
+        "originalPrice": "LKR 150"
+      }
+    ],
+    "mens": [
+      {
+        "id": 13,
+        "name": "Green Slim Fit Bomber Jacket",
+        "salePrice": "LKR 85",
+        "originalPrice": "LKR 120.5"
+      },
+      {
+        "id": 14,
+        "name": "Casual Green Zippered Jacket",
+        "salePrice": "LKR 85",
+        "originalPrice": "LKR 120.5"
+      }
+    ]
+  },
+  "navigation": {
+    "productImage": "/product/{id}",
+    "search": "filters in-place",
+    "priceFilter": "filters in-place",
+    "sort": "reorders in-place"
+  },
+  "screenshots": ["snapshots/03-category-womens.png"]
+}

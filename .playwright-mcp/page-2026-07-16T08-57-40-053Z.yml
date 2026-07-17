@@ -1,0 +1,99 @@
+- generic [ref=f31e3]:
+  - generic [ref=f31e4]:
+    - link [ref=f31e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f31e6]
+      - paragraph [ref=f31e7]: OneStyle
+    - list [ref=f31e9]:
+      - listitem [ref=f31e10] [cursor=pointer]:
+        - link "Shop" [ref=f31e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f31e12]
+      - listitem [ref=f31e13] [cursor=pointer]:
+        - link "Men" [ref=f31e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f31e15] [cursor=pointer]:
+        - link "Women" [ref=f31e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f31e17] [cursor=pointer]:
+        - link "Kids" [ref=f31e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f31e19]:
+      - link [ref=f31e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f31e21]
+      - link [ref=f31e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f31e23]
+      - button "Logout" [ref=f31e24] [cursor=pointer]
+      - link "♡" [ref=f31e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f31e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f31e28]
+      - generic [ref=f31e29]: "1"
+  - generic [ref=f31e31]:
+    - generic [ref=f31e32]:
+      - paragraph [ref=f31e33]: Products
+      - paragraph [ref=f31e34]: Title
+      - paragraph [ref=f31e35]: Price
+      - paragraph [ref=f31e36]: Quantity
+      - paragraph [ref=f31e37]: Total
+      - paragraph [ref=f31e38]: Remove
+    - separator [ref=f31e39]
+    - generic [ref=f31e40]:
+      - generic [ref=f31e41]:
+        - paragraph [ref=f31e42]: Versatile Bomber Jacket
+        - paragraph [ref=f31e43]: LKR 85
+        - generic [ref=f31e44]:
+          - button "-" [ref=f31e45] [cursor=pointer]
+          - generic [ref=f31e46]: "1"
+          - button "+" [ref=f31e47] [cursor=pointer]
+        - paragraph [ref=f31e48]: LKR 85
+        - img "Remove" [ref=f31e49] [cursor=pointer]
+      - separator [ref=f31e50]
+    - generic [ref=f31e52]:
+      - heading "Cart Totals" [level=1] [ref=f31e53]
+      - generic [ref=f31e54]:
+        - generic [ref=f31e55]:
+          - paragraph [ref=f31e56]: "Sub Total:"
+          - paragraph [ref=f31e57]: LKR 85
+        - separator [ref=f31e58]
+        - generic [ref=f31e59]:
+          - paragraph [ref=f31e60]: Shipping Free
+          - paragraph [ref=f31e61]: Free
+        - separator [ref=f31e62]
+        - generic [ref=f31e63]:
+          - heading "Total:" [level=3] [ref=f31e64]
+          - heading "LKR 85" [level=3] [ref=f31e65]
+      - button "Proceed to Checkout" [active] [ref=f31e66] [cursor=pointer]
+    - generic [ref=f31e83]:
+      - generic [ref=f31e84]:
+        - heading "Checkout" [level=2] [ref=f31e85]
+        - button "✕" [ref=f31e86] [cursor=pointer]
+      - paragraph [ref=f31e87]:
+        - text: "Total:"
+        - strong [ref=f31e88]: LKR 85.00
+      - paragraph [ref=f31e89]: Select Payment Method
+      - generic [ref=f31e90]:
+        - generic [ref=f31e91] [cursor=pointer]:
+          - generic [ref=f31e92]: 💳
+          - generic [ref=f31e93]: Credit / Debit Card
+        - generic [ref=f31e94] [cursor=pointer]:
+          - generic [ref=f31e95]: 🅿️
+          - generic [ref=f31e96]: PayPal
+        - generic [ref=f31e97] [cursor=pointer]:
+          - generic [ref=f31e98]: 💵
+          - generic [ref=f31e99]: Cash on Delivery
+      - button "Continue →" [ref=f31e100] [cursor=pointer]
+      - button "Cancel" [ref=f31e101] [cursor=pointer]
+  - generic [ref=f31e67]:
+    - list [ref=f31e69]:
+      - listitem [ref=f31e70] [cursor=pointer]: Company
+      - listitem [ref=f31e71] [cursor=pointer]: Products
+      - listitem [ref=f31e72] [cursor=pointer]: Offices
+      - listitem [ref=f31e73] [cursor=pointer]: About
+      - listitem [ref=f31e74] [cursor=pointer]: Contact
+    - generic [ref=f31e79]:
+      - separator [ref=f31e80]
+      - paragraph [ref=f31e81]: Copyright @ 2024 - All Rights Reserved

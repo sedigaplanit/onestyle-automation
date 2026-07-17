@@ -22,13 +22,17 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 1,
+  workers: process.env.CI ? 1 : undefined,
+
+  timeout: 30_000, // Hard cap: every test must finish within 30s
   reporter: 'html',
 
   // Global settings for all tests
   use: {
     baseURL: process.env.BASE_URL,
     headless: isHeadless,
+    actionTimeout: 10_000, // Any single action (click, fill, waitFor) fails after 10s
+    navigationTimeout: 30_000, // page.goto / page.waitForNavigation fail after 30s
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
   },

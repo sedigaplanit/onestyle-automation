@@ -1,0 +1,49 @@
+- generic [ref=f23e3]:
+  - generic [ref=f23e4]:
+    - link [ref=f23e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f23e6]
+      - paragraph [ref=f23e7]: OneStyle
+    - list [ref=f23e9]:
+      - listitem [ref=f23e10] [cursor=pointer]:
+        - link "Shop" [ref=f23e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f23e12]
+      - listitem [ref=f23e13] [cursor=pointer]:
+        - link "Men" [ref=f23e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f23e15] [cursor=pointer]:
+        - link "Women" [ref=f23e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f23e17] [cursor=pointer]:
+        - link "Kids" [ref=f23e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f23e19]:
+      - link [ref=f23e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f23e21]
+      - link [ref=f23e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f23e23]
+      - button "Logout" [ref=f23e24] [cursor=pointer]
+      - link "♡" [ref=f23e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f23e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f23e28]
+      - generic [ref=f23e29]: "1"
+  - generic [ref=f23e31]:
+    - heading "My Profile" [level=1] [ref=f23e32]
+    - generic [ref=f23e33]: T
+    - paragraph [ref=f23e34]: test@test.com
+    - paragraph [ref=f23e35]: Loading profile...
+  - generic [ref=f23e36]:
+    - list [ref=f23e38]:
+      - listitem [ref=f23e39] [cursor=pointer]: Company
+      - listitem [ref=f23e40] [cursor=pointer]: Products
+      - listitem [ref=f23e41] [cursor=pointer]: Offices
+      - listitem [ref=f23e42] [cursor=pointer]: About
+      - listitem [ref=f23e43] [cursor=pointer]: Contact
+    - generic [ref=f23e48]:
+      - separator [ref=f23e49]
+      - paragraph [ref=f23e50]: Copyright @ 2024 - All Rights Reserved

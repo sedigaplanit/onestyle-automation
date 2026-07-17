@@ -1,0 +1,45 @@
+- generic [ref=f25e3]:
+  - generic [ref=f25e4]:
+    - link [ref=f25e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f25e6]
+      - paragraph [ref=f25e7]: OneStyle
+    - list [ref=f25e9]:
+      - listitem [ref=f25e10] [cursor=pointer]:
+        - link "Shop" [ref=f25e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f25e12]
+      - listitem [ref=f25e13] [cursor=pointer]:
+        - link "Men" [ref=f25e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f25e15] [cursor=pointer]:
+        - link "Women" [ref=f25e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f25e17] [cursor=pointer]:
+        - link "Kids" [ref=f25e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f25e19]:
+      - link [ref=f25e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f25e21]
+      - link [ref=f25e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f25e23]
+      - button "Logout" [ref=f25e24] [cursor=pointer]
+      - link "♡" [ref=f25e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f25e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f25e28]
+      - generic [ref=f25e29]: "1"
+  - paragraph [ref=f25e31]: Loading orders...
+  - generic [ref=f25e32]:
+    - list [ref=f25e34]:
+      - listitem [ref=f25e35] [cursor=pointer]: Company
+      - listitem [ref=f25e36] [cursor=pointer]: Products
+      - listitem [ref=f25e37] [cursor=pointer]: Offices
+      - listitem [ref=f25e38] [cursor=pointer]: About
+      - listitem [ref=f25e39] [cursor=pointer]: Contact
+    - generic [ref=f25e44]:
+      - separator [ref=f25e45]
+      - paragraph [ref=f25e46]: Copyright @ 2024 - All Rights Reserved

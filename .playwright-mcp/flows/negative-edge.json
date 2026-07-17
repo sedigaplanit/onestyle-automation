@@ -1,0 +1,72 @@
+{
+  "flow": "Negative Edge Cases",
+  "description": "Edge cases and error conditions observed from live app",
+  "cases": [
+    {
+      "id": "NEG-001",
+      "name": "Add to cart without selecting a size",
+      "steps": [
+        { "action": "Navigate to /product/{id}" },
+        { "action": "Click 'Add to Cart' WITHOUT selecting a size" }
+      ],
+      "expectedResult": "Size heading changes from 'Select Size' to 'Select Size — required'",
+      "errorLocator": "getByRole('heading', { name: 'Select Size — required' })",
+      "cartNotModified": true,
+      "screenshot": "snapshots/04-product-no-size-error.png"
+    },
+    {
+      "id": "NEG-002",
+      "name": "Decrement cart quantity to zero removes item",
+      "steps": [
+        { "action": "Navigate to /cart with item at qty 1" },
+        { "action": "Click '-' on item", "locator": "getByRole('button', { name: '-' }).first()" }
+      ],
+      "expectedResult": "Item row is removed from cart, cart counter decrements",
+      "screenshot": "snapshots/05-cart-empty.png"
+    },
+    {
+      "id": "NEG-003",
+      "name": "Checkout button disabled on empty cart",
+      "steps": [{ "action": "Navigate to /cart with empty cart" }],
+      "expectedResult": "'Proceed to Checkout' button has [disabled] attribute",
+      "disabledLocator": "getByRole('button', { name: 'Proceed to Checkout' })",
+      "checkAttribute": "disabled",
+      "screenshot": "snapshots/05-cart-empty.png"
+    },
+    {
+      "id": "NEG-004",
+      "name": "Guest/unauthenticated cart access",
+      "steps": [{ "action": "Log out" }, { "action": "Navigate to /cart" }],
+      "expectedResult": "No checkout button; shows 'Sign in to proceed with checkout' + 'Sign Up / Login' button",
+      "signInPromptLocator": "getByText('Sign in to proceed with checkout')",
+      "signUpLoginLocator": "getByRole('button', { name: 'Sign Up / Login' })",
+      "screenshot": "snapshots/07-guest-cart.png"
+    },
+    {
+      "id": "NEG-005",
+      "name": "Login with invalid credentials",
+      "steps": [
+        { "action": "Navigate to /login" },
+        { "action": "Fill wrong email and password" },
+        { "action": "Click Login button" }
+      ],
+      "expectedResult": "Error message: 'Invalid email or password.' — stays on /login",
+      "errorLocator": "getByText('Invalid email or password.')",
+      "screenshot": "snapshots/02-login-error.png"
+    },
+    {
+      "id": "NEG-006",
+      "name": "Remove item via Remove icon",
+      "steps": [
+        { "action": "Navigate to /cart with item" },
+        { "action": "Click Remove icon", "locator": "getByRole('img', { name: 'Remove' })" }
+      ],
+      "expectedResult": "Item row removed, cart counter decrements, totals update"
+    }
+  ],
+  "knownBug": {
+    "ref": "BUG_CART_001",
+    "description": "Same product with different sizes may not appear as separate cart entries",
+    "file": "bug-reports/BUG_CART_001_same-product-different-sizes-not-separate-cart-entries.md"
+  }
+}

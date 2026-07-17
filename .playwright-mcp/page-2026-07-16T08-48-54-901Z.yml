@@ -1,0 +1,66 @@
+- generic [ref=f17e3]:
+  - generic [ref=f17e4]:
+    - link [ref=f17e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f17e6]
+      - paragraph [ref=f17e7]: OneStyle
+    - list [ref=f17e9]:
+      - listitem [ref=f17e10] [cursor=pointer]:
+        - link "Shop" [ref=f17e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f17e12]
+      - listitem [ref=f17e13] [cursor=pointer]:
+        - link "Men" [ref=f17e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f17e15] [cursor=pointer]:
+        - link "Women" [ref=f17e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f17e17] [cursor=pointer]:
+        - link "Kids" [ref=f17e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f17e19]:
+      - link [ref=f17e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/login
+        - button "Login" [ref=f17e21]
+      - link "♡" [ref=f17e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f17e24] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f17e25]
+      - generic [ref=f17e26]: "0"
+  - generic [ref=f17e28]:
+    - generic [ref=f17e29]:
+      - paragraph [ref=f17e30]: Products
+      - paragraph [ref=f17e31]: Title
+      - paragraph [ref=f17e32]: Price
+      - paragraph [ref=f17e33]: Quantity
+      - paragraph [ref=f17e34]: Total
+      - paragraph [ref=f17e35]: Remove
+    - separator [ref=f17e36]
+    - generic [ref=f17e38]:
+      - heading "Cart Totals" [level=1] [ref=f17e39]
+      - generic [ref=f17e40]:
+        - generic [ref=f17e41]:
+          - paragraph [ref=f17e42]: "Sub Total:"
+          - paragraph [ref=f17e43]: LKR 0
+        - separator [ref=f17e44]
+        - generic [ref=f17e45]:
+          - paragraph [ref=f17e46]: Shipping Free
+          - paragraph [ref=f17e47]: Free
+        - separator [ref=f17e48]
+        - generic [ref=f17e49]:
+          - heading "Total:" [level=3] [ref=f17e50]
+          - heading "LKR 0" [level=3] [ref=f17e51]
+      - generic [ref=f17e52]:
+        - paragraph [ref=f17e53]: Sign in to proceed with checkout
+        - button "Sign Up / Login" [ref=f17e54] [cursor=pointer]
+  - generic [ref=f17e55]:
+    - list [ref=f17e57]:
+      - listitem [ref=f17e58] [cursor=pointer]: Company
+      - listitem [ref=f17e59] [cursor=pointer]: Products
+      - listitem [ref=f17e60] [cursor=pointer]: Offices
+      - listitem [ref=f17e61] [cursor=pointer]: About
+      - listitem [ref=f17e62] [cursor=pointer]: Contact
+    - generic [ref=f17e67]:
+      - separator [ref=f17e68]
+      - paragraph [ref=f17e69]: Copyright @ 2024 - All Rights Reserved

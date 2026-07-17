@@ -1,0 +1,84 @@
+{
+  "flow": "Shopping E2E",
+  "description": "Full journey: browse category → view product → add to cart → cart management → checkout",
+  "steps": [
+    {
+      "phase": "Browse",
+      "step": 1,
+      "action": "Navigate to a category page",
+      "url": "/womens",
+      "verify": "getByText(/Showing \\d+ products/)"
+    },
+    {
+      "phase": "Browse",
+      "step": 2,
+      "action": "Click first product image link",
+      "locator": "getByRole('link').first() inside product card",
+      "result": "Navigates to /product/{id}"
+    },
+    {
+      "phase": "Product",
+      "step": 3,
+      "action": "Select a size",
+      "locator": "getByText('M', { exact: true })",
+      "verify": "Size option visually highlighted"
+    },
+    {
+      "phase": "Product",
+      "step": 4,
+      "action": "Optionally adjust quantity",
+      "locator_increment": "getByRole('button', { name: '+' })",
+      "locator_decrement": "getByRole('button', { name: '−' })"
+    },
+    {
+      "phase": "Product",
+      "step": 5,
+      "action": "Click Add to Cart",
+      "locator": "getByRole('button', { name: 'Add to Cart' })",
+      "verify": "Button changes to '✓ In Cart — View Cart', cart counter increments"
+    },
+    {
+      "phase": "Cart",
+      "step": 6,
+      "action": "Navigate to cart (click cart icon or 'In Cart' button)",
+      "locator_cartIcon": "getByRole('img', { name: 'Cart Icon' })",
+      "locator_inCartBtn": "getByRole('button', { name: /In Cart.*View Cart/ })",
+      "url": "/cart",
+      "verify": "getByRole('heading', { level: 1, name: 'Cart Totals' })"
+    },
+    {
+      "phase": "Cart",
+      "step": 7,
+      "action": "Verify item is in cart",
+      "locator": "getByText('product name')"
+    },
+    {
+      "phase": "Cart",
+      "step": 8,
+      "action": "Click Proceed to Checkout",
+      "locator": "getByRole('button', { name: 'Proceed to Checkout' })",
+      "verify": "getByRole('heading', { level: 2, name: 'Checkout' })"
+    },
+    {
+      "phase": "Checkout",
+      "step": 9,
+      "action": "Select payment method",
+      "locator": "getByText('💳Credit / Debit Card')"
+    },
+    {
+      "phase": "Checkout",
+      "step": 10,
+      "action": "Click Continue",
+      "locator": "getByRole('button', { name: 'Continue →' })",
+      "verify": "getByRole('heading', { level: 2, name: '💳 Credit / Debit Card' })"
+    }
+  ],
+  "keyAssertions": {
+    "categoryPageLoaded": "getByText(/Showing \\d+ products/)",
+    "productPageLoaded": "getByRole('heading', { level: 1 }) (product name)",
+    "addedToCart": "getByRole('button', { name: /In Cart.*View Cart/ })",
+    "cartPageLoaded": "getByRole('heading', { level: 1, name: 'Cart Totals' })",
+    "checkoutModalOpen": "getByRole('heading', { level: 2, name: 'Checkout' })",
+    "step2Open": "getByRole('heading', { level: 2, name: '💳 Credit / Debit Card' })"
+  }
+}

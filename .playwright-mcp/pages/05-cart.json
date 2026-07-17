@@ -1,0 +1,90 @@
+{
+  "page": "Cart",
+  "url": {
+    "pattern": "/cart",
+    "full": "https://sedigaplanit.github.io/AI-R-D---Github-copilot/cart",
+    "title": "E-Commerce App",
+    "accessControl": "both authenticated and unauthenticated (different UX)"
+  },
+  "elements": {
+    "columnHeaders": {
+      "note": "All 6 headers always present, even when cart is empty",
+      "Products": "getByRole('paragraph').filter({ hasText: 'Products' })",
+      "Title": "getByRole('paragraph').filter({ hasText: 'Title' })",
+      "Price": "getByRole('paragraph').filter({ hasText: 'Price' })",
+      "Quantity": "getByRole('paragraph').filter({ hasText: 'Quantity' })",
+      "Total": "getByRole('paragraph').filter({ hasText: 'Total' })",
+      "Remove": "getByRole('paragraph').filter({ hasText: 'Remove' })"
+    },
+    "itemRow": {
+      "note": "Use .first() or .nth() for specific rows",
+      "productName": "paragraph in item row",
+      "unitPrice": "paragraph in item row",
+      "decreaseButton": {
+        "role": "button",
+        "name": "-",
+        "note": "ASCII hyphen (-), different from product page decrement (−)"
+      },
+      "quantityValue": "generic element",
+      "increaseButton": { "role": "button", "name": "+" },
+      "lineTotal": "paragraph — unit price × quantity",
+      "removeIcon": { "role": "img", "name": "Remove", "behavior": "removes item immediately" }
+    },
+    "cartTotals": {
+      "heading": {
+        "role": "heading",
+        "level": 1,
+        "name": "Cart Totals",
+        "useAs": "page ready marker"
+      },
+      "subTotalLabel": "getByText('Sub Total:')",
+      "subTotalValue": "paragraph next to Sub Total label",
+      "shippingLabel": "getByText('Shipping Free')",
+      "shippingValue": "getByText('Free')",
+      "totalHeading": { "role": "heading", "level": 3, "name": "Total:" },
+      "totalValue": "getByRole('heading', { level: 3 }).last()",
+      "checkoutButton": {
+        "role": "button",
+        "name": "Proceed to Checkout",
+        "enabledWhen": "cart has items",
+        "disabledWhen": "cart is empty"
+      }
+    },
+    "guestView": {
+      "signInPrompt": { "locator": "getByText('Sign in to proceed with checkout')" },
+      "signUpLoginButton": { "role": "button", "name": "Sign Up / Login", "navigatesTo": "/login" }
+    }
+  },
+  "states": {
+    "withItems": {
+      "description": "Cart has one or more items, user authenticated",
+      "checkoutButtonEnabled": true,
+      "itemRowsVisible": true
+    },
+    "empty": {
+      "description": "No items in cart, user authenticated",
+      "checkoutButtonEnabled": false,
+      "checkoutButtonDisabled": true,
+      "itemRowsVisible": false,
+      "headersStillVisible": true
+    },
+    "guest": {
+      "description": "User not logged in",
+      "cartCountOnLoad": "0",
+      "checkoutButtonVisible": false,
+      "signInPromptVisible": true,
+      "signUpLoginButtonVisible": true
+    }
+  },
+  "quantityBehavior": {
+    "increment": "qty increases, line total and subtotal update",
+    "decrementAboveOne": "qty decreases, totals update",
+    "decrementFromOne": "item REMOVED from cart (qty goes to 0)",
+    "removeIcon": "item removed immediately"
+  },
+  "screenshots": [
+    "snapshots/05-cart-with-items.png",
+    "snapshots/05-cart-empty.png",
+    "snapshots/07-guest-cart.png"
+  ]
+}

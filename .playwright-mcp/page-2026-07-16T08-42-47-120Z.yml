@@ -1,0 +1,253 @@
+- generic [ref=f4e3]:
+  - generic [ref=f4e4]:
+    - link [ref=f4e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f4e6]
+      - paragraph [ref=f4e7]: OneStyle
+    - list [ref=f4e9]:
+      - listitem [ref=f4e10] [cursor=pointer]:
+        - link "Shop" [ref=f4e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f4e12]
+      - listitem [ref=f4e13] [cursor=pointer]:
+        - link "Men" [ref=f4e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f4e15] [cursor=pointer]:
+        - link "Women" [ref=f4e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f4e17] [cursor=pointer]:
+        - link "Kids" [ref=f4e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f4e19]:
+      - link [ref=f4e20] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/profile
+        - button "Profile" [ref=f4e21]
+      - link [ref=f4e22] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/orders
+        - button "My Orders" [ref=f4e23]
+      - button "Logout" [ref=f4e24] [cursor=pointer]
+      - link "♡" [ref=f4e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f4e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f4e28]
+      - generic [ref=f4e29]: "0"
+  - generic [ref=f4e30]:
+    - paragraph [ref=f4e32]:
+      - generic [ref=f4e33]: Showing 12
+      - text: products
+    - generic [ref=f4e34]:
+      - textbox "Search products..." [ref=f4e35]
+      - combobox [ref=f4e36]:
+        - option "All Prices" [selected]
+        - option "Under LKR 100"
+        - option "LKR 100 – 200"
+        - option "Above LKR 200"
+      - combobox [ref=f4e37]:
+        - option "Sort By" [selected]
+        - 'option "Price: Low to High"'
+        - 'option "Price: High to Low"'
+        - 'option "Name: A – Z"'
+    - generic [ref=f4e38]:
+      - generic [ref=f4e39]:
+        - generic [ref=f4e40]:
+          - link [ref=f4e41] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/1
+          - button "♡" [ref=f4e42] [cursor=pointer]
+        - paragraph [ref=f4e43]: Casual Striped Blouse with Peplum Hem
+        - generic [ref=f4e44]:
+          - generic [ref=f4e45]: LKR 50
+          - generic [ref=f4e46]: LKR 80.5
+        - generic [ref=f4e47]:
+          - button "S" [ref=f4e48] [cursor=pointer]
+          - button "M" [ref=f4e49] [cursor=pointer]
+          - button "L" [ref=f4e50] [cursor=pointer]
+          - button "XL" [ref=f4e51] [cursor=pointer]
+          - button "XXL" [ref=f4e52] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e54] [cursor=pointer]
+      - generic [ref=f4e55]:
+        - generic [ref=f4e56]:
+          - link [ref=f4e57] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/2
+          - button "♡" [ref=f4e58] [cursor=pointer]
+        - paragraph [ref=f4e59]: Elegant Overlap Collar Top
+        - generic [ref=f4e60]:
+          - generic [ref=f4e61]: LKR 85
+          - generic [ref=f4e62]: LKR 120.5
+        - generic [ref=f4e63]:
+          - button "S" [ref=f4e64] [cursor=pointer]
+          - button "M" [ref=f4e65] [cursor=pointer]
+          - button "L" [ref=f4e66] [cursor=pointer]
+          - button "XL" [ref=f4e67] [cursor=pointer]
+          - button "XXL" [ref=f4e68] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e70] [cursor=pointer]
+      - generic [ref=f4e71]:
+        - generic [ref=f4e72]:
+          - link [ref=f4e73] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/3
+          - button "♡" [ref=f4e74] [cursor=pointer]
+        - paragraph [ref=f4e75]: Striped Summer Flutter Blouse
+        - generic [ref=f4e76]:
+          - generic [ref=f4e77]: LKR 60
+          - generic [ref=f4e78]: LKR 100.5
+        - generic [ref=f4e79]:
+          - button "S" [ref=f4e80] [cursor=pointer]
+          - button "M" [ref=f4e81] [cursor=pointer]
+          - button "L" [ref=f4e82] [cursor=pointer]
+          - button "XL" [ref=f4e83] [cursor=pointer]
+          - button "XXL" [ref=f4e84] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e86] [cursor=pointer]
+      - generic [ref=f4e87]:
+        - generic [ref=f4e88]:
+          - link [ref=f4e89] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/4
+          - button "♡" [ref=f4e90] [cursor=pointer]
+        - paragraph [ref=f4e91]: Sophisticated Peplum Blouse
+        - generic [ref=f4e92]:
+          - generic [ref=f4e93]: LKR 100
+          - generic [ref=f4e94]: LKR 150
+        - generic [ref=f4e95]:
+          - button "S" [ref=f4e96] [cursor=pointer]
+          - button "M" [ref=f4e97] [cursor=pointer]
+          - button "L" [ref=f4e98] [cursor=pointer]
+          - button "XL" [ref=f4e99] [cursor=pointer]
+          - button "XXL" [ref=f4e100] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e102] [cursor=pointer]
+      - generic [ref=f4e103]:
+        - generic [ref=f4e104]:
+          - link [ref=f4e105] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/5
+          - button "♡" [ref=f4e106] [cursor=pointer]
+        - paragraph [ref=f4e107]: Chic Overlap Collar Blouse
+        - generic [ref=f4e108]:
+          - generic [ref=f4e109]: LKR 85
+          - generic [ref=f4e110]: LKR 120.5
+        - generic [ref=f4e111]:
+          - button "S" [ref=f4e112] [cursor=pointer]
+          - button "M" [ref=f4e113] [cursor=pointer]
+          - button "L" [ref=f4e114] [cursor=pointer]
+          - button "XL" [ref=f4e115] [cursor=pointer]
+          - button "XXL" [ref=f4e116] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e118] [cursor=pointer]
+      - generic [ref=f4e119]:
+        - generic [ref=f4e120]:
+          - link [ref=f4e121] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/6
+          - button "♡" [ref=f4e122] [cursor=pointer]
+        - paragraph [ref=f4e123]: Flutter Sleeve Stripe Top
+        - generic [ref=f4e124]:
+          - generic [ref=f4e125]: LKR 85
+          - generic [ref=f4e126]: LKR 120.5
+        - generic [ref=f4e127]:
+          - button "S" [ref=f4e128] [cursor=pointer]
+          - button "M" [ref=f4e129] [cursor=pointer]
+          - button "L" [ref=f4e130] [cursor=pointer]
+          - button "XL" [ref=f4e131] [cursor=pointer]
+          - button "XXL" [ref=f4e132] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e134] [cursor=pointer]
+      - generic [ref=f4e135]:
+        - generic [ref=f4e136]:
+          - link [ref=f4e137] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/7
+          - button "♡" [ref=f4e138] [cursor=pointer]
+        - paragraph [ref=f4e139]: Striped Day-Out Blouse
+        - generic [ref=f4e140]:
+          - generic [ref=f4e141]: LKR 85
+          - generic [ref=f4e142]: LKR 120.5
+        - generic [ref=f4e143]:
+          - button "S" [ref=f4e144] [cursor=pointer]
+          - button "M" [ref=f4e145] [cursor=pointer]
+          - button "L" [ref=f4e146] [cursor=pointer]
+          - button "XL" [ref=f4e147] [cursor=pointer]
+          - button "XXL" [ref=f4e148] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e150] [cursor=pointer]
+      - generic [ref=f4e151]:
+        - generic [ref=f4e152]:
+          - link [ref=f4e153] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/8
+          - button "♡" [ref=f4e154] [cursor=pointer]
+        - paragraph [ref=f4e155]: Feminine Striped Peplum Top
+        - generic [ref=f4e156]:
+          - generic [ref=f4e157]: LKR 85
+          - generic [ref=f4e158]: LKR 120.5
+        - generic [ref=f4e159]:
+          - button "S" [ref=f4e160] [cursor=pointer]
+          - button "M" [ref=f4e161] [cursor=pointer]
+          - button "L" [ref=f4e162] [cursor=pointer]
+          - button "XL" [ref=f4e163] [cursor=pointer]
+          - button "XXL" [ref=f4e164] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e166] [cursor=pointer]
+      - generic [ref=f4e167]:
+        - generic [ref=f4e168]:
+          - link [ref=f4e169] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/9
+          - button "♡" [ref=f4e170] [cursor=pointer]
+        - paragraph [ref=f4e171]: Modern Striped Casual Blouse
+        - generic [ref=f4e172]:
+          - generic [ref=f4e173]: LKR 85
+          - generic [ref=f4e174]: LKR 120.5
+        - generic [ref=f4e175]:
+          - button "S" [ref=f4e176] [cursor=pointer]
+          - button "M" [ref=f4e177] [cursor=pointer]
+          - button "L" [ref=f4e178] [cursor=pointer]
+          - button "XL" [ref=f4e179] [cursor=pointer]
+          - button "XXL" [ref=f4e180] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e182] [cursor=pointer]
+      - generic [ref=f4e183]:
+        - generic [ref=f4e184]:
+          - link [ref=f4e185] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/10
+          - button "♡" [ref=f4e186] [cursor=pointer]
+        - paragraph [ref=f4e187]: Peplum Hem Overlap Top
+        - generic [ref=f4e188]:
+          - generic [ref=f4e189]: LKR 85
+          - generic [ref=f4e190]: LKR 120.5
+        - generic [ref=f4e191]:
+          - button "S" [ref=f4e192] [cursor=pointer]
+          - button "M" [ref=f4e193] [cursor=pointer]
+          - button "L" [ref=f4e194] [cursor=pointer]
+          - button "XL" [ref=f4e195] [cursor=pointer]
+          - button "XXL" [ref=f4e196] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e198] [cursor=pointer]
+      - generic [ref=f4e199]:
+        - generic [ref=f4e200]:
+          - link [ref=f4e201] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/11
+          - button "♡" [ref=f4e202] [cursor=pointer]
+        - paragraph [ref=f4e203]: Relaxed Fit Striped Blouse
+        - generic [ref=f4e204]:
+          - generic [ref=f4e205]: LKR 85
+          - generic [ref=f4e206]: LKR 120.5
+        - generic [ref=f4e207]:
+          - button "S" [ref=f4e208] [cursor=pointer]
+          - button "M" [ref=f4e209] [cursor=pointer]
+          - button "L" [ref=f4e210] [cursor=pointer]
+          - button "XL" [ref=f4e211] [cursor=pointer]
+          - button "XXL" [ref=f4e212] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e214] [cursor=pointer]
+      - generic [ref=f4e215]:
+        - generic [ref=f4e216]:
+          - link [ref=f4e217] [cursor=pointer]:
+            - /url: /AI-R-D---Github-copilot/product/12
+          - button "♡" [ref=f4e218] [cursor=pointer]
+        - paragraph [ref=f4e219]: Sophisticated Flutter Sleeve Top
+        - generic [ref=f4e220]:
+          - generic [ref=f4e221]: LKR 85
+          - generic [ref=f4e222]: LKR 120.5
+        - generic [ref=f4e223]:
+          - button "S" [ref=f4e224] [cursor=pointer]
+          - button "M" [ref=f4e225] [cursor=pointer]
+          - button "L" [ref=f4e226] [cursor=pointer]
+          - button "XL" [ref=f4e227] [cursor=pointer]
+          - button "XXL" [ref=f4e228] [cursor=pointer]
+        - button "Add to Cart" [ref=f4e230] [cursor=pointer]
+  - generic [ref=f4e231]:
+    - list [ref=f4e233]:
+      - listitem [ref=f4e234] [cursor=pointer]: Company
+      - listitem [ref=f4e235] [cursor=pointer]: Products
+      - listitem [ref=f4e236] [cursor=pointer]: Offices
+      - listitem [ref=f4e237] [cursor=pointer]: About
+      - listitem [ref=f4e238] [cursor=pointer]: Contact
+    - generic [ref=f4e243]:
+      - separator [ref=f4e244]
+      - paragraph [ref=f4e245]: Copyright @ 2024 - All Rights Reserved

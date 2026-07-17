@@ -1,0 +1,43 @@
+{
+  "page": "My Orders (Order History)",
+  "url": {
+    "pattern": "/orders",
+    "full": "https://sedigaplanit.github.io/AI-R-D---Github-copilot/orders",
+    "title": "E-Commerce App",
+    "authRequired": true
+  },
+  "elements": {
+    "heading": { "role": "heading", "level": 1, "name": "Order History" },
+    "orderCount": { "locator": "getByText(/\\d+ orders placed/)", "example": "8 orders placed" },
+    "orderCard": {
+      "description": "One card per order",
+      "orderIdAndDate": "generic containing e.g. 'ORD-10500016 July 2026'",
+      "statusBadge": "generic — e.g. 'Delivered'",
+      "orderTotal": "generic — e.g. 'LKR 85.00'",
+      "itemRow": {
+        "productImage": "img with product name as alt text",
+        "productName": "paragraph",
+        "qtyAndPrice": "paragraph — e.g. 'Qty: 1 · LKR 85 each'",
+        "lineTotal": "paragraph — e.g. 'LKR 85.00'"
+      },
+      "itemCount": "generic — e.g. '1 item' or '2 items'",
+      "totalPaid": "strong element — e.g. LKR 85.00"
+    }
+  },
+  "states": {
+    "withOrders": {
+      "description": "User has placed orders",
+      "orderCountVisible": true
+    },
+    "empty": {
+      "description": "No orders placed yet — structure not confirmed"
+    }
+  },
+  "sampleOrderStructure": {
+    "orderId": "ORD-XXXXXXXX",
+    "dateFormat": "DD Month YYYY (e.g. '16 July 2026')",
+    "statusValues": ["Delivered"],
+    "totalFormat": "LKR X.XX"
+  },
+  "screenshot": "snapshots/09-orders.png"
+}

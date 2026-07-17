@@ -1,0 +1,30 @@
+{
+  "page": "Wishlist",
+  "url": {
+    "pattern": "/wishlist",
+    "full": "https://sedigaplanit.github.io/AI-R-D---Github-copilot/wishlist",
+    "title": "E-Commerce App",
+    "authRequired": false
+  },
+  "states": {
+    "empty": {
+      "heartIcon": "♡ generic element",
+      "heading": { "role": "heading", "level": 2, "name": "Your wishlist is empty" },
+      "description": { "text": "Save items you love by clicking the heart on any product." },
+      "startShoppingButton": { "role": "button", "name": "Start Shopping", "navigatesTo": "/" }
+    },
+    "withItems": {
+      "description": "Not captured — add items via ♡ button on product cards or product pages"
+    }
+  },
+  "wishlistToggle": {
+    "locations": [
+      "Product card on landing page",
+      "Product card on category pages",
+      "Product detail page"
+    ],
+    "locator": "getByRole('button', { name: '♡' })",
+    "behavior": "Toggles item in/out of wishlist"
+  },
+  "screenshot": "snapshots/10-wishlist-empty.png"
+}

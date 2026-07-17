@@ -1,0 +1,67 @@
+{
+  "page": "Login",
+  "url": {
+    "pattern": "/login",
+    "full": "https://sedigaplanit.github.io/AI-R-D---Github-copilot/login",
+    "title": "E-Commerce App",
+    "accessControl": "unauthenticated only — redirects to / if already logged in"
+  },
+  "elements": {
+    "heading": { "role": "heading", "level": 1, "name": "Login" },
+    "emailInput": { "role": "textbox", "name": "Email Address", "htmlAttr": "input[name='email']" },
+    "passwordInput": {
+      "role": "textbox",
+      "name": "Password",
+      "htmlAttr": "input[name='password']"
+    },
+    "submitButton": {
+      "role": "button",
+      "name": "Login",
+      "locator": "page.locator('form').getByRole('button', { name: 'Login' })"
+    },
+    "errorMessage": {
+      "text": "Invalid email or password.",
+      "locator": "getByText('Invalid email or password.')",
+      "visibleWhen": "invalid credentials submitted"
+    },
+    "signUpText": {
+      "text": "Don't have an account? Sign Up",
+      "locator": "getByText(\"Don't have an account? Sign Up\")"
+    }
+  },
+  "states": {
+    "default": {
+      "description": "Empty form, no error",
+      "errorVisible": false
+    },
+    "filled": {
+      "description": "Credentials entered, not yet submitted",
+      "errorVisible": false
+    },
+    "error": {
+      "description": "Wrong credentials submitted",
+      "errorText": "Invalid email or password.",
+      "staysOnPage": true
+    },
+    "success": {
+      "description": "Correct credentials submitted",
+      "redirectsTo": "/",
+      "authMarker": { "role": "button", "name": "My Orders" }
+    }
+  },
+  "credentials": {
+    "email": "process.env.USER_NAME",
+    "password": "process.env.PASSWORD"
+  },
+  "authStorage": ".auth/user.json",
+  "navigation": {
+    "successfulLogin": "/",
+    "failedLogin": "/login (stays)",
+    "visitWhenAuthenticated": "/ (redirect)"
+  },
+  "screenshots": [
+    "snapshots/02-login.png",
+    "snapshots/02-login-error.png",
+    "snapshots/02-login-filled.png"
+  ]
+}

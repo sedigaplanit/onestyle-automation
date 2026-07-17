@@ -1,0 +1,49 @@
+- generic [ref=f2e3]:
+  - generic [ref=f2e4]:
+    - link [ref=f2e5] [cursor=pointer]:
+      - /url: /AI-R-D---Github-copilot
+      - img "OneStyle Logo" [ref=f2e6]
+      - paragraph [ref=f2e7]: OneStyle
+    - list [ref=f2e9]:
+      - listitem [ref=f2e10] [cursor=pointer]:
+        - link "Shop" [ref=f2e11]:
+          - /url: /AI-R-D---Github-copilot
+        - separator [ref=f2e12]
+      - listitem [ref=f2e13] [cursor=pointer]:
+        - link "Men" [ref=f2e14]:
+          - /url: /AI-R-D---Github-copilot/mens
+      - listitem [ref=f2e15] [cursor=pointer]:
+        - link "Women" [ref=f2e16]:
+          - /url: /AI-R-D---Github-copilot/womens
+      - listitem [ref=f2e17] [cursor=pointer]:
+        - link "Kids" [ref=f2e18]:
+          - /url: /AI-R-D---Github-copilot/kids
+    - generic [ref=f2e19]:
+      - link [ref=f2e280] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/login
+        - button "Login" [ref=f2e281]
+      - link "♡" [ref=f2e25] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/wishlist
+      - link [ref=f2e27] [cursor=pointer]:
+        - /url: /AI-R-D---Github-copilot/cart
+        - img "Cart Icon" [ref=f2e28]
+      - generic [ref=f2e29]: "0"
+  - generic [ref=f2e284]:
+    - heading "Login" [level=1] [ref=f2e285]
+    - generic [ref=f2e286]:
+      - generic [ref=f2e287]:
+        - textbox "Email Address" [ref=f2e288]: wrong@email.com
+        - textbox "Password" [ref=f2e289]: wrongpassword
+      - generic [ref=f2e292]: Invalid email or password.
+      - button "Login" [active] [ref=f2e290] [cursor=pointer]
+    - paragraph [ref=f2e291]: Don't have an account? Sign Up
+  - generic [ref=f2e265]:
+    - list [ref=f2e267]:
+      - listitem [ref=f2e268] [cursor=pointer]: Company
+      - listitem [ref=f2e269] [cursor=pointer]: Products
+      - listitem [ref=f2e270] [cursor=pointer]: Offices
+      - listitem [ref=f2e271] [cursor=pointer]: About
+      - listitem [ref=f2e272] [cursor=pointer]: Contact
+    - generic [ref=f2e277]:
+      - separator [ref=f2e278]
+      - paragraph [ref=f2e279]: Copyright @ 2024 - All Rights Reserved
