@@ -1,0 +1,69 @@
+name: E2E Pipeline
+
+# ─────────────────────────────────────────────────────────────────────────────
+# This is the single entry point for the entire CI pipeline.
+#
+# What runs and when:
+#   • Every push (any branch)         →  Lint only
+#   • Push to main (PR merged)        →  Lint  →  Cross-browser regression
+#   • Manual trigger (this file)      →  Lint  →  Cross-browser regression
+#                                         (user chooses browser or runs all 3)
+#   • Nightly schedule                →  DISABLED — see instructions below
+# ─────────────────────────────────────────────────────────────────────────────
+on:
+  push:
+    branches: ['**']
+
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser to test — choose one or "all" for full cross-browser run'
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - chromium
+          - firefox
+          - webkit
+
+  # ── Nightly schedule ──────────────────────────────────────────────────────
+  # Disabled until the application reaches production stability.
+  #
+  # HOW TO ENABLE (when production is ready):
+  #   1. Uncomment the four lines below.
+  #   2. Adjust the cron expression if a different time is preferred.
+  #      Format: 'minute hour day-of-month month day-of-week' (all UTC)
+  #      Example: '0 2 * * *' = every night at 02:00 UTC
+  #   3. Commit and push to main — GitHub picks up the schedule automatically.
+  #
+  # schedule:
+  #   - cron: '0 2 * * *'
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Jobs
+#   1. lint               — Always runs; calls the reusable lint.yml workflow
+#   2. cross-browser-tests — Runs only on main / manual / schedule;
+#                            calls the reusable cross-browser-tests.yml workflow
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  # ── 1. Lint ───────────────────────────────────────────────────────────────
+  lint:
+    name: Lint
+    uses: ./.github/workflows/lint.yml
+
+  # ── 2. Cross-Browser Regression ───────────────────────────────────────────
+  # Skipped on pushes to non-main branches (e.g. feature branches).
+  # Always runs on main, on manual dispatch, and on schedule.
+  cross-browser-tests:
+    name: Cross-Browser Tests
+    needs: lint
+    if: |
+      github.ref == 'refs/heads/main'   ||
+      github.ref == 'refs/heads/master' ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule'
+    uses: ./.github/workflows/cross-browser-tests.yml
+    with:
+      browser: ${{ inputs.browser || 'all' }}
+    secrets: inherit
