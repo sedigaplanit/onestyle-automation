@@ -14,7 +14,8 @@ if (!process.env.BASE_URL) {
 }
 
 // 3. Cast string configurations into their correct primitive types
-const isHeadless = process.env.HEADLESS === 'true'
+// Default: headless=true in CI (HEADLESS is not set); headless=false only when explicitly HEADLESS=false
+const isHeadless = process.env.HEADLESS !== 'false'
 const targetBrowser = process.env.BROWSER || 'chromium'
 
 export default defineConfig({
