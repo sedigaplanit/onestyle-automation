@@ -8,6 +8,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const authFile = path.join(__dirname, '../.auth/user.json')
 
 setup('Authenticate and save session storage', async ({ page }) => {
+  const userName = process.env.USER_NAME
+  const password = process.env.PASSWORD
+  if (!userName || !password) {
+    throw new Error('CRITICAL: USER_NAME and PASSWORD must be set in .env or CI secrets.')
+  }
+
   // Navigate to the login page
   await page.goto('')
   await page.getByRole('button', { name: 'Login' }).click()
@@ -16,8 +22,8 @@ setup('Authenticate and save session storage', async ({ page }) => {
   await page
     .getByRole('heading', { level: 1, name: 'Login' })
     .waitFor({ state: 'visible', timeout: 5000 })
-  await page.locator('input[name="email"]').fill(process.env.USER_NAME || '')
-  await page.locator('input[name="password"]').fill(process.env.PASSWORD || '')
+  await page.getByRole('textbox', { name: 'Email Address' }).fill(userName)
+  await page.getByRole('textbox', { name: 'Password' }).fill(password)
   await page.getByRole('button', { name: 'Login' }).last().click()
 
   // Explicit timeout: login API is hosted on Render.com free tier.

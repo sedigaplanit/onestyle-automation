@@ -1,0 +1,6 @@
+# Prevent Prettier from reformatting YAML frontmatter in instruction/agent files.
+# VS Code's YAML parser requires double-quoted strings in applyTo arrays;
+# Prettier rewrites them to single quotes, causing silent parse failures.
+.github/instructions/**
+.github/agents/**
+.github/prompts/**

@@ -77,6 +77,133 @@ Step 1 → select "Credit / Debit Card" → click "Continue →"
 
 ---
 
+## Step 2B: PayPal Form
+
+### Trigger
+
+Step 1 → select "🅿️ PayPal" → click "Continue →"
+
+### Elements
+
+| Element              | Role/Locator                                                                       | Notes                                 |
+| -------------------- | ---------------------------------------------------------------------------------- | ------------------------------------- |
+| Modal heading        | `getByRole('heading', { level: 2, name: '🅿️ PayPal' })`                            |                                       |
+| Back header button   | `getByRole('button', { name: '←' })`                                               | Returns to Step 1                     |
+| Amount display       | `getByText(/Amount to pay:.*LKR/)`                                                 | Format: "Amount to pay: **LKR X.XX**" |
+| Street Address field | `getByRole('textbox', { name: 'No. 12, Main Street' })`                            | Placeholder value; required           |
+| City field           | `getByRole('textbox', { name: 'Colombo' })`                                        | Placeholder value; required           |
+| Phone field          | `getByRole('textbox', { name: '+94 77 000 0000' })`                                | Placeholder value; required           |
+| PayPal redirect note | `getByText('You will be redirected to PayPal to complete your payment securely.')` | `<p>` element                         |
+| Proceed to PayPal    | `getByRole('button', { name: 'Proceed to PayPal' })`                               | Submits order                         |
+| Back button          | `getByRole('button', { name: '← Back' })`                                          | Returns to Step 1                     |
+
+### Notes
+
+- No card fields — delivery address only
+- **Known limitation:** PayPal redirect is simulated; no real PayPal gateway connection
+
+---
+
+## Step 2C: Cash on Delivery Form
+
+### Trigger
+
+Step 1 → select "💵 Cash on Delivery" → click "Continue →"
+
+### Elements
+
+| Element              | Role/Locator                                                      | Notes                       |
+| -------------------- | ----------------------------------------------------------------- | --------------------------- |
+| Modal heading        | `getByRole('heading', { level: 2, name: '💵 Cash on Delivery' })` |                             |
+| Back header button   | `getByRole('button', { name: '←' })`                              | Returns to Step 1           |
+| Total display        | `getByRole('heading', { level: 3 }).last()`                       | Format: "LKR X"             |
+| Street Address field | `getByRole('textbox', { name: 'No. 12, Main Street' })`           | Placeholder value; required |
+| City field           | `getByRole('textbox', { name: 'Colombo' })`                       | Placeholder value; required |
+| Phone field          | `getByRole('textbox', { name: '+94 77 000 0000' })`               | Placeholder value; required |
+| Confirm Order button | `getByRole('button', { name: 'Confirm Order' })`                  | Submits order               |
+| Back button          | `getByRole('button', { name: '← Back' })`                         | Returns to Step 1           |
+
+### Notes
+
+- No card fields — delivery address only
+- No PayPal redirect note
+
+---
+
+## Step 3: Processing
+
+### Trigger
+
+Valid form submitted on Step 2 (any payment method) → processing screen shown ~2 seconds
+
+### Elements
+
+| Element            | Role/Locator                                   | Notes                       |
+| ------------------ | ---------------------------------------------- | --------------------------- |
+| Spinner            | CSS `[class*="spinner"]` or similar            | Loading indicator           |
+| Processing message | `getByText('Processing your payment...')`      | Displayed during processing |
+| Do not close msg   | `getByText('Please do not close this window')` |                             |
+
+### Notes
+
+- Duration: approximately 2 seconds before auto-advancing to Step 4
+- This step is too brief to capture reliably in automated assertions without timing tricks
+
+---
+
+## Step 4: Order Success
+
+### Trigger
+
+Processing completes → success screen shown
+
+### Elements
+
+| Element               | Role/Locator                                                             | Notes                           |
+| --------------------- | ------------------------------------------------------------------------ | ------------------------------- |
+| Checkmark icon        | `getByText('✓')` (first occurrence in modal)                             | Success icon                    |
+| Success heading       | `getByRole('heading', { level: 2, name: 'Order Placed Successfully!' })` |                                 |
+| Order number label    | `getByText('ORDER NUMBER')`                                              |                                 |
+| Order number value    | `getByText(/ORD-\d+/)`                                                   | Format: `ORD-XXXXXX` (6 digits) |
+| Thank you message     | `getByText('Thank you for shopping with OneStyle!')`                     | `<p>` element                   |
+| Redirect message      | `getByText('This page will redirect in a few seconds...')`               |                                 |
+| View My Orders button | `getByRole('button', { name: 'View My Orders' })`                        | Navigates to `/orders`          |
+| Continue Shopping btn | `getByRole('button', { name: 'Continue Shopping' })`                     | Navigates to `/`                |
+| Toast notification    | `getByText(/Order ORD-\d+ placed successfully!/)`                        | Appears at bottom of screen     |
+
+### Post-Order State
+
+- Cart is cleared (cart total = LKR 0, cart count = 0)
+- Auto-redirects to home page (`/`) after 6 seconds
+- Wishlisted purchased items removed from wishlist
+
+---
+
+## Validation Errors (Step 2A Card Form)
+
+### Trigger
+
+Click "Pay LKR [total]" with missing or invalid fields
+
+### Error Elements
+
+| Field           | Error Message                        | Locator                                           |
+| --------------- | ------------------------------------ | ------------------------------------------------- |
+| Street Address  | "Required"                           | `locator('span.checkout-error').nth(0)`           |
+| City            | "Required"                           | `locator('span.checkout-error').nth(1)`           |
+| Phone           | "Required"                           | `locator('span.checkout-error').nth(2)`           |
+| Cardholder Name | "Required"                           | `locator('span.checkout-error').nth(3)`           |
+| Card Number     | "Enter a valid 16-digit card number" | `getByText('Enter a valid 16-digit card number')` |
+| Expiry Date     | "Enter MM/YY"                        | `getByText('Enter MM/YY')`                        |
+| CVV             | "Enter 3-digit CVV"                  | `getByText('Enter 3-digit CVV')`                  |
+
+### Notes
+
+- Error class: `checkout-error` (SPAN elements)
+- Form is **not submitted** when errors are present
+
+---
+
 ## Notes
 
 - Modal is rendered **below the cart table** in the DOM — may require scrolling on smaller viewports
@@ -90,3 +217,5 @@ Step 1 → select "Credit / Debit Card" → click "Continue →"
 - `snapshots/06-checkout-modal-step1.png` — Step 1 payment selection
 - `snapshots/06-checkout-modal-step2-card.png` — Step 2 credit card form (viewport)
 - `snapshots/06-checkout-modal-step2-card-fullpage.png` — Step 2 credit card form (full page)
+- `snapshots/06-checkout-modal-step2-paypal.png` — Step 2 PayPal form
+- `snapshots/06-checkout-modal-step2-cod.png` — Step 2 Cash on Delivery form

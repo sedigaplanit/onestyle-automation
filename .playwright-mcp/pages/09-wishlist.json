@@ -14,7 +14,25 @@
       "startShoppingButton": { "role": "button", "name": "Start Shopping", "navigatesTo": "/" }
     },
     "withItems": {
-      "description": "Not captured — add items via ♡ button on product cards or product pages"
+      "heading": {
+        "role": "heading",
+        "level": 1,
+        "name": "My Wishlist",
+        "class": "wishlist-title"
+      },
+      "itemCount": { "tag": "p", "class": "wishlist-subtitle", "textPattern": "{N} item(s) saved" },
+      "itemName": { "tag": "p", "locator": "getByText('product name')" },
+      "wishlistedToggle": {
+        "tag": "BUTTON",
+        "class": "item-wishlist-btn wishlisted",
+        "text": "♥",
+        "locator": "locator('button.item-wishlist-btn.wishlisted')",
+        "note": "Filled heart — click to remove from wishlist"
+      },
+      "quantityControls": {
+        "decrement": "getByRole('button', { name: '−' })",
+        "increment": "getByRole('button', { name: '+' })"
+      }
     }
   },
   "wishlistToggle": {

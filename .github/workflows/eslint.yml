@@ -1,0 +1,19 @@
+name: ESLint
+on:
+  push:
+    branches: ['**'] # every push to every branch
+  pull_request:
+    branches: ['**'] # every PR, regardless of target
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npx eslint .
