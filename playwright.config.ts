@@ -25,7 +25,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   timeout: 30_000, // Hard cap: every test must finish within 30s
-  reporter: 'html',
+  reporter: process.env.CI ? [['github'], ['html']] : 'html',
 
   // Global settings for all tests
   use: {

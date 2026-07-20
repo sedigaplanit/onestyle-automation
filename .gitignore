@@ -10,3 +10,6 @@ node_modules/
 #Environments and secrets
 .env
 .auth/
+# MCP session snapshots (timestamped working files)
+.playwright-mcp/page-*.yml
+.playwright-mcp/console-*.log
