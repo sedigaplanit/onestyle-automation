@@ -83,7 +83,10 @@ jobs:
         run: npx playwright install chromium ${{ matrix.browser }} --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test --project=${{ matrix.browser }} --reporter=blob
+        # --grep @ui: explicitly limits to UI-tagged tests.
+        # API tests live in the 'api' project (no browser) and are already run
+        # as a mandatory gate in api-tests.yml before this workflow starts.
+        run: npx playwright test --project=${{ matrix.browser }} --grep @ui --reporter=blob
 
       - name: Upload blob report
         uses: actions/upload-artifact@v4

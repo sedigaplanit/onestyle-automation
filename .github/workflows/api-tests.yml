@@ -1,7 +1,8 @@
 name: API Tests
 
 # Reusable workflow — called by e2e.yml
-# Runs all tests tagged @api against Chromium only (no browser matrix needed).
+# Runs all tests in tests/api/ via the dedicated 'api' project.
+# No browser is installed — API tests authenticate over HTTP via the apiContext fixture.
 # Must pass before cross-browser UI tests are allowed to start.
 on:
   workflow_call:
@@ -17,7 +18,7 @@ on:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Jobs
-#   1. test         — runs @api-tagged specs on Chromium, produces a blob report
+#   1. test         — runs tests/api/** via the 'api' project (no browser needed)
 #   2. merge-report — downloads blob report, merges into a single HTML report
 #
 # Total elapsed-time budget: ≤ 30 minutes
@@ -34,7 +35,6 @@ jobs:
       USER_NAME: ${{ secrets.USER_NAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
       API_URL: ${{ secrets.API_URL }}
-      BROWSER: chromium
     steps:
       - uses: actions/checkout@v4
 
@@ -46,11 +46,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browser — chromium
-        run: npx playwright install chromium --with-deps
-
       - name: Run API tests
-        run: npx playwright test --grep @api --project=chromium --reporter=blob
+        run: npx playwright test --project=api --reporter=blob
 
       - name: Upload blob report
         uses: actions/upload-artifact@v4
