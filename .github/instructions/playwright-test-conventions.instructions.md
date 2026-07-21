@@ -222,3 +222,29 @@ import LandingPage from '@pages/landing/LandingPage'
 ```
 
 Always use the `@pages/` alias in dynamic imports — never relative paths. Mixing both creates two separate module instances.
+
+---
+
+## Character Rule — STRICTLY ENFORCED
+
+**Emojis and special Unicode symbols are strictly prohibited** in all spec files and page object files — including test titles, method names, comments, and locator strings.
+
+| Prohibited | Use instead |
+| --- | --- |
+| Emoji in locator strings (`💳`, `🅿️`, `💵`, etc.) | `getByText` substring match or `filter({ hasText })` — emoji labels in the app UI are matched via substring |
+| Unicode symbols as `getByRole` name (`✕`, `←`) | CSS class selectors (`.checkout-close`, `.checkout-cancel-btn`) |
+| Emoji or symbols in test titles | Plain English only |
+| Emoji or symbols in comments | Plain English only |
+
+```typescript
+// ✅ CORRECT — substring match eliminates emoji from code
+await this.page.getByText('Credit / Debit Card').click()
+await this.page.locator('.checkout-close').click()
+expect(await modal.isCardStep2Visible()).toBe(true)
+
+// ❌ WRONG — emoji / symbol in code
+await this.page.getByText('💳Credit / Debit Card').click()
+await this.page.getByRole('button', { name: '✕' }).click()
+```
+
+> **Why:** Emoji and Unicode symbols in source code cause encoding inconsistencies across editors, OS clipboard tools, and CI log renderers. They make grep/search unreliable and break automated linting pipelines that enforce ASCII-safe identifiers.

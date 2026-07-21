@@ -26,4 +26,16 @@ export default class CartPage extends BasePage {
   public async isCheckoutButtonEnabled(): Promise<boolean> {
     return this.page.getByRole('button', { name: 'Proceed to Checkout' }).isEnabled()
   }
+
+  public async isSignInPromptVisible(): Promise<boolean> {
+    return this.page.getByText('Sign in to proceed with checkout').isVisible()
+  }
+
+  public async isCheckoutButtonAbsent(): Promise<boolean> {
+    return !(await this.page.getByRole('button', { name: 'Proceed to Checkout' }).isVisible())
+  }
+
+  public async clickSignUpLogin(): Promise<void> {
+    await this.page.getByRole('button', { name: 'Sign Up / Login' }).click()
+  }
 }
