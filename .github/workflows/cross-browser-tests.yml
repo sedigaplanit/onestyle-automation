@@ -75,7 +75,9 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browser — ${{ matrix.browser }}
-        run: npx playwright install ${{ matrix.browser }} --with-deps
+        # chromium is always required: the auth setup project has no browser override
+        # and defaults to Chromium regardless of which test browser is selected
+        run: npx playwright install chromium ${{ matrix.browser }} --with-deps
 
       - name: Run Playwright tests
         run: npx playwright test --project=${{ matrix.browser }} --reporter=blob
