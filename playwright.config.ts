@@ -12,6 +12,9 @@ const authFile = path.resolve(__dirname, '.auth/user.json')
 if (!process.env.BASE_URL) {
   throw new Error('CRITICAL: BASE_URL is not defined in the .env file.')
 }
+if (!process.env.API_URL) {
+  throw new Error('CRITICAL: API_URL is not defined in the .env file.')
+}
 
 // 3. Cast string configurations into their correct primitive types
 // Default: headless=true in CI (HEADLESS is not set); headless=false only when explicitly HEADLESS=false

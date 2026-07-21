@@ -8,9 +8,13 @@ Before running, verify the following exist at the workspace root:
 
 | Requirement               | Location       | Purpose                                                                   |
 | ------------------------- | -------------- | ------------------------------------------------------------------------- |
-| `.env` file               | Workspace root | Contains `BASE_URL`, `USER_NAME`, `PASSWORD`                              |
+| `.env` file               | Workspace root | Contains `BASE_URL`, `API_URL`, `USER_NAME`, `PASSWORD`                   |
 | `.playwright-mcp/` folder | Workspace root | Pre-captured app reference — must exist before any agent can run          |
 | Node.js + Playwright      | Machine-level  | Run `npx playwright install` if tests have never been run on this machine |
+
+`BASE_URL` — the UI app entry point (used by `playwright.config.ts` as `baseURL`).
+`API_URL` — the REST API base URL (used by `BaseApiClient` for all API client calls).
+`USER_NAME` / `PASSWORD` — credentials for both auth setup and the `apiContext` fixture.
 
 See the **Project Pipeline** instructions (`.github/instructions/project-pipeline.instructions.md`) for the full workflow overview.
 
