@@ -28,4 +28,20 @@ export default class ProductPage extends BasePage {
     const { default: CartPageClass } = await import('@pages/cart/CartPage')
     return new CartPageClass(this.page).init()
   }
+
+  public async clickAddToWishlist(): Promise<this> {
+    // Use class-based locator — the empty heart label changes to filled heart when already wishlisted (auth storage persists wishlist)
+    const alreadyWishlisted = await this.page
+      .locator('button.item-wishlist-btn.wishlisted')
+      .isVisible()
+    if (!alreadyWishlisted) {
+      await this.page.locator('button.item-wishlist-btn').click()
+      await this.page.locator('button.item-wishlist-btn.wishlisted').waitFor({ state: 'visible' })
+    }
+    return this
+  }
+
+  public async isWishlisted(): Promise<boolean> {
+    return this.page.locator('button.item-wishlist-btn.wishlisted').isVisible()
+  }
 }

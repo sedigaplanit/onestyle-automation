@@ -5,6 +5,13 @@
     "examples": ["/product/1", "/product/2", "/product/3"]
   },
   "breadcrumb": "HOME → SHOP → {category} → {productName}",
+  "gotchas": {
+    "noWishlistButtonOnDetailPage": "The product detail page does NOT have a wishlist button. The wishlist button (class: item-wishlist-btn) only exists on category listing pages (/womens, /mens, /kids). To wishlist a product, navigate to the category page and click the button on the product card.",
+    "wishlistButtonOnCategoryCards": {
+      "unwishlisted": { "tag": "button", "class": "item-wishlist-btn", "text": "♡" },
+      "wishlisted": { "tag": "button", "class": "item-wishlist-btn wishlisted", "text": "♥" }
+    }
+  },
   "elements": {
     "productImages": {
       "mainImage": {
