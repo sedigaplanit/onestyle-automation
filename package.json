@@ -4,7 +4,9 @@
   "type": "module",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "generate:schemas": "node scripts/generate-schemas.mjs"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -15,6 +17,7 @@
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-playwright": "^2.10.5",
+    "openapi-typescript": "^6.7.6",
     "prettier": "^3.9.4",
     "typescript": "^7.0.2"
   }

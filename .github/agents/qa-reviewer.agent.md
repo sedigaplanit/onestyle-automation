@@ -51,6 +51,7 @@ Read only the attached files. Do not scan `manual-tests/`, `tests/`, or `pages/`
 
 ### Code Review checklist
 - Spec: wrapped in `test.describe`; imports from `'../fixtures'`; no locators in spec; no hardcoded creds; `test.slow()` has comment
+- Test tagging: domain/type tags (`@api`/`@ui` + domain tag) at `describe` level; `@smoke` at `test` level for critical happy-path tests
 - Page object: extends `BasePage`; `init()` waits for landmark; same-page methods return `Promise<this>`; nav methods return `Promise<NewPage>`; no `expect()` inside; `@pages/` alias used; circular imports use `import type` + dynamic import with `@pages/` alias
 - Locators: `getByRole` first; fallback order respected; no positional selectors; `{ exact: true }` when ambiguous
 - No TypeScript or ESLint errors

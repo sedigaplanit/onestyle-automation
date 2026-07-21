@@ -23,7 +23,13 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // workers: undefined — Playwright defaults to half the CPU core count.
+  // All state-mutating spec files use test.describe.configure({ mode: 'serial' }) so tests
+  // within each file run sequentially. Each file also has beforeEach + afterEach to clear
+  // shared server-side state (cart, wishlist) before and after every test.
+  // NOTE: If two spec files that mutate the same resource run on separate workers at the
+  // same time, transient interference is still possible. Use BROWSER=chromium npx playwright
+  // test --workers=1 to guarantee zero cross-file interference with a single user account.
 
   timeout: 30_000, // Hard cap: every test must finish within 30s
   reporter: process.env.CI ? [['github'], ['html']] : 'html',

@@ -7,7 +7,9 @@
     /* Paths & Architecture */
     "paths": {
       "@pages/*": ["./pages/*"],
-      "@tests/*": ["./tests/*"]
+      "@tests/*": ["./tests/*"],
+      "@api/*": ["./api/*"],
+      "@dataprovider/*": ["./dataprovider/*"]
     },
 
     /* Strictness & Safety */
@@ -21,5 +23,12 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "tests/**/*", "pages/**/*", "playwright.config.ts"]
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "pages/**/*",
+    "api/**/*",
+    "dataprovider/**/*",
+    "playwright.config.ts"
+  ]
 }

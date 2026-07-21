@@ -3,18 +3,43 @@
 ## Project Structure
 
 ```
-pages/        # Page Object classes — one file per page/section
-tests/        # Spec files — one file per feature area
-tests/fixtures.ts  # Custom Playwright fixture — exports test, expect, and the open factory
-manual-tests/ # Markdown files describing manual test steps
+pages/          # Page Object classes — one file per page/section
+tests/          # Spec files — one file per feature area
+tests/fixtures.ts       # Custom Playwright fixture — exports test, expect, open, and apiContext
+tests/api/      # API test specs — one file per API domain
+api/            # API layer — clients, base class, schema types, fetch helpers
+  types/
+    capital.schema.ts   # Auto-generated from swagger.json — NEVER edit manually
+  BaseApiClient.ts      # Base class — authorise(token), makeRequest()
+  fetch-helpers.ts      # HTTP mechanics with retry logic
+  {domain}/
+    XxxApiClient.ts     # One client class per domain (Cart, Products, Orders, etc.)
+  index.ts              # Barrel export for all clients and ApiPaths
+dataprovider/   # State-setup helpers for tests — pure functions, one file per domain
+  CartDataProvider.ts
+  ProductDataProvider.ts
+  WishlistDataProvider.ts
+  OrdersDataProvider.ts
+manual-tests/   # Markdown files describing manual test steps
+scripts/
+  generate-schemas.mjs  # Generates api/types/capital.schema.ts from swagger.json
+swagger.json    # OpenAPI spec — source of truth for schema generation
 ```
+
+Run `npm run generate:schemas` whenever `swagger.json` changes to regenerate `capital.schema.ts`.
 
 ## Naming Conventions
 
 - **Page objects**: PascalCase, suffix `Page` (e.g. `CartPage.ts`, `LandingPage.ts`)
-- **Spec files**: PascalCase, suffix `Tests.spec.ts` (e.g. `CartTests.spec.ts`)
+- **API clients**: PascalCase, suffix `ApiClient` (e.g. `CartApiClient.ts`)
+- **Data providers**: PascalCase, suffix `DataProvider` (e.g. `CartDataProvider.ts`) — pure functions, no class
+- **Spec files**: PascalCase, suffix `Tests.spec.ts` (e.g. `CartTests.spec.ts`, `CartApiTests.spec.ts`)
 - **Page object methods**: camelCase, verb-first (e.g. `clickCheckout()`, `fillEmail()`, `isConfirmationVisible()`)
-- **Path alias**: use `@pages/PageName` for imports **within** the `pages/` folder; use relative `../../pages/PageName` in spec files (two levels up from `tests/{feature-folder}/`); import `{ test, expect }` from `'../fixtures'` — never from `@playwright/test` directly
+- **Path aliases**:
+  - `@pages/{feature-folder}/{PageName}` — page object imports
+  - `@api/{domain}/{FileName}` — API client imports
+  - `@dataprovider/{FileName}` — data provider imports
+  - Import `{ test, expect }` from `'../fixtures'` — never from `@playwright/test` directly
 
 ## Key Rules
 
@@ -25,6 +50,32 @@ manual-tests/ # Markdown files describing manual test steps
 - Always import `{ test, expect }` from `'../fixtures'`, not from `@playwright/test`. The `open` fixture (`async ({ open }) => {}`) is the standard way to start a chain: `open(LandingPage)` is equivalent to `new LandingPage(page).init()`.
 - Auth storage state is applied globally via `playwright.config.ts`; do not add `test.use(storageState)` unless the test must run **without** auth.
 - For circular page-object imports (A→B and B→A), use `import type` at the top and a dynamic `import('@pages/...')` inside the method body. Never use relative paths for dynamic imports.
+- **API clients** (`XxxApiClient.ts`) are for making HTTP calls and returning typed responses — never call `expect()` inside them.
+- **Data providers** (`dataprovider/XxxDataProvider.ts`) are pure state-setup helpers — they call API clients and do not return responses for assertion. Import them with `@dataprovider/XxxDataProvider`.
+- Use `apiContext` fixture for all API calls in tests. It is pre-authenticated (JWT token acquired once per worker).
+
+## Test Tagging
+
+All tests must carry tags for selective test runs:
+
+| Tag                                                                                       | Scope                                                     |
+| ----------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `@api`                                                                                    | All API test specs (`tests/api/`)                         |
+| `@ui`                                                                                     | All UI/browser test specs                                 |
+| `@smoke`                                                                                  | Critical happy-path tests (subset for fast CI validation) |
+| `@system`                                                                                 | System / health-check API tests                           |
+| `@checkout`, `@cart`, `@auth`, `@products`, `@orders`, `@wishlist`, `@reviews`, `@events` | Domain-specific tags                                      |
+
+Apply at **describe** level for domain/type tags, and at **test** level for `@smoke`:
+
+```typescript
+test.describe('Cart API', { tag: ['@api', '@cart'] }, () => {
+  test('saves items successfully', { tag: '@smoke' }, async ({ apiContext }) => { ... })
+  test('returns 401 without token', async ({ request }) => { ... })
+})
+```
+
+Run a subset: `npx playwright test --grep @smoke`
 
 ## Locator Priority
 

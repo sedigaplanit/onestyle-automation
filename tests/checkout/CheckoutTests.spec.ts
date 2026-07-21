@@ -1,11 +1,32 @@
 import { test, expect } from '../fixtures'
-import CartPage from '../../pages/cart/CartPage'
-import ProductPage from '../../pages/product-browsing/ProductPage'
-import CategoryPage from '../../pages/product-browsing/CategoryPage'
-import WishlistPage from '../../pages/wishlist/WishlistPage'
-import OrdersPage from '../../pages/orders/OrdersPage'
+import CartPage from '@pages/cart/CartPage'
+import WishlistPage from '@pages/wishlist/WishlistPage'
+import OrdersPage from '@pages/orders/OrdersPage'
+import CartDataProvider from '@dataprovider/CartDataProvider'
+import WishlistDataProvider from '@dataprovider/WishlistDataProvider'
 
-test.describe('Checkout Tests', () => {
+test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
+  test.describe.configure({ mode: 'serial' })
+
+  // Populated in beforeEach — derived from the first product returned by the API
+  let seedProductId: number
+
+  test.beforeEach(async ({ apiContext }, testInfo) => {
+    const res = await apiContext.products.getProducts()
+    seedProductId = res.data.products[0].id
+
+    const cart = new CartDataProvider(apiContext.cart)
+    const wishlist = new WishlistDataProvider(apiContext.wishlist)
+    await Promise.all([cart.clearCart(), wishlist.clearWishlist()])
+    await cart.seedCart({ [String(seedProductId)]: 1 })
+  })
+
+  test.afterEach(async ({ apiContext }) => {
+    const cart = new CartDataProvider(apiContext.cart)
+    const wishlist = new WishlistDataProvider(apiContext.wishlist)
+    await Promise.all([cart.clearCart(), wishlist.clearWishlist()])
+  })
+
   test('Checkout modal opens on Step 1 and displays payment options with total', async ({
     open,
     page,
@@ -13,11 +34,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
-      .then((_) => _.clickProceedToCheckout())
+    const modal = await open(CartPage).then((_) => _.clickProceedToCheckout())
 
     expect(await modal.isModalVisible()).toBe(true)
     expect(page.url()).toContain('/cart')
@@ -36,10 +53,7 @@ test.describe('Checkout Tests', () => {
     test.slow()
 
     // Credit / Debit Card is the default selected method — click Continue directly
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.clickContinue())
 
@@ -62,10 +76,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('paypal'))
       .then((_) => _.clickContinue())
@@ -88,10 +99,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('cod'))
       .then((_) => _.clickContinue())
@@ -113,10 +121,7 @@ test.describe('Checkout Tests', () => {
     test.slow()
 
     // Credit / Debit Card is the default — proceed directly to Step 2
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.clickContinue())
 
@@ -136,10 +141,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.clickContinue())
 
@@ -154,31 +156,30 @@ test.describe('Checkout Tests', () => {
     expect(errors).toHaveLength(3)
   })
 
-  test('Successful COD order placement shows processing screen then order success screen', async ({
-    open,
-  }) => {
-    // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
-    test.slow()
+  test(
+    'Successful COD order placement shows processing screen then order success screen',
+    { tag: '@smoke' },
+    async ({ open }) => {
+      // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
+      test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
-      .then((_) => _.clickProceedToCheckout())
-      .then((_) => _.selectPaymentMethod('cod'))
-      .then((_) => _.clickContinue())
+      const modal = await open(CartPage)
+        .then((_) => _.clickProceedToCheckout())
+        .then((_) => _.selectPaymentMethod('cod'))
+        .then((_) => _.clickContinue())
 
-    await modal.fillDeliveryAddress('No. 45, Main Street', 'Colombo', '+94 77 000 0000')
-    await modal.clickConfirmOrder()
-    await modal.waitForSuccessScreen()
+      await modal.fillDeliveryAddress('No. 45, Main Street', 'Colombo', '+94 77 000 0000')
+      await modal.clickConfirmOrder()
+      await modal.waitForSuccessScreen()
 
-    expect(await modal.isSuccessVisible()).toBe(true)
-    expect(await modal.getOrderNumber()).toMatch(/ORD-\d{6}/)
+      expect(await modal.isSuccessVisible()).toBe(true)
+      expect(await modal.getOrderNumber()).toMatch(/ORD-\d{6}/)
 
-    const orderNumber = await modal.getOrderNumber()
-    const toastText = await modal.getSuccessToastMessage()
-    expect(toastText).toContain(orderNumber)
-  })
+      const orderNumber = await modal.getOrderNumber()
+      const toastText = await modal.getSuccessToastMessage()
+      expect(toastText).toContain(orderNumber)
+    }
+  )
 
   test('Cart is cleared on both client and server after successful order placement', async ({
     open,
@@ -186,10 +187,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('cod'))
       .then((_) => _.clickContinue())
@@ -212,10 +210,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('cod'))
       .then((_) => _.clickContinue())
@@ -237,10 +232,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('cod'))
       .then((_) => _.clickContinue())
@@ -260,10 +252,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('cod'))
       .then((_) => _.clickContinue())
@@ -283,10 +272,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const cartPage = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const cartPage = await open(CartPage)
 
     const cartCountBefore = await cartPage.getCartItemCount()
     const modal = await cartPage.clickProceedToCheckout()
@@ -305,10 +291,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const cartPage = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const cartPage = await open(CartPage)
 
     const cartCountBefore = await cartPage.getCartItemCount()
     const modal = await cartPage.clickProceedToCheckout()
@@ -330,10 +313,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.clickContinue())
       .then((_) => _.clickBackBottom())
@@ -352,11 +332,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const cartPage = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
-
+    const cartPage = await open(CartPage)
     const cartCountBefore = await cartPage.getCartItemCount()
 
     const modal = await cartPage.clickProceedToCheckout()
@@ -378,10 +354,7 @@ test.describe('Checkout Tests', () => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('paypal'))
       .then((_) => _.clickContinue())
@@ -398,26 +371,28 @@ test.describe('Checkout Tests', () => {
     expect(toastText).toContain(orderNumber)
   })
 
-  test('Wishlisted item is removed from wishlist after it is purchased', async ({ open }) => {
+  test('Wishlisted item is removed from wishlist after it is purchased', async ({
+    open,
+    apiContext,
+  }) => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
 
-    // Wishlist the first product from the women's category page
-    // Note: wishlist buttons (class: item-wishlist-btn) only exist on category listing pages,
-    // not on the product detail page
-    const categoryPage = await open(CategoryPage)
-    await categoryPage.wishlistFirstProduct()
-    expect(await categoryPage.isFirstProductWishlisted()).toBe(true)
+    // Seed the wishlist via API (beforeEach already cleared it)
+    await new WishlistDataProvider(apiContext.wishlist).ensureInWishlist(seedProductId)
 
-    // Verify item appears in wishlist
+    // Verify item appears in wishlist via UI
     const wishlistBefore = await open(WishlistPage)
-    expect(await wishlistBefore.isWishlistEmpty()).toBe(false)
+    await expect
+      .poll(async () => await wishlistBefore.isWishlistEmpty(), {
+        timeout: 5000,
+        intervals: [500],
+        message: 'Waiting for wishlist to be populated after seeding via API',
+      })
+      .toBe(false)
 
-    // Purchase the first women's product (product/1) via COD
-    const modal = await open(ProductPage)
-      .then((_) => _.selectSize('M'))
-      .then((_) => _.clickAddToCart())
-      .then((_) => _.clickViewCart())
+    // Purchase the seeded product via COD (cart already seeded by beforeEach)
+    const modal = await open(CartPage)
       .then((_) => _.clickProceedToCheckout())
       .then((_) => _.selectPaymentMethod('cod'))
       .then((_) => _.clickContinue())

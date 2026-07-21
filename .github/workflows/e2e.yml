@@ -43,7 +43,10 @@ on:
 # ─────────────────────────────────────────────────────────────────────────────
 # Jobs
 #   1. lint               — Always runs; calls the reusable lint.yml workflow
-#   2. cross-browser-tests — Runs only on main / manual / schedule;
+#   2. api-tests          — Mandatory gate; runs all @api specs before any UI run;
+#                            calls the reusable api-tests.yml workflow
+#   3. cross-browser-tests — Runs only on main / manual / schedule;
+#                            blocked until api-tests passes;
 #                            calls the reusable cross-browser-tests.yml workflow
 # ─────────────────────────────────────────────────────────────────────────────
 jobs:
@@ -52,12 +55,27 @@ jobs:
     name: Lint
     uses: ./.github/workflows/lint.yml
 
-  # ── 2. Cross-Browser Regression ───────────────────────────────────────────
+  # ── 2. API Tests (mandatory gate) ────────────────────────────────────────
+  # Runs on the same conditions as cross-browser-tests.
+  # cross-browser-tests will not start until this job succeeds.
+  api-tests:
+    name: API Tests
+    needs: lint
+    if: |
+      github.ref == 'refs/heads/main'   ||
+      github.ref == 'refs/heads/master' ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule'
+    uses: ./.github/workflows/api-tests.yml
+    secrets: inherit
+
+  # ── 3. Cross-Browser Regression ───────────────────────────────────────────
   # Skipped on pushes to non-main branches (e.g. feature branches).
   # Always runs on main, on manual dispatch, and on schedule.
+  # Blocked until api-tests passes — API health is confirmed before UI regression.
   cross-browser-tests:
     name: Cross-Browser Tests
-    needs: lint
+    needs: [lint, api-tests]
     if: |
       github.ref == 'refs/heads/main'   ||
       github.ref == 'refs/heads/master' ||
