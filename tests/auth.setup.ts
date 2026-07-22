@@ -8,8 +8,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const authFile = path.join(__dirname, '../.auth/user.json')
 
 setup('Authenticate and save session storage', async ({ page }) => {
-  const userName = process.env.USER_NAME
-  const password = process.env.PASSWORD
+  const browser = process.env.BROWSER?.toUpperCase()
+  const userName = (browser && process.env[`USER_NAME_${browser}`]) || process.env.USER_NAME
+  const password = (browser && process.env[`PASSWORD_${browser}`]) || process.env.PASSWORD
   if (!userName || !password) {
     throw new Error('CRITICAL: USER_NAME and PASSWORD must be set in .env or CI secrets.')
   }

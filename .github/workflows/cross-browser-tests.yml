@@ -19,6 +19,18 @@ on:
         required: true
       API_URL:
         required: true
+      USER_NAME_CHROMIUM:
+        required: false
+      PASSWORD_CHROMIUM:
+        required: false
+      USER_NAME_FIREFOX:
+        required: false
+      PASSWORD_FIREFOX:
+        required: false
+      USER_NAME_WEBKIT:
+        required: false
+      PASSWORD_WEBKIT:
+        required: false
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Jobs
@@ -57,7 +69,6 @@ jobs:
     timeout-minutes: 45
     strategy:
       fail-fast: false
-      max-parallel: 1 # browsers run sequentially — prevents shared cart state race conditions
       matrix:
         browser: ${{ fromJson(needs.setup.outputs.browsers) }}
     env:
@@ -67,6 +78,12 @@ jobs:
       PASSWORD: ${{ secrets.PASSWORD }}
       API_URL: ${{ secrets.API_URL }}
       BROWSER: ${{ matrix.browser }}
+      USER_NAME_CHROMIUM: ${{ secrets.USER_NAME_CHROMIUM }}
+      PASSWORD_CHROMIUM: ${{ secrets.PASSWORD_CHROMIUM }}
+      USER_NAME_FIREFOX: ${{ secrets.USER_NAME_FIREFOX }}
+      PASSWORD_FIREFOX: ${{ secrets.PASSWORD_FIREFOX }}
+      USER_NAME_WEBKIT: ${{ secrets.USER_NAME_WEBKIT }}
+      PASSWORD_WEBKIT: ${{ secrets.PASSWORD_WEBKIT }}
     steps:
       - uses: actions/checkout@v4
 

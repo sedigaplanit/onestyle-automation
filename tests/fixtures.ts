@@ -34,8 +34,9 @@ export const test = base.extend<AppFixtures>({
   apiContext: async ({}, use) => {
     const requestContext = await baseRequest.newContext()
 
-    const email = process.env.USER_NAME
-    const password = process.env.PASSWORD
+    const browser = process.env.BROWSER?.toUpperCase()
+    const email = (browser && process.env[`USER_NAME_${browser}`]) || process.env.USER_NAME
+    const password = (browser && process.env[`PASSWORD_${browser}`]) || process.env.PASSWORD
     if (!email || !password) {
       throw new Error('USER_NAME and PASSWORD must be set in .env')
     }
