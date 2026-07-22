@@ -16,13 +16,7 @@ You are an expert Playwright TypeScript automation engineer. Your job is to conv
 
 ## Prerequisites
 
-Before running, verify the following exist at the workspace root:
-
-- `.env` — contains `BASE_URL`, `USER_NAME`, `PASSWORD`
-- `.playwright-mcp/` — pre-captured app reference folder
-- Node.js and Playwright installed (`npx playwright install` if first run)
-
-See the **Project Pipeline** instructions (`.github/instructions/project-pipeline.instructions.md`) for the full workflow overview.
+Follow the **Agent Prerequisites** instructions (`.github/instructions/agent-prerequisites.instructions.md`) — verifies `.env`, `.playwright-mcp/`, Node.js + Playwright, and credential rules before proceeding.
 
 ---
 
@@ -48,7 +42,11 @@ Generate automation only for the attached test case. Do not infer or generate te
 
 Read `.playwright-mcp/README.md` first (always). Then load the specific page and flow `.json` files needed for this test. Follow the **Playwright MCP Protocol** instructions.
 
-### 3 — Reuse Audit (before writing any code)
+### 3 — Understand the Shared Code Layer
+
+Read the **Project Pipeline** instructions (`.github/instructions/project-pipeline.instructions.md`) — Shared Code Layer section — to understand what API clients (`api/{domain}/`), data providers (`dataprovider/`), and fixture exports (`tests/fixtures.ts`) are already available before deciding what to write.
+
+### 4 — Reuse Audit (before writing any code)
 
 Use the **Explore** subagent to scan the codebase. This is faster and keeps the main context clean:
 
@@ -61,11 +59,13 @@ Rules:
 - If the spec file already exists, add the new test block to it — never create a second spec file for the same feature.
 - If the exact test title already exists in the spec: log `Test already exists — skipping.` and stop.
 
-### 4 — Write or Update Code
+### 5 — Write or Update Code
 
 Follow the **Playwright Test Conventions** instructions (`.github/instructions/playwright-test-conventions.instructions.md`) for all spec file and page object patterns, timeout strategy, chain-breaking rules, and circular import handling.
 
-### 5 — Lint and Type-Check
+Follow the **Test Independence** instructions (`.github/instructions/test-independence.instructions.md`) for isolation rules, clear-before-seed patterns, `beforeEach`/`afterEach` scoping, and worker safety.
+
+### 6 — Lint and Type-Check
 
 ```
 npx eslint --fix tests/{feature-folder}/{SpecFile}.spec.ts pages/{feature-folder}/*.ts
@@ -73,31 +73,19 @@ npx eslint --fix tests/{feature-folder}/{SpecFile}.spec.ts pages/{feature-folder
 
 Then check `read/problems` on every file you created or modified. Fix all TypeScript and ESLint errors before proceeding.
 
-### 6 — Run and Debug
+### 7 — Run and Debug
 
 Follow the **Playwright Post-Test Workflow** instructions (`.github/instructions/playwright-post-test-workflow.instructions.md`).
 
-### 7 — Automatic Review
+### 8 — Automatic Review
 
-After the test passes, invoke the **qa-reviewer** subagent with all modified spec and page object files:
-- If the report has no ❌ failures: report success and stop.
-- If the report has ❌ failures: fix only the failing criteria, then re-invoke qa-reviewer on the fixed files.
-- Maximum **2 fix attempts**. If failures remain after 2 attempts, report the outstanding issues and stop.
+Follow the **Auto-Review Protocol** instructions (`.github/instructions/auto-review-protocol.instructions.md`) — Code Review section.
 
 ---
 
-## Folder Convention
+## Folder Convention and Test Tagging
 
-| Feature Area        | tests folder            | pages folder            |
-| ------------------- | ----------------------- | ----------------------- |
-| Sign Up             | tests/sign-up/          | pages/sign-up/          |
-| Login               | tests/login/            | pages/login/            |
-| Navigation          | tests/navigation/       | pages/navigation/       |
-| Product Browsing    | tests/product-browsing/ | pages/product-browsing/ |
-| Cart Management     | tests/cart/             | pages/cart/             |
-| Checkout            | tests/checkout/         | pages/checkout/         |
-| Wishlist            | tests/wishlist/         | pages/wishlist/         |
-| End-to-End Journeys | tests/e2e/              | pages/e2e/              |
+Follow the **Folder Convention** instructions (`.github/instructions/folder-convention.instructions.md`) for the complete folder map and tagging rules.
 
 **Spec file name**: `{FeatureName}Tests.spec.ts` inside `tests/{feature-folder}/`
 **Page object name**: `{PageName}.ts` inside `pages/{feature-folder}/`

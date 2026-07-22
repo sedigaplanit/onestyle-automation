@@ -41,7 +41,7 @@ The agent derives test scenarios covering normal use, error handling, edge cases
 | ---------------- | ------------------------------------------------------------------------------------------------ |
 | **You attach**   | One manual test case file from `manual-tests/` in the chat                                       |
 | **Agent reads**  | The test case + the pre-captured app reference in `.playwright-mcp/`                             |
-| **Agent writes** | Updated TypeScript code in `tests/{feature}/` (spec) and `pages/{feature}/` (page helpers)       |
+| **Agent writes** | UI tests: `tests/{feature}/` (spec) and `pages/{feature}/` (page objects) — or API tests: `tests/api/` (spec only, using `apiContext` fixture and data providers from `dataprovider/`) |
 | **Agent then**   | Runs the test, fixes failures up to 3 times, or files a bug report and marks the test as skipped |
 | **A human can**  | Review the code, re-run with `npx playwright test` at any time                                   |
 
@@ -66,12 +66,19 @@ If a required piece of information is missing from these files, the agent uses t
 
 ## Prerequisites
 
-Both agents require these to be in place before running:
+See **Agent Prerequisites** (`.github/instructions/agent-prerequisites.instructions.md`) for the canonical pre-run checklist and credential rules. That file is the single source of truth — agents follow it directly.
 
-| Requirement               | Location       | Purpose                                                                   |
-| ------------------------- | -------------- | ------------------------------------------------------------------------- |
-| `.env` file               | Workspace root | Contains `BASE_URL`, `USER_NAME`, `PASSWORD`                              |
-| `.playwright-mcp/` folder | Workspace root | Pre-captured app reference — must exist before agents can run             |
-| Node.js + Playwright      | Machine-level  | Run `npx playwright install` if tests have never been run on this machine |
+---
 
-Credentials are never hardcoded in any generated file — always referenced as `$BASE_URL` / `process.env.USER_NAME`.
+## Shared Code Layer
+
+Both UI and API tests draw on a set of shared TypeScript modules that the Playwright Test Generator can read and extend:
+
+| Folder / File                       | Purpose                                                                 |
+| ----------------------------------- | ----------------------------------------------------------------------- |
+| `api/{domain}/XxxApiClient.ts`      | HTTP client per domain — typed requests and responses, no `expect()`    |
+| `dataprovider/XxxDataProvider.ts`   | State-setup helpers — clear, seed, and query state before/after tests   |
+| `tests/fixtures.ts`                 | Custom fixture — exports `open` (UI), `apiContext` (pre-authed API clients), and `expect` |
+| `api/types/capital.schema.ts`       | Auto-generated from `swagger.json` — run `npm run generate:schemas` after any OpenAPI change |
+
+When writing a new API test, import `{ test, expect }` from `'../fixtures'` and use `apiContext.{domain}` to access the pre-authenticated client for that domain.

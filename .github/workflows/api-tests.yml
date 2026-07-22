@@ -1,0 +1,101 @@
+name: API Tests
+
+# Reusable workflow — called by e2e.yml
+# Runs all tests in tests/api/ via the dedicated 'api' project.
+# No browser is installed — API tests authenticate over HTTP via the apiContext fixture.
+# Must pass before cross-browser UI tests are allowed to start.
+on:
+  workflow_call:
+    secrets:
+      BASE_URL:
+        required: true
+      USER_NAME:
+        required: true
+      PASSWORD:
+        required: true
+      API_URL:
+        required: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Jobs
+#   1. test         — runs tests/api/** via the 'api' project (no browser needed)
+#   2. merge-report — downloads blob report, merges into a single HTML report
+#
+# Total elapsed-time budget: ≤ 30 minutes
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  # ── 1. API Tests ──────────────────────────────────────────────────────────
+  test:
+    name: API Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: true
+      BASE_URL: ${{ secrets.BASE_URL }}
+      USER_NAME: ${{ secrets.USER_NAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      API_URL: ${{ secrets.API_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run API tests
+        run: npx playwright test --project=api --reporter=blob
+
+      - name: Upload blob report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: blob-report-api
+          path: blob-report/
+          retention-days: 2
+
+      - name: Upload traces on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: traces-api
+          path: test-results/
+          retention-days: 2
+
+  # ── 2. Merge blob report into a single HTML report ────────────────────────
+  merge-report:
+    name: Merge & Publish API Test Report
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: ${{ !cancelled() }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download blob report
+        uses: actions/download-artifact@v4
+        with:
+          pattern: blob-report-api
+          path: all-blob-reports
+          merge-multiple: true
+
+      - name: Merge into single HTML report
+        run: npx playwright merge-reports --reporter=html ./all-blob-reports
+
+      - name: Upload merged HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-api
+          path: playwright-report/
+          retention-days: 2

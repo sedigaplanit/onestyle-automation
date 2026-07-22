@@ -10,6 +10,8 @@ export default class CartPage extends BasePage {
     await this.page
       .getByRole('heading', { level: 1, name: 'Cart Totals' })
       .waitFor({ state: 'visible' })
+    // Wait for the cart API fetch to complete so nav count and checkout button are stable
+    await this.page.waitForLoadState('networkidle')
     return this
   }
 

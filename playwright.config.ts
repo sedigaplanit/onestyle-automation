@@ -12,18 +12,26 @@ const authFile = path.resolve(__dirname, '.auth/user.json')
 if (!process.env.BASE_URL) {
   throw new Error('CRITICAL: BASE_URL is not defined in the .env file.')
 }
+if (!process.env.API_URL) {
+  throw new Error('CRITICAL: API_URL is not defined in the .env file.')
+}
 
 // 3. Cast string configurations into their correct primitive types
 // Default: headless=true in CI (HEADLESS is not set); headless=false only when explicitly HEADLESS=false
 const isHeadless = process.env.HEADLESS !== 'false'
-const targetBrowser = process.env.BROWSER || 'chromium'
 
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 1 : 0,
+  // workers: undefined — Playwright defaults to half the CPU core count.
+  // All state-mutating spec files use test.describe.configure({ mode: 'serial' }) so tests
+  // within each file run sequentially. Each file also has beforeEach + afterEach to clear
+  // shared server-side state (cart, wishlist) before and after every test.
+  // NOTE: If two spec files that mutate the same resource run on separate workers at the
+  // same time, transient interference is still possible. Use BROWSER=chromium npx playwright
+  // test --workers=1 to guarantee zero cross-file interference with a single user account.
 
   timeout: 30_000, // Hard cap: every test must finish within 30s
   reporter: process.env.CI ? [['github'], ['html']] : 'html',
@@ -40,23 +48,38 @@ export default defineConfig({
 
   // Projects configuration filtered dynamically by your .env choice
   projects: [
-    //Define global setup project for authentication
+    // ── Auth setup ────────────────────────────────────────────────────────────
+    // Saves browser session state to .auth/user.json for all UI browser projects.
+    // Not used by API tests — they authenticate over HTTP via the apiContext fixture.
     {
       name: 'setup',
       testMatch: /auth\.setup\.ts/,
     },
+
+    // ── API project ───────────────────────────────────────────────────────────
+    // Runs tests/api/** only. No browser, no storageState, no setup dependency.
+    // API tests authenticate via the apiContext fixture (HTTP login), not browser cookies.
+    {
+      name: 'api',
+      testMatch: /tests\/api\/.*/,
+    },
+
+    // ── UI browser projects ───────────────────────────────────────────────────
     {
       name: 'chromium',
+      testIgnore: /tests\/api\/.*/,
       use: { ...devices['Desktop Chrome'], storageState: authFile },
-      dependencies: ['setup'], // Ensure setup runs before this project
+      dependencies: ['setup'],
     },
     {
       name: 'firefox',
+      testIgnore: /tests\/api\/.*/,
       use: { ...devices['Desktop Firefox'], storageState: authFile },
       dependencies: ['setup'],
     },
     {
       name: 'webkit',
+      testIgnore: /tests\/api\/.*/,
       use: { ...devices['Desktop Safari'], storageState: authFile },
       dependencies: ['setup'],
     },
@@ -70,6 +93,10 @@ export default defineConfig({
     // 2. Fallback for your manual command-line runs via terminal:
     if (!process.env.BROWSER) return true
 
-    return project.name === 'setup' || project.name === process.env.BROWSER
+    // 3. 'api' project is always included regardless of the BROWSER env var.
+    // 'setup' is required by all UI browser projects.
+    return (
+      project.name === 'api' || project.name === 'setup' || project.name === process.env.BROWSER
+    )
   }),
 })

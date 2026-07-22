@@ -9,7 +9,7 @@ applyTo: "tests/**/*.spec.ts, pages/**/*.ts"
 
 ```typescript
 import { test, expect } from '../fixtures'
-import SomePage from '../../pages/feature/SomePage'
+import SomePage from '@pages/feature/SomePage'
 
 test.describe('<Feature> Tests', () => {
   test('<Exact TC title from manual test>', async ({ open }) => {
@@ -76,6 +76,50 @@ await this.page.getByRole('img').waitFor({ state: 'visible', timeout: 20_000 })
 // ❌ WRONG — arbitrary timeout with no comment
 await this.page.getByRole('heading').waitFor({ state: 'visible', timeout: 15000 })
 ```
+
+---
+
+## Polling Assertions — `expect.poll()` Rule
+
+Use `expect.poll()` when asserting UI state that loads **asynchronously after a page navigation or API-triggered update**. This covers cases where the React app fetches data from the server after mounting and the DOM may not reflect the final state immediately.
+
+| Scenario | Rule |
+| --- | --- |
+| Asserting a value that appears synchronously (element already stable) | Plain `expect(await page.someAssertion()).toBe(...)` |
+| Asserting a value that loads asynchronously (API fetch happens after page mount) | `expect.poll()` with `timeout` and `message` |
+
+```typescript
+// ✅ CORRECT — polling for async state after API-triggered update
+await expect
+  .poll(async () => await wishlistPage.isWishlistEmpty(), {
+    timeout: 5_000,
+    intervals: [500],
+    message: 'Waiting for wishlist to reflect seeded item',
+  })
+  .toBe(false)
+
+// ✅ CORRECT — polling after navigation where cart data loads from API
+await expect
+  .poll(async () => await cartPage.getCartItemCount(), {
+    timeout: 5_000,
+    intervals: [500],
+    message: 'Waiting for cart count to reflect seeded item',
+  })
+  .toBeGreaterThan(0)
+
+// ❌ WRONG — plain expect on async-loaded state (may read before data arrives)
+expect(await wishlistPage.isWishlistEmpty()).toBe(false)
+```
+
+**When NOT to use `expect.poll()`:**
+- Element visibility/presence — use `waitFor({ state: 'visible' })` in the page object instead.
+- Transitions triggered by a user action the test just performed — the action already waits; plain `expect` is fine.
+- Any value that is guaranteed stable by the time `init()` returns.
+
+**`expect.poll()` parameters:**
+- `timeout` — maximum wait in milliseconds. Match or align with the section's `test.slow()` multiplier.
+- `intervals` — polling frequency in ms. `[500]` (every 500 ms) is the default for this project.
+- `message` — required; explains what state is being awaited. Always include.
 
 ---
 
@@ -159,7 +203,7 @@ export default class SomePage extends BasePage {
 - Navigation methods return `Promise<NewPage>` and call `new NewPage(this.page).init()`.
 - Assertion helpers return raw values (`boolean`, `string`, `number`) — never call `expect()`.
 - Imports within `pages/`: use `@pages/{feature-folder}/{PageName}` alias.
-- Imports in spec files: use `../../pages/{feature-folder}/{PageName}` (two levels up from `tests/{feature}/`).
+- Imports in spec files: use `@pages/{feature-folder}/{PageName}` alias — same as within `pages/`.
 - `BasePage` is always imported as `@pages/BasePage`.
 - Do **not** modify `BasePage.ts` unless adding a utility needed by every single page.
 

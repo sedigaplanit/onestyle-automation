@@ -19,6 +19,8 @@ Determine the review mode from the attached file:
 
 Run all checks against the attached TC file. For traceability checks, the user story must also be attached — if it is not, mark traceability checks as ⚠️ (cannot verify).
 
+> The canonical TC section template, file naming rules, and reserved prefixes are defined in **TC File Format** (`.github/instructions/tc-file-format.instructions.md`). The checklist below is an inline fast-path copy — use the source file if any criterion is ambiguous.
+
 ### Completeness — all sections must be present and non-empty
 
 - [ ] `### Test Case ID` — format `TC_{PREFIX}_{NNN}`
@@ -66,6 +68,8 @@ Run all checks against the attached `.spec.ts` and/or `pages/*.ts` files.
 - [ ] No hardcoded credential values — `process.env.VARIABLE_NAME` only
 - [ ] Every `test.slow()` call has an explanatory comment on the line above or same line
 - [ ] Auth-required tests do not add `test.use(storageState)` at describe level
+- [ ] `test.describe` carries type tag (`@api` or `@ui`) and domain tag (e.g. `@checkout`, `@cart`) — API specs also carry `@api`; UI specs carry `@ui`
+- [ ] `@smoke` tag applied at `test` level on critical happy-path tests only — not at describe level
 
 ### Page Object Rules
 

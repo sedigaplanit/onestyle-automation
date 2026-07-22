@@ -17,6 +17,20 @@ on:
         required: true
       PASSWORD:
         required: true
+      API_URL:
+        required: true
+      USER_NAME_CHROMIUM:
+        required: false
+      PASSWORD_CHROMIUM:
+        required: false
+      USER_NAME_FIREFOX:
+        required: false
+      PASSWORD_FIREFOX:
+        required: false
+      USER_NAME_WEBKIT:
+        required: false
+      PASSWORD_WEBKIT:
+        required: false
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Jobs
@@ -62,7 +76,14 @@ jobs:
       BASE_URL: ${{ secrets.BASE_URL }}
       USER_NAME: ${{ secrets.USER_NAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
+      API_URL: ${{ secrets.API_URL }}
       BROWSER: ${{ matrix.browser }}
+      USER_NAME_CHROMIUM: ${{ secrets.USER_NAME_CHROMIUM }}
+      PASSWORD_CHROMIUM: ${{ secrets.PASSWORD_CHROMIUM }}
+      USER_NAME_FIREFOX: ${{ secrets.USER_NAME_FIREFOX }}
+      PASSWORD_FIREFOX: ${{ secrets.PASSWORD_FIREFOX }}
+      USER_NAME_WEBKIT: ${{ secrets.USER_NAME_WEBKIT }}
+      PASSWORD_WEBKIT: ${{ secrets.PASSWORD_WEBKIT }}
     steps:
       - uses: actions/checkout@v4
 
@@ -75,10 +96,15 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browser — ${{ matrix.browser }}
-        run: npx playwright install ${{ matrix.browser }} --with-deps
+        # chromium is always required: the auth setup project has no browser override
+        # and defaults to Chromium regardless of which test browser is selected
+        run: npx playwright install chromium ${{ matrix.browser }} --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test --project=${{ matrix.browser }} --reporter=blob
+        # --grep @ui: explicitly limits to UI-tagged tests.
+        # API tests live in the 'api' project (no browser) and are already run
+        # as a mandatory gate in api-tests.yml before this workflow starts.
+        run: npx playwright test --project=${{ matrix.browser }} --grep @ui --workers=1 --reporter=blob
 
       - name: Upload blob report
         uses: actions/upload-artifact@v4
@@ -117,7 +143,7 @@ jobs:
       - name: Download all blob reports
         uses: actions/download-artifact@v4
         with:
-          pattern: blob-report-*
+          pattern: blob-report-{chromium,firefox,webkit}
           path: all-blob-reports
           merge-multiple: true
 

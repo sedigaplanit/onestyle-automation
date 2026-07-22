@@ -3,7 +3,6 @@ import BasePage from '@pages/BasePage'
 export default class WishlistPage extends BasePage {
   public async init(): Promise<this> {
     await this.page.goto(`${process.env.BASE_URL}/wishlist`)
-    // Wait for either the items state or the empty state heading
     await Promise.race([
       this.page
         .getByRole('heading', { level: 1, name: 'My Wishlist' })

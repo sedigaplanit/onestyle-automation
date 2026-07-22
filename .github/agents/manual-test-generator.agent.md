@@ -18,12 +18,7 @@ All UI details must come from `.playwright-mcp/`. Never assume or invent app beh
 
 ## Prerequisites
 
-Before running, verify the following exist at the workspace root:
-
-- `.env` — contains `BASE_URL`, `USER_NAME`, `PASSWORD`
-- `.playwright-mcp/` — pre-captured app reference folder
-
-See the **Project Pipeline** instructions (`.github/instructions/project-pipeline.instructions.md`) for the full workflow overview.
+Follow the **Agent Prerequisites** instructions (`.github/instructions/agent-prerequisites.instructions.md`) — verifies `.env`, `.playwright-mcp/`, and credential rules before proceeding.
 
 ---
 
@@ -31,13 +26,7 @@ See the **Project Pipeline** instructions (`.github/instructions/project-pipelin
 
 ### Credentials
 
-Read `.env` from the workspace root and extract `BASE_URL`, `USER_NAME`, and `PASSWORD`.
-
-**Credential rules — strictly enforced:**
-
-- Never hardcode credential values anywhere in output files.
-- Always reference them as `$BASE_URL`, `$USER_NAME`, `$PASSWORD`.
-- Use `$BASE_URL` only once, in the Preconditions section: `Navigate to $BASE_URL`.
+Read `.env` from the workspace root and extract `BASE_URL`, `USER_NAME`, and `PASSWORD`. Apply the credential rules from the **Agent Prerequisites** instructions.
 
 ### User Story
 
@@ -66,75 +55,10 @@ Follow the **Playwright MCP Protocol** instructions (`.github/instructions/playw
    - Apply the regression suitability filter from the **QA Test Types** instructions (`.github/instructions/qa-test-types.instructions.md`) — skip and log any test that is not deterministic, not assertable, or not directly traceable to the AC.
    - Generate only the tests that pass the filter. Tag each with `Tags: Regression`.
 7. **Generate files** — for each new test: determine the feature subfolder, find the highest existing TC number, assign the next ID, create one `.md` file. Never overwrite — always increment. Log: `Skipping TC_X_NNN — already exists.`
-8. **Automatic review** — after all TC files are saved, invoke the **qa-reviewer** subagent for each new TC file, passing the TC file and the attached user story as context:
-   - If the report has no ❌ failures: proceed to pipeline handoff.
-   - If the report has ❌ failures: fix only the failing criteria in the affected TC file, then re-invoke qa-reviewer on the fixed file.
-   - Maximum **2 fix attempts** per TC. If failures remain after 2 attempts, report the outstanding issues alongside the TC and stop.
-
-> **Pipeline handoff:** Once all TC files are saved and reviewed, the user can attach any of them to the **Playwright Test Generator** agent to automate the test.
+8. **Automatic review** — follow the **Auto-Review Protocol** instructions (`.github/instructions/auto-review-protocol.instructions.md`) — TC File Review section.
 
 ---
 
-## Output
+## Output Format
 
-### Test Case File Structure
-
-```
-### Test Case ID
-TC_{PREFIX}_{NNN}
-
-### Test Case Title
-Short descriptive title
-
-### Feature Area
-The feature name derived from the user story (e.g. Authentication, User Profile, Search,
-Checkout, Dashboard, Notifications, End-to-End Journey, Negative and Edge Cases, Unverified Workflows)
-
-### Priority
-High / Medium / Low
-
-### Preconditions
-- Navigate to $BASE_URL
-- Concrete state descriptions (e.g. "User is not logged in", "Record has been created")
-- Reference existing TC IDs for required state: "TC_FEATURE_001 has been executed"
-
-### Test Steps
-Numbered steps using exact UI labels, button text, and field names from .playwright-mcp/ reference
-
-### Expected Result
-Numbered expected result per step, plus a summary of overall expected behaviour
-
-### Notes and Assumptions
-- Tags: Regression
-- Any assumptions about app state or known limitations from .playwright-mcp/
-
-### Defect Opportunity
-Potential failure points observed or inferred from .playwright-mcp/ notes and gotchas
-```
-
-### File Naming
-
-```
-manual-tests/{feature-folder}/TC_{PREFIX}_{NNN}_{short-description}.md
-```
-
-Short description: lowercase kebab-case, 3–6 words summarising what the test validates.
-
-**Deriving folder and prefix from the feature area:**
-
-| Rule                                                                 | Example                                            |
-| -------------------------------------------------------------------- | -------------------------------------------------- |
-| Folder: kebab-case of the feature area                               | `authentication`, `user-profile`, `search-results` |
-| Prefix: uppercase abbreviation of the feature (up to 6 chars) + `_*` | `TC_AUTH_*`, `TC_PROF_*`, `TC_SEARCH_*`            |
-
-The following prefixes are reserved across all domains:
-
-| Purpose                                         | Folder           | Prefix            |
-| ----------------------------------------------- | ---------------- | ----------------- |
-| Authentication (login, sign-up, password reset) | `authentication` | `TC_AUTH_*`       |
-| Navigation and routing                          | `navigation`     | `TC_NAV_*`        |
-| End-to-End user journeys                        | `e2e`            | `TC_E2E_*`        |
-| Negative and edge cases                         | `negative-edge`  | `TC_NEG_*`        |
-| Unverified or exploratory workflows             | `unverified`     | `TC_UNVERIFIED_*` |
-
-All other feature areas derive their folder and prefix from the feature name in the user story.
+Follow the **TC File Format** instructions (`.github/instructions/tc-file-format.instructions.md`) for the exact section template, file naming pattern, folder/prefix derivation rules, and reserved prefixes.
