@@ -37,7 +37,6 @@ test.describe('Orders API', { tag: ['@api', '@orders'] }, () => {
   test('POST /api/orders with duplicate order id returns 409', async ({ apiContext }, testInfo) => {
     const listRes = await apiContext.products.getProducts()
     const firstProduct = listRes.data.products[0]
-    testInfo.skip(!firstProduct, 'No products in DB')
     const firstOrderRes = await apiContext.orders.createOrder({
       id: 'ORD-DUPE-TEST-001',
       date: new Date().toISOString(),

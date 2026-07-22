@@ -6,14 +6,10 @@ test.describe('Products API', { tag: ['@api', '@products'] }, () => {
   test(
     'GET /api/products returns 200 with a non-empty products array',
     { tag: '@smoke' },
-    async ({ apiContext }, testInfo) => {
+    async ({ apiContext }) => {
       const res = await apiContext.products.getProducts()
       expect(res.status).toBe(200)
       expect(Array.isArray(res.data.products)).toBe(true)
-      testInfo.skip(
-        res.data.products.length === 0,
-        'No products in DB — seed the products table before running this test'
-      )
       expect(res.data.products.length).toBeGreaterThan(0)
     }
   )
@@ -68,10 +64,9 @@ test.describe('Products API', { tag: ['@api', '@products'] }, () => {
     expect(res.data.products.every((p) => p.is_popular === true)).toBe(true)
   })
 
-  test('GET /api/products/:id returns the correct product', async ({ apiContext }, testInfo) => {
+  test('GET /api/products/:id returns the correct product', async ({ apiContext }) => {
     const listRes = await apiContext.products.getProducts()
     const firstProduct = listRes.data.products[0]
-    testInfo.skip(!firstProduct, 'No products in DB')
     const res = await apiContext.products.getById(firstProduct!.id)
     expect(res.status).toBe(200)
     expect(res.data.product.id).toBe(firstProduct!.id)
@@ -84,10 +79,9 @@ test.describe('Products API', { tag: ['@api', '@products'] }, () => {
 
   test('GET /api/products/:id/reviews returns reviews and aggregate data', async ({
     apiContext,
-  }, testInfo) => {
+  }) => {
     const listRes = await apiContext.products.getProducts()
     const firstProduct = listRes.data.products[0]
-    testInfo.skip(!firstProduct, 'No products in DB')
     const res = await apiContext.products.getReviews(firstProduct!.id)
     expect(res.status).toBe(200)
     expect(res.data).toMatchObject({

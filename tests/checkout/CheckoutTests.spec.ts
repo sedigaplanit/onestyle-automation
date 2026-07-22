@@ -6,8 +6,6 @@ import CartDataProvider from '@dataprovider/CartDataProvider'
 import WishlistDataProvider from '@dataprovider/WishlistDataProvider'
 
 test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
-  test.describe.configure({ mode: 'serial' })
-
   // Populated in beforeEach — derived from the first product returned by the API
   let seedProductId: number
 
