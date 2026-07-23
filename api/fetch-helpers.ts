@@ -34,6 +34,7 @@ const RETRYABLE_ERROR_PATTERNS = [
 ]
 const MAX_RETRIES = 2
 const RETRY_BACKOFF_MS = 300
+const REQUEST_TIMEOUT_MS = 30_000
 
 function isRetryableNetworkError(error: unknown): boolean {
   if (!(error instanceof Error)) return false
@@ -74,6 +75,7 @@ export async function fetchWithConfig<T, D>(
         method,
         headers,
         data: requestBody,
+        timeout: REQUEST_TIMEOUT_MS,
       })
       break
     } catch (error) {
