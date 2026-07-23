@@ -48,6 +48,10 @@ on:
 #   3. cross-browser-tests — Runs only on main / manual / schedule;
 #                            blocked until api-tests passes;
 #                            calls the reusable cross-browser-tests.yml workflow
+#   4. self-heal          — Runs only when api-tests or cross-browser-tests fail;
+#                            downloads test-results-json-* artifacts uploaded by
+#                            sibling jobs (same github.run_id), calls GPT-4o to
+#                            classify failures, and opens a PR with fixes/bug reports.
 # ─────────────────────────────────────────────────────────────────────────────
 jobs:
   # ── 1. Lint ───────────────────────────────────────────────────────────────
@@ -85,3 +89,169 @@ jobs:
     with:
       browser: ${{ inputs.browser || 'all' }}
     secrets: inherit
+
+  # ── 4. Self-Heal (only when tests fail) ───────────────────────────────────
+  # Runs after both test jobs complete (success, failure, or skip).
+  # always() is required so this job is not skipped when a dependency fails.
+  # Downloads test-results-json-* artifacts from THIS run (github.run_id) —
+  # no cross-run artifact lookup needed.
+  self-heal:
+    name: Self-Heal
+    needs: [api-tests, cross-browser-tests]
+    if: |
+      always() &&
+      (needs.api-tests.result == 'failure' ||
+       needs.cross-browser-tests.result == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download test results from this run
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ github.run_id }}
+          pattern: test-results-json-*
+          path: test-results
+          merge-multiple: true
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge results JSON files
+        run: |
+          node --input-type=module << 'EOF'
+          import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+          import path from 'node:path'
+
+          const dir = 'test-results'
+          mkdirSync(dir, { recursive: true })
+
+          const files = readdirSync(dir).filter(
+            f => f.startsWith('results') && f.endsWith('.json') && f !== 'merged-results.json'
+          )
+
+          if (files.length === 0) {
+            console.log('[merge] No result JSON files found — creating empty manifest')
+            writeFileSync(path.join(dir, 'merged-results.json'), JSON.stringify({ suites: [] }, null, 2))
+            process.exit(0)
+          }
+
+          const allSuites = []
+          for (const f of files) {
+            try {
+              const data = JSON.parse(readFileSync(path.join(dir, f), 'utf-8'))
+              allSuites.push(...(data.suites ?? []))
+              console.log(`[merge] Included ${f}`)
+            } catch (e) {
+              console.warn(`[merge] Could not parse ${f}: ${e.message}`)
+            }
+          }
+
+          writeFileSync(
+            path.join(dir, 'merged-results.json'),
+            JSON.stringify({ suites: allSuites }, null, 2)
+          )
+          console.log(`[merge] Merged ${files.length} file(s) into merged-results.json`)
+          EOF
+
+      - name: Run self-heal diagnostic
+        run: node scripts/self-heal.mjs --results test-results/merged-results.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add bug-reports/ proposed-fixes/ tests/ pages/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate PR body
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          node --input-type=module << 'EOF'
+          import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+
+          if (!existsSync('self-heal-summary.json')) {
+            writeFileSync('pr-body.md', '## Self-Heal Report\n\nNo summary available.')
+            process.exit(0)
+          }
+
+          const summary = JSON.parse(readFileSync('self-heal-summary.json', 'utf-8'))
+          const patches  = summary.filter(s => s.verdict === 'fix_test').length
+          const bugs     = summary.filter(s => s.verdict === 'create_bug_report').length
+
+          const header = '| Test | Verdict | Confidence | Reasoning |'
+          const sep    = '|---|---|---|---|'
+          const rows = summary
+            .map(s => `| ${s.fullTitle ?? s.testTitle} | ${s.verdict} | ${s.confidence ?? '-'} | ${s.reasoning ?? '-'} |`)
+            .join('\n')
+
+          const body = [
+            '## Self-Heal Report',
+            '',
+            header,
+            sep,
+            rows,
+            '',
+            `**${patches}** test patch(es) applied &bull; **${bugs}** bug report(s) created.`,
+            '',
+            '> :robot: Generated automatically by the self-heal workflow.',
+            '> Review all changes carefully before merging.',
+          ].join('\n')
+
+          writeFileSync('pr-body.md', body)
+          console.log('[pr-body] Written successfully')
+          EOF
+
+      - name: Create branch and open PR
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="self-heal/run-${{ github.run_id }}-$(date +%Y%m%d%H%M%S)"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+
+          PATCHES=$(node -e "
+            const s = require('./self-heal-summary.json');
+            console.log(s.filter(x => x.verdict === 'fix_test').length)
+          " 2>/dev/null || echo "?")
+          BUGS=$(node -e "
+            const s = require('./self-heal-summary.json');
+            console.log(s.filter(x => x.verdict === 'create_bug_report').length)
+          " 2>/dev/null || echo "?")
+
+          git commit -m "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
+            --body-file pr-body.md \
+            --label "self-heal,automated" \
+            --base main \
+          || gh pr create \
+            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
+            --body-file pr-body.md \
+            --label "self-heal,automated" \
+            --base master
