@@ -65,7 +65,7 @@ function collectFailures(suites, inheritedFile = null) {
     for (const spec of suite.specs ?? []) {
       for (const test of spec.tests ?? []) {
         const failedResult = (test.results ?? []).find(
-          (r) => r.status === 'failed' || r.status === 'timedOut',
+          (r) => r.status === 'failed' || r.status === 'timedOut'
         )
         if (failedResult) {
           failures.push({
@@ -178,7 +178,9 @@ Analyse the failure above and choose **one** of these actions:
 - Severity: Critical / High / Medium / Low.
 
 Open a PR with your changes and request review.
-`
+---
+
+> **To trigger the Copilot coding agent:** open this issue in GitHub and click **"Assign to Copilot"** (or assign @${COPILOT_ASSIGNEE} via the Assignees panel). Copilot will then analyse the codebase and open a fix PR automatically.`
 }
 
 async function githubFetch(urlPath, options = {}) {
@@ -204,15 +206,33 @@ async function findExistingIssue(title) {
 }
 
 async function createIssue(title, body) {
-  return githubFetch('/issues', {
+  // Create the issue without an assignee — the copilot bot username is not API-assignable
+  // on all GitHub Enterprise configurations. The issue body contains a call-to-action
+  // instructing the team to assign @copilot via the GitHub UI to trigger the coding agent.
+  const issue = await githubFetch('/issues', {
     method: 'POST',
     body: JSON.stringify({
       title,
       body,
       labels: ['self-heal', 'automated'],
-      assignees: [COPILOT_ASSIGNEE],
     }),
   })
+
+  // Attempt to assign the Copilot coding agent programmatically.
+  // This only works if the bot is already a collaborator — safe to ignore if it fails.
+  try {
+    await githubFetch(`/issues/${issue.number}/assignees`, {
+      method: 'POST',
+      body: JSON.stringify({ assignees: [COPILOT_ASSIGNEE] }),
+    })
+    console.log(`  Assigned to @${COPILOT_ASSIGNEE}`)
+  } catch {
+    console.log(
+      `  Note: could not assign @${COPILOT_ASSIGNEE} via API — assign manually in the GitHub UI to trigger the coding agent`
+    )
+  }
+
+  return issue
 }
 
 const summary = []
@@ -258,8 +278,10 @@ writeFileSync('self-heal-summary.json', JSON.stringify(summary, null, 2))
 
 const created = summary.filter((s) => s.action === 'created').length
 const skipped = summary.filter((s) => s.action === 'skipped').length
-const errors  = summary.filter((s) => s.action === 'error').length
+const errors = summary.filter((s) => s.action === 'error').length
 
 console.log('-'.repeat(60))
-console.log(`[self-heal] Done - ${created} issue(s) created, ${skipped} skipped, ${errors} error(s)`)
+console.log(
+  `[self-heal] Done - ${created} issue(s) created, ${skipped} skipped, ${errors} error(s)`
+)
 console.log('[self-heal] Summary written to self-heal-summary.json')
