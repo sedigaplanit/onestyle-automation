@@ -140,6 +140,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
+          BASE_URL: ${{ secrets.BASE_URL }}
           # schedule runs on the default branch (main) — always assign.
           # workflow_dispatch ref follows whatever branch was selected — assign on main only.
           ASSIGN_COPILOT: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event_name == 'schedule' }}

@@ -48,8 +48,7 @@ if (!GITHUB_REPOSITORY) {
 
 const GITHUB_RUN_ID = process.env.GITHUB_RUN_ID ?? 'local'
 const ASSIGN_COPILOT = process.env.ASSIGN_COPILOT === 'true'
-const COPILOT_ASSIGNEE = process.env.COPILOT_ASSIGNEE ?? 'copilot'
-const REPO_ROOT = process.cwd()
+const COPILOT_ASSIGNEE = process.env.COPILOT_ASSIGNEE ?? 'copilot'const BASE_URL         = process.env.BASE_URL ?? '(not set — check repo secrets)'const REPO_ROOT = process.cwd()
 const DRY_RUN = args['dry-run'] === true
 const GITHUB_API = `https://api.github.com/repos/${GITHUB_REPOSITORY}`
 const MAX_BODY_CHARS = 60_000 // GitHub issue limit is 65 536; leave headroom
@@ -151,8 +150,7 @@ function buildConsolidatedBody(failures) {
   sections.push(
     `## Self-Heal Report — Run #${GITHUB_RUN_ID}\n`,
     `**${failures.length} failure(s) detected.** ` +
-      `Copilot: please address each failure below in a **single PR**.\n`,
-    `---\n`
+      `Copilot: please address each failure below in a **single PR**.\n`,    `**Live app URL:** \`${BASE_URL}\` \u2014 the app is publicly accessible; use Playwright to inspect it if needed.\n`,    `---\n`
   )
 
   for (let i = 0; i < failures.length; i++) {
@@ -185,10 +183,18 @@ function buildConsolidatedBody(failures) {
       `- Locator priority: \`getByRole\` > \`getByLabel\` > \`getByPlaceholder\` > \`getByText\` > \`locator('css')\`\n` +
       `- Tests import \`{ test, expect }\` from \`'../fixtures'\` — never from \`@playwright/test\`\n` +
       `- Page objects extend \`BasePage\` and implement \`async init(): Promise<this>\`\n\n` +
+      `**If the error is a locator / element-not-found failure**, the app UI may have changed since the last snapshot.\n` +
+      `Before fixing the test code:\n` +
+      `1. Run \`npx playwright install chromium --with-deps\` to ensure the browser is available.\n` +
+      `2. Write and run a short Playwright script to inspect the current DOM at the relevant page on \`${BASE_URL}\`.\n` +
+      `3. Update the corresponding \`.playwright-mcp/pages/\` JSON file with the new locators.\n` +
+      `4. Fix the page object and spec to use the new locators.\n` +
+      `5. Include the \`.playwright-mcp/\` update in your PR alongside the code fix.\n\n` +
       `**Option B — Create a bug report** (assertion is correct, app behaviour is wrong):\n` +
-      `- Create \`bug-reports/BUG_{DOMAIN}_{NNN}_{slug}.md\` following existing files in that folder\n` +
+      `- **Read the 'Existing Bug Reports' section above first.** If the same root cause is already filed, reference it instead of creating a duplicate.\n` +
+      `- If genuinely new: create \`bug-reports/BUG_{DOMAIN}_{NNN}_{slug}.md\` matching existing files in that folder.\n` +
       `- Severity: Critical / High / Medium / Low\n\n` +
-      `Open a **single PR** that fixes all test-code issues and/or creates all bug reports.\n`
+      `Open a **single PR** that fixes all test-code issues and/or creates all new bug reports.\n`
   )
 
   // Enforce body size limit

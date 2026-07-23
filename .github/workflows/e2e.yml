@@ -175,8 +175,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          # Assign @copilot automatically on main/master; skip on feature branches
+          GITHUB_RUN_ID: ${{ github.run_id }}          BASE_URL:          ${{ secrets.BASE_URL }}          # Assign @copilot automatically on main/master; skip on feature branches
           ASSIGN_COPILOT: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
           # Override if your Enterprise uses a different bot login
           COPILOT_ASSIGNEE: ${{ vars.COPILOT_ASSIGNEE || 'copilot' }}
