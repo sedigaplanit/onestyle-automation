@@ -108,6 +108,7 @@ jobs:
       contents: write
       pull-requests: write
       actions: read
+      models: read
     steps:
       - uses: actions/checkout@v4
         with:
