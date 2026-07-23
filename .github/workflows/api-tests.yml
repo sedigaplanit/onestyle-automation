@@ -47,7 +47,23 @@ jobs:
         run: npm ci
 
       - name: Run API tests
-        run: npx playwright test --project=api --reporter=blob
+        # reporters are configured in playwright.config.ts: blob + github + json
+        run: npx playwright test --project=api
+
+      - name: Stage results JSON for artifact upload
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -f test-results/results.json ]; then
+            cp test-results/results.json test-results/results-api.json
+          fi
+
+      - name: Upload test results JSON
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: test-results-json-api
+          path: test-results/results-api.json
+          retention-days: 2
 
       - name: Upload blob report
         uses: actions/upload-artifact@v4

@@ -34,7 +34,9 @@ export default defineConfig({
   // test --workers=1 to guarantee zero cross-file interference with a single user account.
 
   timeout: 30_000, // Hard cap: every test must finish within 30s
-  reporter: process.env.CI ? [['github'], ['html']] : 'html',
+  reporter: process.env.CI
+    ? [['blob'], ['github'], ['json', { outputFile: 'test-results/results.json' }]]
+    : 'html',
 
   // Global settings for all tests
   use: {
