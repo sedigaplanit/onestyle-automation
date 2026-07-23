@@ -16,7 +16,8 @@ setup('Authenticate and save session storage', async ({ page }) => {
   }
 
   // Navigate directly to the login page
-  await page.goto('login')
+  // goto('/login') resolves to domain root on GitHub Pages; full BASE_URL path required
+  await page.goto(`${process.env.BASE_URL}/login`)
   await page
     .getByRole('heading', { level: 1, name: 'Login' })
     .waitFor({ state: 'visible', timeout: 5000 })
