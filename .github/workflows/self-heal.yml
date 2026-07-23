@@ -1,29 +1,22 @@
 name: Self-Heal
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Triggered whenever the E2E Pipeline fails, on a nightly schedule, or manually.
+# Standalone self-heal workflow — for nightly and manual runs.
 #
-# What it does:
-#   1. Obtains structured test results (downloads artifact OR runs a fresh smoke suite).
-#   2. Calls scripts/self-heal.mjs — GPT-4o via GitHub Models API diagnoses each failure.
-#   3. For high-confidence test-code fixes: applies the patch directly.
-#      For medium/low confidence: parks the patch in proposed-fixes/ for human review.
-#      For genuine app bugs: writes a bug report to bug-reports/BUG_*.md.
-#   4. Opens a GitHub PR with all changes (unless dry-run or nothing changed).
+# Failure-triggered healing is handled INLINE by the e2e.yml pipeline as job 4
+# (self-heal), which runs in the same workflow execution and downloads artifacts
+# directly via github.run_id — no cross-run lookup needed.
+#
+# This file covers the remaining cases:
+#   • Nightly schedule — runs a fresh @smoke + API suite then heals any failures.
+#   • Manual dispatch  — analyze a specific run (by run_id) or run a fresh suite.
 #
 # Requirements:
-#   • The repo must have a GitHub Copilot subscription — GITHUB_TOKEN is used to
-#     call models.inference.ai.azure.com (GitHub Models API).
-#   • Secrets: BASE_URL, USER_NAME, PASSWORD, API_URL (for fresh test runs).
+#   • GitHub Copilot subscription — GITHUB_TOKEN calls models.inference.ai.azure.com.
+#   • Secrets: BASE_URL, USER_NAME, PASSWORD, API_URL (needed for fresh test runs).
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
-  # ── Triggered automatically when the E2E Pipeline fails ──────────────────
-  # Covers: push to main, pull requests, and (once enabled) nightly schedule.
-  workflow_run:
-    workflows: ['E2E Pipeline']
-    types: [completed]
-
   # ── Independent nightly run: runs a fresh smoke suite then heals ──────────
   schedule:
     - cron: '0 3 * * *'
@@ -45,12 +38,9 @@ on:
 jobs:
   heal:
     name: Self-Heal
-    # Skip if the triggering E2E Pipeline run did NOT fail (don't heal a green run).
     if: |
       github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.conclusion == 'failure')
+      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -65,13 +55,9 @@ jobs:
       API_URL: ${{ secrets.API_URL }}
 
     steps:
-      # ── Checkout ───────────────────────────────────────────────────────────
-      # Check out the commit that was actually tested so self-heal reads the
-      # correct source files (important for PRs and feature-branch pushes).
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: actions/setup-node@v4
         with:
@@ -81,20 +67,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ── PATH A: download results from the failed workflow_run ──────────────
-      - name: Download results from failed E2E run
-        if: github.event_name == 'workflow_run'
-        uses: actions/download-artifact@v4
-        with:
-          run-id: ${{ github.event.workflow_run.id }}
-          pattern: test-results-json-*
-          path: test-results
-          merge-multiple: true
-        continue-on-error: true # don't abort if artifacts expired
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # ── PATH B: download results from a specific run (manual dispatch) ─────
+      # ── Download results from a specific run (manual dispatch with run_id) ─
       - name: Download results from specified run
         if: github.event_name == 'workflow_dispatch' && inputs.run_id != ''
         uses: actions/download-artifact@v4
@@ -233,9 +206,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RUN_ID="${{ github.event.workflow_run.id || github.run_id }}"
-          TIMESTAMP="$(date +%Y%m%d%H%M%S)"
-          BRANCH="self-heal/run-${RUN_ID}-${TIMESTAMP}"
+          BRANCH="self-heal/run-${{ github.run_id }}-$(date +%Y%m%d%H%M%S)"
 
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -251,17 +222,17 @@ jobs:
             console.log(s.filter(x => x.verdict === 'create_bug_report').length)
           " 2>/dev/null || echo "?")
 
-          git commit -m "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${RUN_ID}"
+          git commit -m "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}"
           git push origin "$BRANCH"
 
           # Prefer main; fall back to master for repos that haven't renamed yet
           gh pr create \
-            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${RUN_ID}" \
+            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
             --body-file pr-body.md \
             --label "self-heal,automated" \
             --base main \
           || gh pr create \
-            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${RUN_ID}" \
+            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
             --body-file pr-body.md \
             --label "self-heal,automated" \
             --base master
