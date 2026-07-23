@@ -22,6 +22,7 @@ export interface FetchOptions<T = unknown> {
   headers?: Record<string, string>
   data?: T
   params?: QueryParams
+  timeout?: number
 }
 
 const RETRYABLE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS'])
@@ -54,7 +55,7 @@ export async function fetchWithConfig<T, D>(
   url: string,
   options: FetchOptions<D> = {}
 ): Promise<FetchResponse<T>> {
-  const { method = 'GET', headers = {}, data, params } = options
+  const { method = 'GET', headers = {}, data, params, timeout } = options
 
   const urlObj = new URL(url)
   if (params) {
@@ -74,6 +75,7 @@ export async function fetchWithConfig<T, D>(
         method,
         headers,
         data: requestBody,
+        timeout,
       })
       break
     } catch (error) {

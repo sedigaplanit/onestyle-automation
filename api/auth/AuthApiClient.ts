@@ -27,6 +27,9 @@ export interface UpdateProfileRequest {
   address?: string
 }
 
+// Render can cold-start the auth service, so login requests need more time than the default.
+const LOGIN_REQUEST_TIMEOUT_MS = 30_000
+
 export default class AuthApiClient extends BaseApiClient {
   constructor(request: APIRequestContext) {
     super(request)
@@ -36,6 +39,7 @@ export default class AuthApiClient extends BaseApiClient {
     return this.makeRequest<AuthResponse, LoginRequest>(ApiPaths.Login, {
       method: 'POST',
       data,
+      timeout: LOGIN_REQUEST_TIMEOUT_MS,
     })
   }
 

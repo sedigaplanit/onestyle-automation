@@ -1,38 +1,29 @@
 import { test, expect } from '../fixtures'
 import AuthApiClient from '@api/auth/AuthApiClient'
 import { request as baseRequest } from '@playwright/test'
-
-function getAuthCredentials(): { email: string; password: string } {
-  const browser = process.env.BROWSER?.toUpperCase()
-  const email = (browser && process.env[`USER_NAME_${browser}`]) || process.env.USER_NAME
-  const password = (browser && process.env[`PASSWORD_${browser}`]) || process.env.PASSWORD
-
-  if (!email || !password) {
-    throw new Error('USER_NAME and PASSWORD must be set in .env')
-  }
-
-  return { email, password }
-}
+import { getAuthCredentials } from '../getAuthCredentials'
 
 test.describe('Auth API', { tag: ['@api', '@auth'] }, () => {
   test.describe.configure({ mode: 'serial' })
   test(
     'POST /api/auth/login with valid credentials returns 200 and a token',
     { tag: '@smoke' },
-    async ({ request }) => {
+    async () => {
       // test.slow(): the Render-hosted auth API can cold-start and exceed the default test timeout.
       test.slow()
 
-      const { email, password } = getAuthCredentials()
-      const res = await request.post(`${process.env.API_URL}/api/auth/login`, {
-        data: { email, password },
-        timeout: 30_000,
-      })
-      const body = (await res.json()) as { token: string; user: { email: string } }
+      const ctx = await baseRequest.newContext()
+      try {
+        const client = new AuthApiClient(ctx)
+        const { email, password } = getAuthCredentials()
+        const res = await client.login({ email, password })
 
-      expect(res.status()).toBe(200)
-      expect(body.token).toBeTruthy()
-      expect(body.user.email).toBe(email)
+        expect(res.status).toBe(200)
+        expect(res.data.token).toBeTruthy()
+        expect(res.data.user.email).toBe(email)
+      } finally {
+        await ctx.dispose()
+      }
     }
   )
 
