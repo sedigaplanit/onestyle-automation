@@ -34,7 +34,7 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
 
     const modal = await open(CartPage).then((_) => _.clickProceedToCheckout())
 
-    expect(await modal.isModalVisible()).toBe(false)
+    expect(await modal.isModalVisible()).toBe(true)
     expect(page.url()).toContain('/cart')
     expect(await modal.areAllPaymentOptionsVisible()).toBe(true)
     expect(await modal.getTotalText()).toMatch(/Total:.*LKR/)

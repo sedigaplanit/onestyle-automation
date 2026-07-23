@@ -34,7 +34,7 @@ export default class CheckoutModalPage extends BasePage {
   }
 
   public async isContinueButtonVisible(): Promise<boolean> {
-    return this.page.getByRole('button', { name: 'Continue →' }).isVisible()
+    return this.page.getByRole('button', { name: /Continue/ }).isVisible()
   }
 
   public async isCancelButtonVisible(): Promise<boolean> {
@@ -58,7 +58,7 @@ export default class CheckoutModalPage extends BasePage {
   }
 
   public async clickContinue(): Promise<this> {
-    await this.page.getByRole('button', { name: 'Continue →' }).click()
+    await this.page.getByRole('button', { name: /Continue/ }).click()
     // Back button (class: checkout-cancel-btn) only appears on Step 2 — safe wait condition
     await this.page
       .locator('.checkout-cancel-btn')
