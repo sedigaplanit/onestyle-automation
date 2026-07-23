@@ -43,6 +43,12 @@ Run `npm run generate:schemas` whenever `swagger.json` changes to regenerate `ca
 
 ## Key Rules
 
+> **For the GitHub Copilot coding agent:** before editing any `tests/**/*.spec.ts` or `pages/**/*.ts` file, read these instruction files in full — they contain mandatory conventions:
+>
+> - `.github/instructions/playwright-test-conventions.instructions.md` — spec rules, page object patterns, timeout strategy, chain-breaking, circular imports
+> - `.github/instructions/test-independence.instructions.md` — isolation rules, shared-state anti-patterns, API seeding, per-test teardown
+> - `.github/instructions/folder-convention.instructions.md` — canonical folder layout and test-tagging rules
+
 - Every page object class must extend `BasePage` and implement `async init(): Promise<this>`.
 - Do **not** modify `BasePage.ts` unless adding a shared utility every page needs.
 - Use `process.env.VARIABLE_NAME` for credentials; never hardcode them.
