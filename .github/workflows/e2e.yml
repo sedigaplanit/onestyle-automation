@@ -175,6 +175,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          # Override COPILOT_ASSIGNEE if your Enterprise uses a different bot login
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          # Assign @copilot automatically on main/master; skip on feature branches
+          ASSIGN_COPILOT: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+          # Override if your Enterprise uses a different bot login
           COPILOT_ASSIGNEE: ${{ vars.COPILOT_ASSIGNEE || 'copilot' }}
         run: node scripts/self-heal.mjs --results test-results/merged-results.json

@@ -1,23 +1,19 @@
 ﻿#!/usr/bin/env node
 /**
- * self-heal.mjs - Playwright failure to GitHub Issue to Copilot coding agent
+ * self-heal.mjs - Playwright failures -> single consolidated GitHub Issue -> Copilot coding agent
  *
  * Usage:
  *   node scripts/self-heal.mjs --results <path-to-results.json> [--dry-run]
  *
  * Environment:
- *   GITHUB_TOKEN       - required; calls the GitHub Issues REST API.
+ *   GITHUB_TOKEN       - required; GitHub Issues REST API auth.
  *   GITHUB_REPOSITORY  - required; e.g. "sedigaplanit/onestyle-automation".
- *   COPILOT_ASSIGNEE   - optional; Copilot bot login (default: "copilot").
+ *   GITHUB_RUN_ID      - optional; appended to issue title for idempotency (default: "local").
+ *   ASSIGN_COPILOT     - optional; "true" to assign @copilot after creation (main branch only).
+ *   COPILOT_ASSIGNEE   - optional; bot login to assign (default: "copilot").
  *
- * For each unique failure, this script:
- *   1. Reads the failing spec source + imported page-object source.
- *   2. Generates a detailed GitHub Issue body.
- *   3. Checks whether an open issue with the same title exists (idempotent).
- *   4. Creates a new issue assigned to the Copilot coding agent (unless --dry-run).
- *
- * The Copilot coding agent picks up the issue, analyses the full codebase,
- * and opens a PR with a fix or bug report - no Models API calls needed.
+ * Creates ONE issue per run containing ALL failures.
+ * Re-running the same run ID is idempotent (duplicate issue is skipped).
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
@@ -46,18 +42,22 @@ if (!GITHUB_TOKEN) {
 
 const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY
 if (!GITHUB_REPOSITORY) {
-  console.error('[self-heal] GITHUB_REPOSITORY is required (e.g. "owner/repo").')
+  console.error('[self-heal] GITHUB_REPOSITORY is required.')
   process.exit(1)
 }
 
+const GITHUB_RUN_ID    = process.env.GITHUB_RUN_ID ?? 'local'
+const ASSIGN_COPILOT   = process.env.ASSIGN_COPILOT === 'true'
 const COPILOT_ASSIGNEE = process.env.COPILOT_ASSIGNEE ?? 'copilot'
-const REPO_ROOT = process.cwd()
-const DRY_RUN = args['dry-run'] === true
-const GITHUB_API = `https://api.github.com/repos/${GITHUB_REPOSITORY}`
+const REPO_ROOT        = process.cwd()
+const DRY_RUN          = args['dry-run'] === true
+const GITHUB_API       = `https://api.github.com/repos/${GITHUB_REPOSITORY}`
+const MAX_BODY_CHARS   = 60_000  // GitHub issue limit is 65 536; leave headroom
 
 const ANSI_RE = /\x1B\[[0-9;]*m/g
 const strip = (s) => (s ?? '').replace(ANSI_RE, '').trim()
 
+// ── Parse results.json ──────────────────────────────────────────────────────
 function collectFailures(suites, inheritedFile = null) {
   const failures = []
   for (const suite of suites ?? []) {
@@ -65,16 +65,16 @@ function collectFailures(suites, inheritedFile = null) {
     for (const spec of suite.specs ?? []) {
       for (const test of spec.tests ?? []) {
         const failedResult = (test.results ?? []).find(
-          (r) => r.status === 'failed' || r.status === 'timedOut'
+          (r) => r.status === 'failed' || r.status === 'timedOut',
         )
         if (failedResult) {
           failures.push({
-            specFile: currentFile,
+            specFile:  currentFile,
             testTitle: spec.title,
             fullTitle: `${suite.title} > ${spec.title}`,
-            status: failedResult.status,
-            error: strip(failedResult.errors?.[0]?.message),
-            stack: strip(failedResult.errors?.[0]?.stack),
+            status:    failedResult.status,
+            error:     strip(failedResult.errors?.[0]?.message),
+            stack:     strip(failedResult.errors?.[0]?.stack),
           })
         }
       }
@@ -84,7 +84,7 @@ function collectFailures(suites, inheritedFile = null) {
   return failures
 }
 
-const results = JSON.parse(readFileSync(resultsPath, 'utf-8'))
+const results    = JSON.parse(readFileSync(resultsPath, 'utf-8'))
 const rawFailures = collectFailures(results.suites)
 
 const seen = new Set()
@@ -101,8 +101,9 @@ if (failures.length === 0) {
   process.exit(0)
 }
 
-console.log(`[self-heal] Found ${failures.length} unique failure(s). Generating issues...\n`)
+console.log(`[self-heal] Found ${failures.length} unique failure(s). Building consolidated issue...\n`)
 
+// ── Source helpers ──────────────────────────────────────────────────────────
 function readSource(relPath) {
   if (!relPath) return null
   const abs = path.resolve(REPO_ROOT, relPath)
@@ -113,85 +114,75 @@ function extractPageObjectPaths(specSource) {
   const paths = []
   const re = /from\s+['"]@pages\/([^'"]+)['"]/g
   let m
-  while ((m = re.exec(specSource)) !== null) {
-    paths.push(`pages/${m[1]}.ts`)
-  }
+  while ((m = re.exec(specSource)) !== null) paths.push(`pages/${m[1]}.ts`)
   return paths
 }
 
-function buildIssueBody(failure) {
-  const specSource = readSource(failure.specFile) ?? '(source not found)'
-  const poPaths = extractPageObjectPaths(specSource)
-  const poSections = poPaths
-    .map((p) => {
+// ── Build consolidated issue body ───────────────────────────────────────────
+function buildConsolidatedBody(failures) {
+  const sections = []
+
+  sections.push(
+    `## Self-Heal Report — Run #${GITHUB_RUN_ID}\n`,
+    `**${failures.length} failure(s) detected.** ` +
+    `Copilot: please address each failure below in a **single PR**.\n`,
+    `---\n`,
+  )
+
+  for (let i = 0; i < failures.length; i++) {
+    const f = failures[i]
+    const specSource = readSource(f.specFile) ?? '(source not found)'
+    const poPaths    = extractPageObjectPaths(specSource)
+
+    let section = `## Failure ${i + 1} of ${failures.length} — \`${f.testTitle}\`\n\n`
+    section += `**File:** \`tests/${f.specFile}\` | **Status:** \`${f.status}\`\n\n`
+    section += `### Error\n\`\`\`\n${f.error}\n\`\`\`\n\n`
+    section += `### Stack Trace\n\`\`\`\n${f.stack.slice(0, 800)}\n\`\`\`\n\n`
+    section += `### Spec Source\n\`\`\`typescript\n${specSource.slice(0, 2500)}\n\`\`\`\n\n`
+
+    for (const p of poPaths) {
       const src = readSource(p)
-      return src ? `### ${p}\n\`\`\`typescript\n${src}\n\`\`\`` : null
-    })
-    .filter(Boolean)
-    .join('\n\n')
+      if (src) section += `### Page Object: ${p}\n\`\`\`typescript\n${src.slice(0, 1500)}\n\`\`\`\n\n`
+    }
 
-  return `## Failing Test
+    section += `---\n`
+    sections.push(section)
+  }
 
-**Spec file:** \`tests/${failure.specFile}\`
-**Test:** \`${failure.fullTitle}\`
-**Status:** \`${failure.status}\`
+  sections.push(
+    `## Instructions for Copilot\n\n` +
+    `For **each** failure listed above, choose the correct action:\n\n` +
+    `**Option A — Fix the test code** (broken locator, wrong assertion, timing, import error):\n` +
+    `- Fix the spec file and/or page object(s) shown above\n` +
+    `- Do NOT modify \`pages/BasePage.ts\` or \`tests/fixtures.ts\`\n` +
+    `- Locator priority: \`getByRole\` > \`getByLabel\` > \`getByPlaceholder\` > \`getByText\` > \`locator('css')\`\n` +
+    `- Tests import \`{ test, expect }\` from \`'../fixtures'\` — never from \`@playwright/test\`\n` +
+    `- Page objects extend \`BasePage\` and implement \`async init(): Promise<this>\`\n\n` +
+    `**Option B — Create a bug report** (assertion is correct, app behaviour is wrong):\n` +
+    `- Create \`bug-reports/BUG_{DOMAIN}_{NNN}_{slug}.md\` following existing files in that folder\n` +
+    `- Severity: Critical / High / Medium / Low\n\n` +
+    `Open a **single PR** that fixes all test-code issues and/or creates all bug reports.\n`,
+  )
 
----
-
-## Error
-
-\`\`\`
-${failure.error}
-\`\`\`
-
-## Stack Trace
-
-\`\`\`
-${failure.stack.slice(0, 1500)}
-\`\`\`
-
----
-
-## Failing Spec Source
-
-\`\`\`typescript
-${specSource.slice(0, 4000)}
-\`\`\`
-
-${poSections ? `## Relevant Page Objects\n\n${poSections.slice(0, 4000)}` : ''}
-
----
-
-## Task for Copilot
-
-Analyse the failure above and choose **one** of these actions:
-
-**Option A - Test code fix** (broken locator, wrong assertion, timing issue, or import error):
-- Fix \`tests/${failure.specFile}\` and/or the relevant page object(s).
-- Do NOT modify \`pages/BasePage.ts\` or \`tests/fixtures.ts\`.
-- Locator priority: \`getByRole\` > \`getByLabel\` > \`getByPlaceholder\` > \`getByText\` > \`locator('css')\`.
-- Tests import \`{ test, expect }\` from \`'../fixtures'\` - never from \`@playwright/test\`.
-- Page objects extend \`BasePage\` and implement \`async init(): Promise<this>\`.
-
-**Option B - Bug report** (test assertion is correct but app behaviour is wrong):
-- Create \`bug-reports/BUG_{DOMAIN}_{NNN}_{slug}.md\` following the format of existing files there.
-- Severity: Critical / High / Medium / Low.
-
-Open a PR with your changes and request review.
----
-
-> **To trigger the Copilot coding agent:** open this issue in GitHub and click **"Assign to Copilot"** (or assign @${COPILOT_ASSIGNEE} via the Assignees panel). Copilot will then analyse the codebase and open a fix PR automatically.`
+  // Enforce body size limit
+  let body = sections.join('\n')
+  if (body.length > MAX_BODY_CHARS) {
+    body = body.slice(0, MAX_BODY_CHARS) +
+      '\n\n_[body truncated — see full test results in the CI run artifacts]_\n'
+  }
+  return body
 }
 
+// ── GitHub API helpers ──────────────────────────────────────────────────────
 async function githubFetch(urlPath, options = {}) {
   const url = `${GITHUB_API}${urlPath}`
   const res = await fetch(url, {
     ...options,
     headers: {
-      Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
+      Accept:               'application/vnd.github+json',
+      Authorization:        `Bearer ${GITHUB_TOKEN}`,
       'X-GitHub-Api-Version': '2022-11-28',
-      'Content-Type': 'application/json',
+      'Content-Type':       'application/json',
       ...(options.headers ?? {}),
     },
   })
@@ -205,83 +196,64 @@ async function findExistingIssue(title) {
   return issues.find((i) => i.title === title) ?? null
 }
 
-async function createIssue(title, body) {
-  // Create the issue without an assignee — the copilot bot username is not API-assignable
-  // on all GitHub Enterprise configurations. The issue body contains a call-to-action
-  // instructing the team to assign @copilot via the GitHub UI to trigger the coding agent.
-  const issue = await githubFetch('/issues', {
-    method: 'POST',
-    body: JSON.stringify({
-      title,
-      body,
-      labels: ['self-heal', 'automated'],
-    }),
-  })
+// ── Main ────────────────────────────────────────────────────────────────────
+const issueTitle = `fix(self-heal): ${failures.length} failure(s) detected — run #${GITHUB_RUN_ID}`
+const issueBody  = buildConsolidatedBody(failures)
 
-  // Attempt to assign the Copilot coding agent programmatically.
-  // This only works if the bot is already a collaborator — safe to ignore if it fails.
+console.log(`Issue title: "${issueTitle}"`)
+console.log(`Body size:   ${issueBody.length} chars\n`)
+
+if (DRY_RUN) {
+  console.log('[dry-run] Would create issue with the body shown above.')
+  console.log(`[dry-run] ASSIGN_COPILOT = ${ASSIGN_COPILOT}`)
+  writeFileSync('self-heal-summary.json', JSON.stringify({ dryRun: true, issueTitle, failures }, null, 2))
+  process.exit(0)
+}
+
+let createdIssue = null
+try {
+  const existing = await findExistingIssue(issueTitle)
+  if (existing) {
+    console.log(`Issue already exists: #${existing.number} — skipping creation`)
+    createdIssue = existing
+  } else {
+    createdIssue = await githubFetch('/issues', {
+      method: 'POST',
+      body: JSON.stringify({
+        title:  issueTitle,
+        body:   issueBody,
+        labels: ['self-heal', 'automated'],
+      }),
+    })
+    console.log(`Created issue #${createdIssue.number}: ${createdIssue.html_url}`)
+  }
+} catch (err) {
+  console.error(`[ERROR] Could not create issue: ${err.message}`)
+  writeFileSync('self-heal-summary.json', JSON.stringify({ error: err.message, failures }, null, 2))
+  process.exit(1)
+}
+
+// Assign to Copilot only when running on the main branch
+if (ASSIGN_COPILOT) {
   try {
-    await githubFetch(`/issues/${issue.number}/assignees`, {
+    await githubFetch(`/issues/${createdIssue.number}/assignees`, {
       method: 'POST',
       body: JSON.stringify({ assignees: [COPILOT_ASSIGNEE] }),
     })
-    console.log(`  Assigned to @${COPILOT_ASSIGNEE}`)
+    console.log(`Assigned issue to @${COPILOT_ASSIGNEE} (main branch — Copilot coding agent will pick this up)`)
   } catch {
-    console.log(
-      `  Note: could not assign @${COPILOT_ASSIGNEE} via API — assign manually in the GitHub UI to trigger the coding agent`
-    )
+    console.log(`Note: could not auto-assign @${COPILOT_ASSIGNEE} via API — assign manually in GitHub UI`)
   }
-
-  return issue
+} else {
+  console.log(`Running on a feature branch — skipping Copilot assignment. Assign manually via the GitHub UI when ready.`)
 }
 
-const summary = []
+writeFileSync('self-heal-summary.json', JSON.stringify({
+  issueNumber: createdIssue.number,
+  issueUrl:    createdIssue.html_url,
+  issueTitle,
+  assignedCopilot: ASSIGN_COPILOT,
+  failures,
+}, null, 2))
 
-for (const failure of failures) {
-  const issueTitle = `fix(self-heal): ${failure.testTitle}`
-  const issueBody = buildIssueBody(failure)
-
-  console.log(`Processing: ${failure.fullTitle}`)
-
-  if (DRY_RUN) {
-    console.log(`  [dry-run] would create issue: "${issueTitle}"`)
-    summary.push({ ...failure, action: 'dry-run', issueTitle })
-    console.log()
-    continue
-  }
-
-  try {
-    const existing = await findExistingIssue(issueTitle)
-    if (existing) {
-      console.log(`  Issue already open: #${existing.number} - skipping`)
-      summary.push({ ...failure, action: 'skipped', issueNumber: existing.number, issueTitle })
-    } else {
-      const issue = await createIssue(issueTitle, issueBody)
-      console.log(`  Created issue #${issue.number}: ${issue.html_url}`)
-      summary.push({
-        ...failure,
-        action: 'created',
-        issueNumber: issue.number,
-        issueUrl: issue.html_url,
-        issueTitle,
-      })
-    }
-  } catch (err) {
-    console.error(`  [ERROR] ${err.message}`)
-    summary.push({ ...failure, action: 'error', error: err.message, issueTitle })
-  }
-
-  console.log()
-}
-
-writeFileSync('self-heal-summary.json', JSON.stringify(summary, null, 2))
-
-const created = summary.filter((s) => s.action === 'created').length
-const skipped = summary.filter((s) => s.action === 'skipped').length
-const errors = summary.filter((s) => s.action === 'error').length
-
-console.log('-'.repeat(60))
-console.log(
-  `[self-heal] Done - ${created} issue(s) created, ${skipped} skipped, ${errors} error(s)`
-)
-console.log('[self-heal] Summary written to self-heal-summary.json')
+console.log('\n[self-heal] Done.')
