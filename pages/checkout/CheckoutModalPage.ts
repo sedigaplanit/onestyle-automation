@@ -34,7 +34,7 @@ export default class CheckoutModalPage extends BasePage {
   }
 
   public async isContinueButtonVisible(): Promise<boolean> {
-    return this.page.getByRole('button', { name: 'Continue →' }).isVisible()
+    return this.page.getByRole('button', { name: 'Continu', exact: true }).isVisible()
   }
 
   public async isCancelButtonVisible(): Promise<boolean> {
