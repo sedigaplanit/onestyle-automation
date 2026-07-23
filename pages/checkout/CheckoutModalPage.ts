@@ -4,6 +4,14 @@ import type OrdersPage from '@pages/orders/OrdersPage'
 import type LandingPage from '@pages/landing/LandingPage'
 
 export default class CheckoutModalPage extends BasePage {
+  private getContinueButton() {
+    return this.page.getByRole('button', { name: 'Continue →' })
+  }
+
+  private getCancelButton() {
+    return this.page.getByRole('button', { name: 'Cancel' })
+  }
+
   public async init(): Promise<this> {
     await this.page
       .getByRole('heading', { level: 2, name: 'Checkout' })
@@ -34,11 +42,13 @@ export default class CheckoutModalPage extends BasePage {
   }
 
   public async isContinueButtonVisible(): Promise<boolean> {
-    return this.page.getByRole('button', { name: 'Continue →' }).isVisible()
+    await this.getContinueButton().waitFor({ state: 'visible' })
+    return this.getContinueButton().isVisible()
   }
 
   public async isCancelButtonVisible(): Promise<boolean> {
-    return this.page.getByRole('button', { name: 'Cancel' }).isVisible()
+    await this.getCancelButton().waitFor({ state: 'visible' })
+    return this.getCancelButton().isVisible()
   }
 
   public async isCloseButtonVisible(): Promise<boolean> {
@@ -58,7 +68,7 @@ export default class CheckoutModalPage extends BasePage {
   }
 
   public async clickContinue(): Promise<this> {
-    await this.page.getByRole('button', { name: 'Continue →' }).click()
+    await this.getContinueButton().click()
     // Back button (class: checkout-cancel-btn) only appears on Step 2 — safe wait condition
     await this.page
       .locator('.checkout-cancel-btn')
@@ -68,7 +78,7 @@ export default class CheckoutModalPage extends BasePage {
   }
 
   public async clickCancel(): Promise<CartPage> {
-    await this.page.getByRole('button', { name: 'Cancel' }).click()
+    await this.getCancelButton().click()
     await this.page
       .getByRole('heading', { level: 2, name: 'Checkout' })
       .waitFor({ state: 'hidden' })
@@ -149,6 +159,8 @@ export default class CheckoutModalPage extends BasePage {
     await this.page
       .getByRole('heading', { level: 2, name: 'Checkout' })
       .waitFor({ state: 'visible' })
+    await this.getContinueButton().waitFor({ state: 'visible' })
+    await this.getCancelButton().waitFor({ state: 'visible' })
     return this
   }
 
