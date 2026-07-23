@@ -47,6 +47,7 @@ jobs:
       contents: write
       pull-requests: write
       actions: read # needed to download artifacts from other workflow runs
+      models: read # needed to call the GitHub Models API (GPT-4o)
     env:
       CI: true
       BASE_URL: ${{ secrets.BASE_URL }}
