@@ -196,8 +196,8 @@ jobs:
         run: node scripts/self-heal.mjs --results test-results/merged-results.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Override with your Enterprise catalog name if needed (e.g. 'gpt-4o-mini')
-          SELF_HEAL_MODEL: ${{ vars.SELF_HEAL_MODEL || 'gpt-4o' }}
+          # Full azureml:// URI required on GitHub Enterprise — override via SELF_HEAL_MODEL Actions variable
+          SELF_HEAL_MODEL: ${{ vars.SELF_HEAL_MODEL || 'azureml://registries/azure-openai/models/gpt-4o/versions/2' }}
 
       - name: Check for changes
         id: changes

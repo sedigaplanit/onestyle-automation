@@ -43,9 +43,10 @@ if (!GITHUB_TOKEN) {
 }
 
 const MODELS_API_URL = 'https://models.inference.ai.azure.com/chat/completions'
-// GitHub Enterprise uses bare model names (e.g. 'gpt-4o') — no 'openai/' prefix.
-// Override with the SELF_HEAL_MODEL env var if your Enterprise catalog uses a different name.
-const MODEL = process.env.SELF_HEAL_MODEL ?? 'gpt-4o'
+// GitHub Enterprise uses full azureml:// URIs as model IDs.
+// Override with the SELF_HEAL_MODEL env var if your instance uses a different version or model.
+const MODEL =
+  process.env.SELF_HEAL_MODEL ?? 'azureml://registries/azure-openai/models/gpt-4o/versions/2'
 const REPO_ROOT = process.cwd()
 const DRY_RUN = args['dry-run'] === true
 
