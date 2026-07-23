@@ -53,6 +53,7 @@ Run `npm run generate:schemas` whenever `swagger.json` changes to regenerate `ca
 - **API clients** (`XxxApiClient.ts`) are for making HTTP calls and returning typed responses — never call `expect()` inside them.
 - **Data providers** (`dataprovider/XxxDataProvider.ts`) are pure state-setup helpers — they call API clients and do not return responses for assertion. Import them with `@dataprovider/XxxDataProvider`.
 - Use `apiContext` fixture for all API calls in tests. It is pre-authenticated (JWT token acquired once per worker).
+- **Before creating a new bug report** in `bug-reports/`, always read the existing files in that folder first. If the same root cause is already documented, do NOT create a duplicate — reference the existing report instead.
 
 ## Test Tagging
 
