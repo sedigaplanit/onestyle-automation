@@ -2,16 +2,37 @@ import { test, expect } from '../fixtures'
 import AuthApiClient from '@api/auth/AuthApiClient'
 import { request as baseRequest } from '@playwright/test'
 
+function getAuthCredentials(): { email: string; password: string } {
+  const browser = process.env.BROWSER?.toUpperCase()
+  const email = (browser && process.env[`USER_NAME_${browser}`]) || process.env.USER_NAME
+  const password = (browser && process.env[`PASSWORD_${browser}`]) || process.env.PASSWORD
+
+  if (!email || !password) {
+    throw new Error('USER_NAME and PASSWORD must be set in .env')
+  }
+
+  return { email, password }
+}
+
 test.describe('Auth API', { tag: ['@api', '@auth'] }, () => {
   test.describe.configure({ mode: 'serial' })
   test(
     'POST /api/auth/login with valid credentials returns 200 and a token',
     { tag: '@smoke' },
-    async ({ apiContext }) => {
-      // apiContext fixture already performed a successful login — verify the client is authorised
-      const res = await apiContext.auth.getMe()
-      expect(res.status).toBe(200)
-      expect(res.data.user.email).toBeTruthy()
+    async ({ request }) => {
+      // test.slow(): the Render-hosted auth API can cold-start and exceed the default test timeout.
+      test.slow()
+
+      const { email, password } = getAuthCredentials()
+      const res = await request.post(`${process.env.API_URL}/api/auth/login`, {
+        data: { email, password },
+        timeout: 30_000,
+      })
+      const body = (await res.json()) as { token: string; user: { email: string } }
+
+      expect(res.status()).toBe(200)
+      expect(body.token).toBeTruthy()
+      expect(body.user.email).toBe(email)
     }
   )
 
