@@ -170,10 +170,34 @@ jobs:
           console.log(`[merge] Merged ${files.length} file(s) into merged-results.json`)
           EOF
 
+      - name: Discover available GitHub Models
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "=== Available models on this GitHub instance ==="
+          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+            https://models.inference.ai.azure.com/models \
+            | node -e "
+              let body='';
+              process.stdin.on('data',d=>body+=d);
+              process.stdin.on('end',()=>{
+                try {
+                  const models = JSON.parse(body);
+                  const list = Array.isArray(models) ? models : (models.data ?? []);
+                  if (list.length === 0) { console.log('(no models returned — check token permissions)'); return; }
+                  list.forEach(m => console.log(' -', m.id ?? m.name ?? JSON.stringify(m)));
+                  console.log('');
+                  console.log('Set the SELF_HEAL_MODEL Actions variable to the model id you want to use.');
+                } catch { console.log('Raw response:', body.slice(0, 500)); }
+              });
+            "
+
       - name: Run self-heal diagnostic
         run: node scripts/self-heal.mjs --results test-results/merged-results.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Override with your Enterprise catalog name if needed (e.g. 'gpt-4o-mini')
+          SELF_HEAL_MODEL: ${{ vars.SELF_HEAL_MODEL || 'gpt-4o' }}
 
       - name: Check for changes
         id: changes
