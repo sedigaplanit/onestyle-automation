@@ -174,7 +174,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "=== Available models on this GitHub instance ==="
+          echo "=== Full model catalog (all fields) ==="
           curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
             https://models.inference.ai.azure.com/models \
             | node -e "
@@ -184,11 +184,9 @@ jobs:
                 try {
                   const models = JSON.parse(body);
                   const list = Array.isArray(models) ? models : (models.data ?? []);
-                  if (list.length === 0) { console.log('(no models returned — check token permissions)'); return; }
-                  list.forEach(m => console.log(' -', m.id ?? m.name ?? JSON.stringify(m)));
-                  console.log('');
-                  console.log('Set the SELF_HEAL_MODEL Actions variable to the model id you want to use.');
-                } catch { console.log('Raw response:', body.slice(0, 500)); }
+                  if (list.length === 0) { console.log('(no models returned)'); return; }
+                  list.forEach(m => console.log(JSON.stringify(m, null, 2)));
+                } catch { console.log('Raw response:', body.slice(0, 2000)); }
               });
             "
 
