@@ -105,14 +105,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: write
-      pull-requests: write
-      actions: read
-      models: read
+      contents: read # checkout only — no commits needed
+      issues: write # create GitHub Issues for the Copilot coding agent
+      actions: read # download artifacts from this run
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -170,112 +167,14 @@ jobs:
           console.log(`[merge] Merged ${files.length} file(s) into merged-results.json`)
           EOF
 
-      - name: Discover available GitHub Models
+      # ── Create GitHub Issues for the Copilot coding agent ──────────────────
+      # self-heal.mjs reads each failure, builds a rich issue body with spec
+      # source + page-object source, then calls the GitHub Issues REST API.
+      # Copilot picks up each issue and opens a PR with a fix or bug report.
+      - name: Create issues for Copilot coding agent
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "=== Full model catalog (all fields) ==="
-          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-            https://models.inference.ai.azure.com/models \
-            | node -e "
-              let body='';
-              process.stdin.on('data',d=>body+=d);
-              process.stdin.on('end',()=>{
-                try {
-                  const models = JSON.parse(body);
-                  const list = Array.isArray(models) ? models : (models.data ?? []);
-                  if (list.length === 0) { console.log('(no models returned)'); return; }
-                  list.forEach(m => console.log(JSON.stringify(m, null, 2)));
-                } catch { console.log('Raw response:', body.slice(0, 2000)); }
-              });
-            "
-
-      - name: Run self-heal diagnostic
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          # Override COPILOT_ASSIGNEE if your Enterprise uses a different bot login
+          COPILOT_ASSIGNEE: ${{ vars.COPILOT_ASSIGNEE || 'copilot' }}
         run: node scripts/self-heal.mjs --results test-results/merged-results.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # GPT-4o may need a paid entitlement on Enterprise — Llama models are universally accessible.
-          # Set SELF_HEAL_MODEL Actions variable to 'openai/gpt-4o' if your org has it enabled.
-          SELF_HEAL_MODEL: ${{ vars.SELF_HEAL_MODEL || 'meta/Meta-Llama-3.1-405B-Instruct' }}
-
-      - name: Check for changes
-        id: changes
-        run: |
-          git add bug-reports/ proposed-fixes/ tests/ pages/ 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Generate PR body
-        if: steps.changes.outputs.has_changes == 'true'
-        run: |
-          node --input-type=module << 'EOF'
-          import { readFileSync, writeFileSync, existsSync } from 'node:fs'
-
-          if (!existsSync('self-heal-summary.json')) {
-            writeFileSync('pr-body.md', '## Self-Heal Report\n\nNo summary available.')
-            process.exit(0)
-          }
-
-          const summary = JSON.parse(readFileSync('self-heal-summary.json', 'utf-8'))
-          const patches  = summary.filter(s => s.verdict === 'fix_test').length
-          const bugs     = summary.filter(s => s.verdict === 'create_bug_report').length
-
-          const header = '| Test | Verdict | Confidence | Reasoning |'
-          const sep    = '|---|---|---|---|'
-          const rows = summary
-            .map(s => `| ${s.fullTitle ?? s.testTitle} | ${s.verdict} | ${s.confidence ?? '-'} | ${s.reasoning ?? '-'} |`)
-            .join('\n')
-
-          const body = [
-            '## Self-Heal Report',
-            '',
-            header,
-            sep,
-            rows,
-            '',
-            `**${patches}** test patch(es) applied &bull; **${bugs}** bug report(s) created.`,
-            '',
-            '> :robot: Generated automatically by the self-heal workflow.',
-            '> Review all changes carefully before merging.',
-          ].join('\n')
-
-          writeFileSync('pr-body.md', body)
-          console.log('[pr-body] Written successfully')
-          EOF
-
-      - name: Create branch and open PR
-        if: steps.changes.outputs.has_changes == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BRANCH="self-heal/run-${{ github.run_id }}-$(date +%Y%m%d%H%M%S)"
-
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
-
-          PATCHES=$(node -e "
-            const s = require('./self-heal-summary.json');
-            console.log(s.filter(x => x.verdict === 'fix_test').length)
-          " 2>/dev/null || echo "?")
-          BUGS=$(node -e "
-            const s = require('./self-heal-summary.json');
-            console.log(s.filter(x => x.verdict === 'create_bug_report').length)
-          " 2>/dev/null || echo "?")
-
-          git commit -m "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}"
-          git push origin "$BRANCH"
-
-          gh pr create \
-            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
-            --body-file pr-body.md \
-            --label "self-heal,automated" \
-            --base main \
-          || gh pr create \
-            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
-            --body-file pr-body.md \
-            --label "self-heal,automated" \
-            --base master

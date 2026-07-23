@@ -47,13 +47,7 @@ jobs:
       contents: write
       pull-requests: write
       actions: read # needed to download artifacts from other workflow runs
-      models: read # needed to call the GitHub Models API (GPT-4o)
-    env:
-      CI: true
-      BASE_URL: ${{ secrets.BASE_URL }}
-      USER_NAME: ${{ secrets.USER_NAME }}
-      PASSWORD: ${{ secrets.PASSWORD }}
-      API_URL: ${{ secrets.API_URL }}
+      issues: write # create GitHub Issues for the Copilot coding agent
 
     steps:
       - uses: actions/checkout@v4
@@ -140,133 +134,15 @@ jobs:
           console.log(`[merge] Merged ${files.length} file(s) into merged-results.json`)
           EOF
 
-      # ── Run the self-heal diagnostic script ───────────────────────────────
-      - name: Discover available GitHub Models
+      # ── Create GitHub Issues for the Copilot coding agent ──────────────────
+      - name: Create issues for Copilot coding agent
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          COPILOT_ASSIGNEE: ${{ vars.COPILOT_ASSIGNEE || 'copilot' }}
         run: |
-          echo "=== Available models on this GitHub instance ==="
-          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-            https://models.inference.ai.azure.com/models \
-            | node -e "
-              let body='';
-              process.stdin.on('data',d=>body+=d);
-              process.stdin.on('end',()=>{
-                try {
-                  const models = JSON.parse(body);
-                  const list = Array.isArray(models) ? models : (models.data ?? []);
-                  if (list.length === 0) { console.log('(no models returned — check token permissions)'); return; }
-                  list.forEach(m => console.log(' -', m.id ?? m.name ?? JSON.stringify(m)));
-                  console.log('');
-                  console.log('Set the SELF_HEAL_MODEL Actions variable to the model id you want to use.');
-                } catch { console.log('Raw response:', body.slice(0, 500)); }
-              });
-            "
-
-      - name: Run self-heal diagnostic
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # GPT-4o may need a paid entitlement on Enterprise — Llama models are universally accessible.
-          # Set SELF_HEAL_MODEL Actions variable to 'openai/gpt-4o' if your org has it enabled.
-          SELF_HEAL_MODEL: ${{ vars.SELF_HEAL_MODEL || 'meta/Meta-Llama-3.1-405B-Instruct' }}
-        run: |
+          DRY_RUN_FLAG=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-          DRY_RUN_FLAG="--dry-run"
+            DRY_RUN_FLAG="--dry-run"
           fi
           node scripts/self-heal.mjs --results test-results/merged-results.json $DRY_RUN_FLAG
-
-      # ── Check whether any patchable files changed ─────────────────────────
-      - name: Check for changes
-        id: changes
-        run: |
-          git add bug-reports/ proposed-fixes/ tests/ pages/ 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
-      # ── Generate PR body from the self-heal summary ───────────────────────
-      - name: Generate PR body
-        if: steps.changes.outputs.has_changes == 'true' && inputs.dry_run != true
-        run: |
-          node --input-type=module << 'EOF'
-          import { readFileSync, writeFileSync, existsSync } from 'node:fs'
-
-          if (!existsSync('self-heal-summary.json')) {
-            writeFileSync('pr-body.md', '## Self-Heal Report\n\nNo summary available.')
-            process.exit(0)
-          }
-
-          const summary = JSON.parse(readFileSync('self-heal-summary.json', 'utf-8'))
-          const patches  = summary.filter(s => s.verdict === 'fix_test').length
-          const bugs     = summary.filter(s => s.verdict === 'create_bug_report').length
-
-          const header = '| Test | Verdict | Confidence | Reasoning |'
-          const sep    = '|---|---|---|---|'
-          const rows = summary
-            .map(s => `| ${s.fullTitle ?? s.testTitle} | ${s.verdict} | ${s.confidence ?? '-'} | ${s.reasoning ?? '-'} |`)
-            .join('\n')
-
-          const body = [
-            '## Self-Heal Report',
-            '',
-            header,
-            sep,
-            rows,
-            '',
-            `**${patches}** test patch(es) applied &bull; **${bugs}** bug report(s) created.`,
-            '',
-            '> :robot: Generated automatically by the self-heal workflow.',
-            '> Review all changes carefully before merging.',
-          ].join('\n')
-
-          writeFileSync('pr-body.md', body)
-          console.log('[pr-body] Written successfully')
-          EOF
-
-      # ── Create branch and open PR ─────────────────────────────────────────
-      - name: Create branch and open PR
-        if: steps.changes.outputs.has_changes == 'true' && inputs.dry_run != true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BRANCH="self-heal/run-${{ github.run_id }}-$(date +%Y%m%d%H%M%S)"
-
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
-
-          # Count patches / bug reports from summary for commit message
-          PATCHES=$(node -e "
-            const s = require('./self-heal-summary.json');
-            console.log(s.filter(x => x.verdict === 'fix_test').length)
-          " 2>/dev/null || echo "?")
-          BUGS=$(node -e "
-            const s = require('./self-heal-summary.json');
-            console.log(s.filter(x => x.verdict === 'create_bug_report').length)
-          " 2>/dev/null || echo "?")
-
-          git commit -m "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}"
-          git push origin "$BRANCH"
-
-          # Prefer main; fall back to master for repos that haven't renamed yet
-          gh pr create \
-            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
-            --body-file pr-body.md \
-            --label "self-heal,automated" \
-            --base main \
-          || gh pr create \
-            --title "fix(self-heal): ${PATCHES} patch(es), ${BUGS} bug report(s) — run #${{ github.run_id }}" \
-            --body-file pr-body.md \
-            --label "self-heal,automated" \
-            --base master
-
-      # ── Dry-run: print summary only ───────────────────────────────────────
-      - name: Print summary (dry-run)
-        if: inputs.dry_run == true
-        run: |
-          echo "=== DRY-RUN SUMMARY ==="
-          cat self-heal-summary.json
-          echo ""
-          echo "No files were written and no PR was opened."
