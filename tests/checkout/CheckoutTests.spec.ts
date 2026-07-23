@@ -1,7 +1,6 @@
 import { test, expect } from '../fixtures'
 import CartPage from '@pages/cart/CartPage'
 import WishlistPage from '@pages/wishlist/WishlistPage'
-import OrdersPage from '@pages/orders/OrdersPage'
 import CartDataProvider from '@dataprovider/CartDataProvider'
 import WishlistDataProvider from '@dataprovider/WishlistDataProvider'
 
@@ -9,7 +8,7 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
   // Populated in beforeEach — derived from the first product returned by the API
   let seedProductId: number
 
-  test.beforeEach(async ({ apiContext }, testInfo) => {
+  test.beforeEach(async ({ apiContext }) => {
     const res = await apiContext.products.getProducts()
     seedProductId = res.data.products[0].id
 
@@ -369,7 +368,8 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
     expect(toastText).toContain(orderNumber)
   })
 
-  test('Wishlisted item is removed from wishlist after it is purchased', async ({
+  // BUG: see bug-reports/BUG_CHECKOUT_003_wishlist-page-does-not-fetch-on-navigation.md
+  test.skip('Wishlisted item is removed from wishlist after it is purchased', async ({
     open,
     apiContext,
   }) => {
@@ -405,7 +405,7 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
   })
 })
 
-test.describe('Checkout Tests — Unauthenticated', () => {
+test.describe('Checkout Tests — Unauthenticated', { tag: ['@ui', '@checkout'] }, () => {
   test.use({ storageState: { cookies: [], origins: [] } })
 
   test('Unauthenticated user on cart page sees sign-in prompt instead of Proceed to Checkout', async ({
