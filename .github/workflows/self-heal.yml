@@ -166,8 +166,9 @@ jobs:
       - name: Run self-heal diagnostic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Full azureml:// URI required on GitHub Enterprise — override via SELF_HEAL_MODEL Actions variable
-          SELF_HEAL_MODEL: ${{ vars.SELF_HEAL_MODEL || 'openai/gpt-4o' }}
+          # GPT-4o may need a paid entitlement on Enterprise — Llama models are universally accessible.
+          # Set SELF_HEAL_MODEL Actions variable to 'openai/gpt-4o' if your org has it enabled.
+          SELF_HEAL_MODEL: ${{ vars.SELF_HEAL_MODEL || 'meta/Meta-Llama-3.1-405B-Instruct' }}
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
           DRY_RUN_FLAG="--dry-run"
