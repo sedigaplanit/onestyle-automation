@@ -3,6 +3,8 @@ import CartDataProvider from '@dataprovider/CartDataProvider'
 import type { Product } from '@api/products/ProductApiClient'
 
 test.describe('Cart API', { tag: ['@api', '@cart'] }, () => {
+  // The hosted backend can cold-start; allow API login/setup requests more than the 10s default.
+  test.use({ actionTimeout: 30_000 })
   test.describe.configure({ mode: 'serial' })
 
   let firstProduct: Product | undefined
