@@ -1,58 +1,25 @@
 name: Self-Heal
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Standalone self-heal workflow — for nightly and manual runs.
-#
-# Failure-triggered healing is handled INLINE by the e2e.yml pipeline as job 4
-# (self-heal), which runs in the same workflow execution and downloads artifacts
-# directly via github.run_id — no cross-run lookup needed.
-#
-# This file covers the remaining cases:
-#   • Nightly schedule — runs a fresh @smoke + API suite then heals any failures.
-#   • Manual dispatch  — analyze a specific run (by run_id) or run a fresh suite.
-#
-# Requirements:
-#   • GitHub Copilot subscription — GITHUB_TOKEN calls models.inference.ai.azure.com.
-#   • Secrets: BASE_URL, USER_NAME, PASSWORD, API_URL (needed for fresh test runs).
-# ─────────────────────────────────────────────────────────────────────────────
-
+# Reusable workflow — called by e2e.yml when api-tests or cross-browser-tests fail.
+# Downloads test-results-json-* artifacts from the triggering run (same github.run_id),
+# merges them, and calls scripts/self-heal.mjs to create GitHub Issues for the
+# Copilot coding agent.
 on:
-  # ── Independent nightly run: runs a fresh smoke suite then heals ──────────
-  schedule:
-    - cron: '0 3 * * *'
-
-  # ── Manual: analyze a specific failed run or run a fresh smoke suite ──────
-  workflow_dispatch:
-    inputs:
-      run_id:
-        description: 'Run ID to analyze (leave empty to run a fresh smoke suite)'
-        required: false
-        type: string
-      dry_run:
-        description: 'Dry run — analyze only, do not write files or open a PR'
-        required: false
-        type: boolean
-        default: false
+  workflow_call:
 
 # ─────────────────────────────────────────────────────────────────────────────
 jobs:
   heal:
     name: Self-Heal
-    if: |
-      github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     permissions:
-      contents: write
-      pull-requests: write
-      actions: read # needed to download artifacts from other workflow runs
+      contents: read # checkout only — no commits needed
       issues: write # create GitHub Issues for the Copilot coding agent
+      actions: read # download artifacts from this run
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -62,12 +29,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ── Download results from a specific run (manual dispatch with run_id) ─
-      - name: Download results from specified run
-        if: github.event_name == 'workflow_dispatch' && inputs.run_id != ''
+      - name: Download test results from this run
         uses: actions/download-artifact@v4
         with:
-          run-id: ${{ inputs.run_id }}
+          run-id: ${{ github.run_id }}
           pattern: test-results-json-*
           path: test-results
           merge-multiple: true
@@ -75,28 +40,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ── PATH C: run a fresh smoke suite (schedule or dispatch without run_id) ─
-      - name: Install Playwright (fresh run path)
-        if: |
-          github.event_name == 'schedule' ||
-          (github.event_name == 'workflow_dispatch' && inputs.run_id == '')
-        run: npx playwright install chromium --with-deps
-
-      - name: Run smoke + API tests (fresh run path)
-        if: |
-          github.event_name == 'schedule' ||
-          (github.event_name == 'workflow_dispatch' && inputs.run_id == '')
-        env:
-          USER_NAME_CHROMIUM: ${{ secrets.USER_NAME_CHROMIUM }}
-          PASSWORD_CHROMIUM: ${{ secrets.PASSWORD_CHROMIUM }}
-        # || true — allow step to succeed even when tests fail so self-heal can process them
-        run: |
-          npx playwright test --project=api || true
-          npx playwright test --project=chromium --grep @smoke --workers=1 || true
-
-      # ── Merge all results-*.json files into one ────────────────────────────
-      # Each artifact (results-chromium.json, results-firefox.json, results-api.json, …)
-      # is combined into a single merged-results.json for the diagnostic script.
       - name: Merge results JSON files
         run: |
           node --input-type=module << 'EOF'
@@ -104,7 +47,7 @@ jobs:
           import path from 'node:path'
 
           const dir = 'test-results'
-          mkdirSync(dir, { recursive: true })   // ensure directory exists regardless of download outcome
+          mkdirSync(dir, { recursive: true })
 
           const files = readdirSync(dir).filter(
             f => f.startsWith('results') && f.endsWith('.json') && f !== 'merged-results.json'
@@ -134,16 +77,10 @@ jobs:
           console.log(`[merge] Merged ${files.length} file(s) into merged-results.json`)
           EOF
 
-      # ── Create GitHub Issues for the Copilot coding agent ──────────────────
       - name: Create issues for Copilot coding agent
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           COPILOT_ASSIGNEE: ${{ vars.COPILOT_ASSIGNEE || 'copilot' }}
-        run: |
-          DRY_RUN_FLAG=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            DRY_RUN_FLAG="--dry-run"
-          fi
-          node scripts/self-heal.mjs --results test-results/merged-results.json $DRY_RUN_FLAG
+        run: node scripts/self-heal.mjs --results test-results/merged-results.json
