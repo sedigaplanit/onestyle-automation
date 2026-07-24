@@ -101,5 +101,9 @@ jobs:
       always() &&
       (needs.api-tests.result == 'failure' ||
        needs.cross-browser-tests.result == 'failure')
+    permissions:
+      contents: read
+      issues: write
+      actions: read
     uses: ./.github/workflows/self-heal.yml
     secrets: inherit
