@@ -6,9 +6,6 @@ name: Self-Heal
 # Copilot coding agent.
 on:
   workflow_call:
-    secrets:
-      GITHUB_TOKEN:
-        required: false # automatically provided by the caller
 
 # ─────────────────────────────────────────────────────────────────────────────
 jobs:
