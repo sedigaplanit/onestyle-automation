@@ -53,6 +53,22 @@ Run `npm run generate:schemas` whenever `swagger.json` changes to regenerate `ca
 - **API clients** (`XxxApiClient.ts`) are for making HTTP calls and returning typed responses — never call `expect()` inside them.
 - **Data providers** (`dataprovider/XxxDataProvider.ts`) are pure state-setup helpers — they call API clients and do not return responses for assertion. Import them with `@dataprovider/XxxDataProvider`.
 - Use `apiContext` fixture for all API calls in tests. It is pre-authenticated (JWT token acquired once per worker).
+- **Before creating a new bug report** in `bug-reports/`, always read the existing files in that folder first. If the same root cause is already documented, do NOT create a duplicate — reference the existing report instead.
+
+## UI Reference — `.playwright-mcp/`
+
+`.playwright-mcp/` is the **single source of truth for the live app's UI structure**. Before fixing any locator or UI-related failure:
+
+1. Read `.playwright-mcp/README.md` — key locators, critical gotchas, app identity.
+2. Read the relevant page file in `.playwright-mcp/pages/` (e.g. `06-checkout-modal.json` for checkout issues).
+3. Read `.playwright-mcp/app-map.json` if the fix involves navigation or routing.
+4. If a locator in the page object doesn't match what `.playwright-mcp/pages/` says — **update the page object to match the reference**, not the other way around.
+5. If you find the `.playwright-mcp/` reference is stale (element no longer exists in the live app):
+   - Use the Playwright MCP browser tools (`browser_navigate`, `browser_snapshot`) to open the live app at `BASE_URL`, navigate to the affected page, and capture the current element structure.
+   - **Update the `.playwright-mcp/pages/` file** with the new locators.
+   - Then update the page object to match.
+   - Include both the `.playwright-mcp/` update and the page object fix in your PR.
+6. If `.playwright-mcp/pages/` has no file for the failing page, use `browser_navigate` + `browser_snapshot` to capture it and create the file before fixing the test.
 
 ## Test Tagging
 

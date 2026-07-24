@@ -175,6 +175,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
           # Override COPILOT_ASSIGNEE if your Enterprise uses a different bot login
           COPILOT_ASSIGNEE: ${{ vars.COPILOT_ASSIGNEE || 'copilot' }}
         run: node scripts/self-heal.mjs --results test-results/merged-results.json
