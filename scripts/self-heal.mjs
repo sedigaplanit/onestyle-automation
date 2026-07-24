@@ -20,7 +20,7 @@
  * and opens a PR with a fix or bug report - no Models API calls needed.
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 
@@ -51,9 +51,11 @@ if (!GITHUB_REPOSITORY) {
 }
 
 const COPILOT_ASSIGNEE = process.env.COPILOT_ASSIGNEE ?? 'copilot'
+const GITHUB_RUN_ID = process.env.GITHUB_RUN_ID ?? 'local'
 const REPO_ROOT = process.cwd()
 const DRY_RUN = args['dry-run'] === true
 const GITHUB_API = `https://api.github.com/repos/${GITHUB_REPOSITORY}`
+const CI_RUN_URL = `https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}`
 
 const ANSI_RE = /\x1B\[[0-9;]*m/g
 const strip = (s) => (s ?? '').replace(ANSI_RE, '').trim()
@@ -119,6 +121,28 @@ function extractPageObjectPaths(specSource) {
   return paths
 }
 
+// Returns the content of the best-matching .playwright-mcp/pages/*.json for a spec file.
+// e.g. "checkout/CheckoutTests.spec.ts" → .playwright-mcp/pages/06-checkout-modal.json
+function getMcpPageContext(specFile) {
+  const pagesDir = path.join(REPO_ROOT, '.playwright-mcp', 'pages')
+  if (!existsSync(pagesDir)) return null
+
+  const keyword = (specFile ?? '').split('/')[0]?.toLowerCase()
+  if (!keyword) return null
+
+  const files = readdirSync(pagesDir).filter(
+    (f) => f.endsWith('.json') && f.toLowerCase().includes(keyword)
+  )
+
+  if (files.length === 0) return null
+  try {
+    const content = readFileSync(path.join(pagesDir, files[0]), 'utf-8')
+    return { file: `.playwright-mcp/pages/${files[0]}`, content: content.slice(0, 3000) }
+  } catch {
+    return null
+  }
+}
+
 function buildIssueBody(failure) {
   const specSource = readSource(failure.specFile) ?? '(source not found)'
   const poPaths = extractPageObjectPaths(specSource)
@@ -130,11 +154,14 @@ function buildIssueBody(failure) {
     .filter(Boolean)
     .join('\n\n')
 
+  const mcpPage = getMcpPageContext(failure.specFile)
+
   return `## Failing Test
 
 **Spec file:** \`tests/${failure.specFile}\`
 **Test:** \`${failure.fullTitle}\`
 **Status:** \`${failure.status}\`
+**CI run (traces + artifacts):** [Run #${GITHUB_RUN_ID}](${CI_RUN_URL})
 
 ---
 
@@ -160,9 +187,13 @@ ${specSource.slice(0, 4000)}
 
 ${poSections ? `## Relevant Page Objects\n\n${poSections.slice(0, 4000)}` : ''}
 
+${mcpPage ? `## UI Reference — \`${mcpPage.file}\`\n\nThis is the live-app reference snapshot for the page under test. Use the locators here if the page object locators are stale.\n\n\`\`\`json\n${mcpPage.content}\n\`\`\`` : ''}
+
 ---
 
 ## Task for Copilot
+
+**Before making any fix**, read \`.playwright-mcp/README.md\` and the relevant \`.playwright-mcp/pages/\` file (see UI Reference above) to understand the current element structure.
 
 Analyse the failure above and choose **one** of these actions:
 
