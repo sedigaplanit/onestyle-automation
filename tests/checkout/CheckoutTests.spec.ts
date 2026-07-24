@@ -401,7 +401,13 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
 
     // Navigate to wishlist and verify purchased item is removed
     const wishlistAfter = await open(WishlistPage)
-    expect(await wishlistAfter.isWishlistEmpty()).toBe(true)
+    await expect
+      .poll(async () => await wishlistAfter.isWishlistEmpty(), {
+        timeout: 10_000,
+        intervals: [500],
+        message: 'Waiting for wishlist to be emptied after purchase',
+      })
+      .toBe(true)
   })
 })
 
