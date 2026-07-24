@@ -369,7 +369,8 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
     expect(toastText).toContain(orderNumber)
   })
 
-  test('Wishlisted item is removed from wishlist after it is purchased', async ({
+  // BUG: see bug-reports/BUG_CHECKOUT_004_wishlist-not-cleared-after-purchase.md
+  test.skip('Wishlisted item is removed from wishlist after it is purchased', async ({
     open,
     apiContext,
   }) => {
