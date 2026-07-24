@@ -5,7 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate:schemas": "node scripts/generate-schemas.mjs"
+    "generate:schemas": "node scripts/generate-schemas.mjs",
+    "self:heal": "node scripts/self-heal-runtime.mjs",
+    "self:heal:results": "node scripts/self-heal.mjs --results"
   },
   "keywords": [],
   "author": "",

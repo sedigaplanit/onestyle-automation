@@ -23,6 +23,7 @@
 import { readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
+import { classifyFailure } from './self-heal-runtime.mjs'
 
 const { values: args } = parseArgs({
   options: {
@@ -121,11 +122,30 @@ function extractPageObjectPaths(specSource) {
   return paths
 }
 
+<<<<<<< Updated upstream
 // Returns the content of the best-matching .playwright-mcp/pages/*.json for a spec file.
 // e.g. "checkout/CheckoutTests.spec.ts" → .playwright-mcp/pages/06-checkout-modal.json
 function getMcpPageContext(specFile) {
   const pagesDir = path.join(REPO_ROOT, '.playwright-mcp', 'pages')
   if (!existsSync(pagesDir)) return null
+=======
+// ── Heuristics ────────────────────────────────────────────────────────────────
+/**
+ * Returns a hint for the AI based on the error message pattern.
+ * The AI can override this hint; it is provided as context only.
+ */
+function hintClassify(error) {
+  const classified = classifyFailure({ error })
+
+  if (classified.verdict === 'heal_locator' || classified.verdict === 'heal_wait') {
+    return 'fix_test'
+  }
+  if (classified.verdict === 'report_bug') {
+    return 'create_bug_report'
+  }
+  return 'ambiguous'
+}
+>>>>>>> Stashed changes
 
   const keyword = (specFile ?? '').split('/')[0]?.toLowerCase()
   if (!keyword) return null

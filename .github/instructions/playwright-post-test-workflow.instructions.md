@@ -9,10 +9,10 @@ After every new or updated test is written, run it immediately.
 ## Step 1 — Run the Test
 
 ```
-npx playwright test tests/{feature-folder}/{SpecFile}.spec.ts --reporter=list --bail=1
+npx playwright test tests/{feature-folder}/{SpecFile}.spec.ts --reporter=list
 ```
 
-`--bail=1` stops the run after the first failure, keeping turnaround time short.
+The run should continue to report all test outcomes in the same invocation so a healed locator failure can be separated from unrelated regressions.
 
 ## Step 2 — On Pass
 
@@ -23,7 +23,7 @@ Report success and stop.
 Re-run **only the failing test** using `--grep`. Never re-run the full spec file — already-passing tests must not be executed again during a fix loop.
 
 ```
-npx playwright test tests/{feature-folder}/{SpecFile}.spec.ts --reporter=list --bail=1 --grep "exact failing test title"
+npx playwright test tests/{feature-folder}/{SpecFile}.spec.ts --reporter=list --grep "exact failing test title"
 ```
 
 Use the exact test title string from the failure output, quoted precisely.
