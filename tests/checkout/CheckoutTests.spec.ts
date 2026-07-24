@@ -398,16 +398,23 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
     await modal.fillDeliveryAddress('No. 45, Main Street', 'Colombo', '+94 77 000 0000')
     await modal.clickConfirmOrder()
     await modal.waitForSuccessScreen()
+    await modal.waitForSuccessToClose()
 
-    // Navigate to wishlist and verify purchased item is removed
-    const wishlistAfter = await open(WishlistPage)
+    // Wait for backend cleanup, then verify UI reflects the removal
     await expect
-      .poll(async () => await wishlistAfter.isWishlistEmpty(), {
-        timeout: 10_000,
-        intervals: [500],
-        message: 'Waiting for wishlist to be emptied after purchase',
-      })
-      .toBe(true)
+      .poll(
+        async () => (await apiContext.wishlist.getWishlist()).data.wishlist.length,
+        {
+          // cleanup can lag on remote backend cold starts; allow up to 30s
+          timeout: 30_000,
+          intervals: [500],
+          message: 'Waiting for server wishlist to be emptied after purchase',
+        }
+      )
+      .toBe(0)
+
+    const wishlistAfter = await open(WishlistPage)
+    expect(await wishlistAfter.isWishlistEmpty()).toBe(true)
   })
 })
 
