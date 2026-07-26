@@ -44,19 +44,20 @@ All category pages share the **same page structure** — only the product data d
 
 Each product card on a category page contains:
 
-| Element              | Role/Locator                                   | Notes                    |
-| -------------------- | ---------------------------------------------- | ------------------------ |
-| Product image (link) | `getByRole('link')` inside card                | Links to `/product/{id}` |
-| Wishlist button      | `getByRole('button', { name: '♡' })`           | Toggles wishlist         |
-| Product name         | `paragraph` inside card                        | Text of product name     |
-| Sale price           | first `generic` in price container             | e.g. "LKR 50"            |
-| Original price       | second `generic` in price container            | e.g. "LKR 80.5"          |
-| Size S               | `getByRole('button', { name: 'S' })`           |                          |
-| Size M               | `getByRole('button', { name: 'M' })`           |                          |
-| Size L               | `getByRole('button', { name: 'L' })`           |                          |
-| Size XL              | `getByRole('button', { name: 'XL' })`          |                          |
-| Size XXL             | `getByRole('button', { name: 'XXL' })`         |                          |
-| Add to Cart          | `getByRole('button', { name: 'Add to Cart' })` |                          |
+| Element                        | Role/Locator                                   | Notes                                                                             |
+| ------------------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------- |
+| Product image (link)           | `getByRole('link')` inside card                | Links to `/product/{id}`                                                          |
+| Wishlist button (unwishlisted) | `getByRole('button', { name: '♡' })`           | Unfilled heart — title="Add to wishlist"; class=`item-wishlist-btn`               |
+| Wishlist button (wishlisted)   | `getByRole('button', { name: '♥' })`           | Filled heart — title="Remove from wishlist"; class=`item-wishlist-btn wishlisted` |
+| Product name                   | `paragraph` inside card                        | Text of product name                                                              |
+| Sale price                     | first `generic` in price container             | e.g. "LKR 50"                                                                     |
+| Original price                 | second `generic` in price container            | e.g. "LKR 80.5"                                                                   |
+| Size S                         | `getByRole('button', { name: 'S' })`           |                                                                                   |
+| Size M                         | `getByRole('button', { name: 'M' })`           |                                                                                   |
+| Size L                         | `getByRole('button', { name: 'L' })`           |                                                                                   |
+| Size XL                        | `getByRole('button', { name: 'XL' })`          |                                                                                   |
+| Size XXL                       | `getByRole('button', { name: 'XXL' })`         |                                                                                   |
+| Add to Cart                    | `getByRole('button', { name: 'Add to Cart' })` |                                                                                   |
 
 > **Note**: On category pages, sizes are `<button>` elements. On product detail pages, sizes are `<generic>` (div) elements. Use `.nth()` for disambiguation.
 

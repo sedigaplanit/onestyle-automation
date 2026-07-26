@@ -19,27 +19,22 @@ Medium
 - Navigate to $BASE_URL
 - User is logged in as $USER_NAME
 - At least one item has been added to the cart
-- Checkout modal has been opened (Step 1), a payment method selected, and "Continue →" clicked (Step 2 is visible)
+- Checkout modal is open on Step 1 (TC_CHECKOUT_001 has been executed)
+- Note the current cart item count
 
 ### Test Steps
 
-1. Confirm the checkout modal is on Step 2 (any payment method form is visible).
-2. Click the "← Back" button to return to Step 1.
-3. Confirm the modal has returned to Step 1 — the heading reads "Checkout" and payment method options are visible.
-4. Click the "✕" button in the modal header.
-5. Observe the modal state after clicking.
-6. Observe the page URL.
-7. Observe the cart contents.
+1. Click the "Continue →" button to advance to Step 2.
+2. Click the "← Back" button at the bottom of Step 2 to return to Step 1.
+3. Click the "✕" close button in the modal header.
+4. Check the modal state, page URL, and cart contents.
 
 ### Expected Result
 
-1. Step 2 is visible with the "← Back" button accessible.
-2. Clicking "← Back" returns the modal to Step 1 (Payment Method Selection).
-3. Step 1 displays the "Checkout" heading, three payment method cards, and the "✕" close button.
-4. Clicking "✕" on Step 1 closes the modal immediately.
-5. The modal overlay is no longer visible.
-6. The URL remains `/cart` — no navigation occurred.
-7. The cart still contains the same items and quantities as before checkout was opened.
+1. The modal advances to Step 2 (any payment method form is visible).
+2. The modal returns to Step 1 — the heading reads "Checkout" and payment method options are visible.
+3. Clicking "✕" closes the modal immediately. No order is placed.
+4. The modal overlay is no longer visible. The URL remains `/cart`. The cart still contains the same items and quantities as before checkout was opened.
 
 ### Notes and Assumptions
 

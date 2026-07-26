@@ -20,7 +20,30 @@
         "name": "My Wishlist",
         "class": "wishlist-title"
       },
-      "itemCount": { "tag": "p", "class": "wishlist-subtitle", "textPattern": "{N} item(s) saved" },
+      "itemCount": {
+        "tag": "p",
+        "class": "wishlist-subtitle",
+        "locator": "locator('.wishlist-subtitle')",
+        "textPattern": "{N} item saved (singular) / {N} items saved (plural)",
+        "note": "Live app (2026-07-24): '1 item saved' — NOT '1 item(s) saved'. Plural varies by count."
+      },
+      "itemGrid": {
+        "containerClass": "wishlist-grid",
+        "itemClass": "wishlist-item-wrapper",
+        "locator": "locator('.wishlist-item-wrapper')",
+        "cardCount": "locator('.wishlist-item-wrapper').count()"
+      },
+      "itemCard": {
+        "imageWrapper": ".item-img-wrapper",
+        "imageLocator": "locator('.wishlist-grid img').first()",
+        "imageNote": "Product image has no alt text — use locator CSS selector, not getByRole('img')",
+        "productLink": "getByRole('link') inside .item-img-wrapper — href: /product/{id}",
+        "productName": "paragraph inside .wishlist-item-wrapper (first p after price container)",
+        "productNameLocator": "locator('.wishlist-item-wrapper p').first()",
+        "salePriceLocator": "locator('.wishlist-grid [class*=\"price\"]').nth(1)",
+        "originalPriceLocator": "locator('.wishlist-grid [class*=\"price\"]').nth(2)",
+        "priceContainerNote": "3 [class*='price'] elements per card: container + sale price + original price"
+      },
       "itemName": { "tag": "p", "locator": "getByText('product name')" },
       "wishlistedToggle": {
         "tag": "BUTTON",

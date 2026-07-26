@@ -39,7 +39,10 @@ export interface paths {
   "/api/cart": {
     /** Fetch the authenticated user's cart */
     get: operations["getCart"];
-    /** Replace the entire cart (full sync) */
+    /**
+     * Replace the entire cart (full sync)
+     * @description Replaces the user's cart with the provided snapshot. Called on every cart mutation (add to cart, remove, quantity update) so the server is always current. Also called on logout to persist the final state.
+     */
     put: operations["saveCart"];
     /** Clear all items from the cart */
     delete: operations["clearCart"];
@@ -75,15 +78,27 @@ export interface paths {
     get: operations["getProductReviews"];
   };
   "/api/wishlist": {
-    /** Get the authenticated user's wishlist */
+    /**
+     * Get the authenticated user's wishlist
+     * @description Returns all wishlisted products with full product details. Called on Wishlist page mount and immediately after login to hydrate client state.
+     */
     get: operations["getWishlist"];
-    /** Clear the entire wishlist (e.g. after checkout) */
+    /**
+     * Clear the entire wishlist
+     * @description Deletes every item from the user's wishlist in one call. Available but not used by the current frontend — individual items are removed via `DELETE /api/wishlist/{productId}` after checkout.
+     */
     delete: operations["clearWishlist"];
   };
   "/api/wishlist/{productId}": {
-    /** Add a product to the wishlist (idempotent) */
+    /**
+     * Add a product to the wishlist (idempotent)
+     * @description Called immediately when the user toggles the heart icon on any product card or detail page. Idempotent — re-adding an already-wishlisted item returns 200 without error.
+     */
     post: operations["addToWishlist"];
-    /** Remove a product from the wishlist */
+    /**
+     * Remove a product from the wishlist
+     * @description Called immediately when the user untoggle the heart icon, and for each purchased product after a successful checkout (to remove bought items from the wishlist).
+     */
     delete: operations["removeFromWishlist"];
   };
   "/api/reviews": {
@@ -516,7 +531,10 @@ export interface operations {
       };
     };
   };
-  /** Replace the entire cart (full sync) */
+  /**
+   * Replace the entire cart (full sync)
+   * @description Replaces the user's cart with the provided snapshot. Called on every cart mutation (add to cart, remove, quantity update) so the server is always current. Also called on logout to persist the final state.
+   */
   saveCart: {
     requestBody: {
       content: {
@@ -526,10 +544,14 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Cart saved */
+      /** @description Cart saved — returns the persisted cartItems for immediate client sync */
       200: {
         content: {
-          "application/json": components["schemas"]["MessageResponse"];
+          "application/json": {
+            /** @example Cart saved. */
+            message: string;
+            cartItems: components["schemas"]["CartItems"];
+          };
         };
       };
       /** @description cartItems missing or invalid */
@@ -846,7 +868,10 @@ export interface operations {
       };
     };
   };
-  /** Get the authenticated user's wishlist */
+  /**
+   * Get the authenticated user's wishlist
+   * @description Returns all wishlisted products with full product details. Called on Wishlist page mount and immediately after login to hydrate client state.
+   */
   getWishlist: {
     responses: {
       /** @description Wishlist items with product details */
@@ -871,7 +896,10 @@ export interface operations {
       };
     };
   };
-  /** Clear the entire wishlist (e.g. after checkout) */
+  /**
+   * Clear the entire wishlist
+   * @description Deletes every item from the user's wishlist in one call. Available but not used by the current frontend — individual items are removed via `DELETE /api/wishlist/{productId}` after checkout.
+   */
   clearWishlist: {
     responses: {
       /** @description Wishlist cleared */
@@ -894,7 +922,10 @@ export interface operations {
       };
     };
   };
-  /** Add a product to the wishlist (idempotent) */
+  /**
+   * Add a product to the wishlist (idempotent)
+   * @description Called immediately when the user toggles the heart icon on any product card or detail page. Idempotent — re-adding an already-wishlisted item returns 200 without error.
+   */
   addToWishlist: {
     parameters: {
       path: {
@@ -935,7 +966,10 @@ export interface operations {
       };
     };
   };
-  /** Remove a product from the wishlist */
+  /**
+   * Remove a product from the wishlist
+   * @description Called immediately when the user untoggle the heart icon, and for each purchased product after a successful checkout (to remove bought items from the wishlist).
+   */
   removeFromWishlist: {
     parameters: {
       path: {

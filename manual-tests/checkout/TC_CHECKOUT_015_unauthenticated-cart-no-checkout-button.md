@@ -22,21 +22,13 @@ High
 
 ### Test Steps
 
-1. Navigate to the cart page (`/cart`) without logging in.
-2. Observe the Cart Totals section.
-3. Look for the "Proceed to Checkout" button.
-4. Observe any alternative call-to-action or prompt displayed in the Cart Totals section.
-5. Observe the "Sign Up / Login" button if present.
-6. Click the "Sign Up / Login" button.
+1. Check the Cart Totals section for the presence or absence of the "Proceed to Checkout" button and any sign-in prompt.
+2. Click the "Sign Up / Login" button.
 
 ### Expected Result
 
-1. The cart page loads at `/cart`.
-2. The "Proceed to Checkout" button is **not present** in the Cart Totals section.
-3. The text "Sign in to proceed with checkout" is displayed in the Cart Totals section.
-4. A "Sign Up / Login" button is visible.
-5. The "Sign Up / Login" button is clickable.
-6. Clicking "Sign Up / Login" navigates the user to `/login`.
+1. The "Proceed to Checkout" button is **not present** in the Cart Totals section. The text "Sign in to proceed with checkout" is displayed. A "Sign Up / Login" button is visible.
+2. Clicking "Sign Up / Login" navigates the user to `/login`.
 
 ### Notes and Assumptions
 

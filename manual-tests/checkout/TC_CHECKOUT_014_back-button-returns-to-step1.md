@@ -19,26 +19,17 @@ Medium
 - Navigate to $BASE_URL
 - User is logged in as $USER_NAME
 - At least one item has been added to the cart
-- Checkout modal is open on Step 2 with Credit / Debit Card selected (TC_CHECKOUT_002 has been executed)
+- Checkout modal is open on Step 2 with Credit / Debit Card selected and the "← Back" button visible (TC_CHECKOUT_002 has been executed)
 
 ### Test Steps
 
-1. Confirm the checkout modal is on Step 2 (Credit / Debit Card form visible).
-2. Click the "← Back" button at the bottom of the Step 2 form.
-3. Observe the modal content after clicking.
-4. Observe the payment method options displayed.
+1. Click the "← Back" button at the bottom of the Step 2 form.
+2. Check the modal content — heading, payment method options, and buttons.
 
 ### Expected Result
 
-1. The Step 2 form (Credit / Debit Card) is visible with the "← Back" button at the bottom.
-2. Clicking "← Back" returns the modal to Step 1 — Payment Method Selection.
-3. The modal heading reads "Checkout".
-4. All three payment method options are displayed again:
-   - 💳 Credit / Debit Card
-   - 🅿️ PayPal
-   - 💵 Cash on Delivery
-5. The "Continue →" and "Cancel" buttons are visible.
-6. The URL remains `/cart` — no navigation occurred.
+1. Clicking "← Back" returns the modal to Step 1 — Payment Method Selection. The modal heading reads "Checkout".
+2. All three payment method options are displayed: 💳 Credit / Debit Card, 🅿️ PayPal, 💵 Cash on Delivery. The "Continue →" and "Cancel" buttons are visible. The URL remains `/cart`.
 
 ### Notes and Assumptions
 

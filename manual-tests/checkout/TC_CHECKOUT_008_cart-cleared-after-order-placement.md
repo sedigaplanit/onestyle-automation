@@ -24,24 +24,15 @@ High
 
 ### Test Steps
 
-1. Observe the cart counter badge in the navigation bar while the success screen is visible.
-2. Click the "Continue Shopping" button to dismiss the modal and navigate to the home page.
-3. Navigate to the cart page (`/cart`).
-4. Observe the cart item list.
-5. Observe the cart totals section.
-6. Observe the state of the "Proceed to Checkout" button.
+1. Click the "Continue Shopping" button on the success screen to dismiss the modal.
+2. Click the cart icon in the navbar to go to the cart page.
+3. Check the cart item list, the cart totals section, and the "Proceed to Checkout" button state.
 
 ### Expected Result
 
-1. The cart counter badge in the navigation bar shows 0 (or is not visible) while on the success screen.
-2. Clicking "Continue Shopping" navigates to the home page (`/`).
-3. The cart page (`/cart`) is accessible.
-4. The cart item list is empty — no product rows are displayed.
-5. The cart totals section shows:
-   - Sub Total: LKR 0
-   - Shipping: Free
-   - Total: LKR 0
-6. The "Proceed to Checkout" button is disabled (greyed out / has `[disabled]` attribute).
+1. Before clicking "Continue Shopping", the cart counter badge in the navbar shows 0 (or is not visible). Clicking the button navigates to the home page (`/`).
+2. The cart page (`/cart`) is accessible.
+3. The cart item list is empty. The cart totals section shows Sub Total: LKR 0, Shipping: Free, Total: LKR 0. The "Proceed to Checkout" button is disabled (greyed out / has `[disabled]` attribute).
 
 ### Notes and Assumptions
 

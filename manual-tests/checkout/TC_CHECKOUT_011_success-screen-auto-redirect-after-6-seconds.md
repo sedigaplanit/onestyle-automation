@@ -25,18 +25,13 @@ Low
 
 ### Test Steps
 
-1. Observe the "This page will redirect in a few seconds..." message on the success screen.
-2. Do not interact with any buttons — wait passively.
-3. After approximately 6 seconds, observe the page URL.
-4. Observe the page content after the redirect.
+1. Do not click any buttons — wait passively for approximately 6 seconds.
+2. After the redirect fires, check the resulting page URL and content.
 
 ### Expected Result
 
-1. The message "This page will redirect in a few seconds..." is visible on the success screen.
-2. After approximately 6 seconds of inactivity, the modal automatically closes.
-3. The user is redirected to the home page.
-4. The URL changes to `/` (the home page / landing page).
-5. The home page loads successfully with no residual modal overlay.
+1. The message "This page will redirect in a few seconds..." is visible on the success screen before the redirect.
+2. After approximately 6 seconds of inactivity, the modal automatically closes and the user is redirected to the home page. The URL changes to `/`. The home page loads successfully with no residual modal overlay.
 
 ### Notes and Assumptions
 

@@ -20,21 +20,17 @@ Medium
 - User is logged in as $USER_NAME
 - At least one item has been added to the cart
 - A successful order has been placed (TC_CHECKOUT_007 has been executed)
-- The success screen (Step 4) is currently displayed
+- The success screen (Step 4) is currently displayed with the "View My Orders" button visible
 
 ### Test Steps
 
-1. Confirm the success screen is displayed with the "View My Orders" button visible.
-2. Click the "View My Orders" button.
-3. Observe the page URL after clicking.
-4. Observe the page content.
+1. Click the "View My Orders" button on the success screen.
+2. Check the resulting page URL and content.
 
 ### Expected Result
 
-1. The success screen displays the "View My Orders" button.
-2. Clicking "View My Orders" navigates to the Order History page.
-3. The URL changes to `/orders`.
-4. The Order History page loads and displays order history content (including the recently placed order).
+1. Clicking "View My Orders" navigates to the Order History page.
+2. The URL changes to `/orders`. The Order History page loads and displays order history content, including the recently placed order.
 
 ### Notes and Assumptions
 

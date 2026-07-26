@@ -25,41 +25,37 @@ Medium
 ### Test Steps
 
 1. On the product page, click the "♡" (Add to wishlist) button to add the product to the wishlist.
-2. Observe the wishlist icon changes to "♥" (filled heart) indicating the product is wishlisted.
-3. Navigate to the wishlist page (`/wishlist`).
-4. Confirm the product appears in "My Wishlist" under "N item(s) saved".
-5. Navigate back to the same product page.
-6. Select a size (e.g., "M").
-7. Click the "Add to Cart" button.
-8. Navigate to the cart page (`/cart`).
-9. Click the "Proceed to Checkout" button.
-10. Select "💵 Cash on Delivery" on Step 1 and click "Continue →".
-11. Fill in the delivery details:
+2. Click the ♡ navbar link to go to the Wishlist page.
+3. Check that the product appears in "My Wishlist" under "N item(s) saved".
+4. Click the product card on the Wishlist page to navigate to the product detail page.
+5. Select a size (e.g., "M").
+6. Click the "Add to Cart" button.
+7. Click the "✓ In Cart — View Cart" button to go to the cart page.
+8. Click the "Proceed to Checkout" button.
+9. Select "💵 Cash on Delivery" on Step 1 and click "Continue →".
+10. Fill in the delivery details:
     - Street Address: "No. 45, Main Street"
     - City: "Colombo"
     - Phone: "+94 77 000 0000"
-12. Click the "Confirm Order" button.
-13. Wait for the success screen (Step 4) to appear.
-14. Navigate to the wishlist page (`/wishlist`).
-15. Observe the wishlist contents.
+11. Click the "Confirm Order" button.
+12. Wait for the success screen (Step 4) to appear.
+13. Click the ♡ navbar link to go to the Wishlist page and check the wishlist contents.
 
 ### Expected Result
 
 1. The "♡" button on the product page toggles to "♥" after clicking — the product is wishlisted.
 2. The wishlist button shows "♥" (filled heart).
 3. The wishlist page (`/wishlist`) loads and displays the product under "My Wishlist".
-4. The product name is visible in the wishlist with "N item(s) saved" count.
-5. The same product page is accessible.
+4. The product name is visible with "N item(s) saved" count.
+5. The product detail page loads.
 6. A size is selected and highlighted.
-7. The "Add to Cart" button is clicked and product is added to cart (button changes to "✓ In Cart — View Cart").
+7. The "Add to Cart" button is clicked and the product is added to cart (button changes to "✓ In Cart — View Cart").
 8. The cart page loads with the product visible.
 9. The checkout modal opens on Step 1.
 10. Cash on Delivery Step 2 form is displayed with delivery fields.
 11. Delivery fields accept the entered values.
-12. "Confirm Order" is clicked; the modal transitions to processing.
-13. The success screen is displayed with "Order Placed Successfully!" and an order number.
-14. The wishlist page (`/wishlist`) loads.
-15. The purchased product is **no longer listed** in the wishlist — the wishlist shows "0 item(s) saved" or the "Your wishlist is empty" state.
+12. "Confirm Order" is clicked; the modal transitions to processing and then to the success screen displaying "Order Placed Successfully!" and an order number.
+13. The purchased product is **no longer listed** in the wishlist — the wishlist shows "0 item(s) saved" or the "Your wishlist is empty" state.
 
 ### Notes and Assumptions
 

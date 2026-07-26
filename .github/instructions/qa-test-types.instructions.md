@@ -101,3 +101,29 @@ Behaviour when a user goes directly to a URL without clicking through the normal
 ## Output Rule
 
 Every test case that passes the regression suitability filter must include `Tags: Regression` in its Notes and Assumptions section.
+
+---
+
+## Additional Test Types (apply when triggered by an AC)
+
+The six core types above cover the majority of web app scenarios. Two additional types apply when ACs explicitly describe them:
+
+---
+
+## Data Persistence — Cross-Session or Cross-Device State
+
+Server-side or storage-backed state survives a full logout and re-login (or a different browser session). Distinct from State Consistency (which covers in-session navigation) — this type requires a complete session boundary.
+
+> **Example:** User adds items to a wishlist, logs out, and logs back in on a different browser → the wishlist items are still present because they are stored server-side.
+>
+> **Regression suitability note:** Only include this type if the AC explicitly states server-side or cross-session persistence. Client-side storage (localStorage, sessionStorage) that does NOT survive logout is covered by State Consistency.
+
+---
+
+## Accessibility — Keyboard and Screen Reader Operability
+
+Critical interactive elements are reachable and operable without a mouse, and their state is correctly communicated to assistive technologies.
+
+> **Example:** User presses Tab repeatedly → focus moves through all interactive elements in a logical order; pressing Enter activates the focused button.
+>
+> **Regression suitability note:** Include only if the AC explicitly mentions keyboard operability, ARIA roles, or accessibility requirements. Skip speculative accessibility checks not tied to a stated AC — they fail the Traceable criterion.

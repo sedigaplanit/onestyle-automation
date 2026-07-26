@@ -25,10 +25,11 @@ setup('Authenticate and save session storage', async ({ page }) => {
   // Perform mandatory login steps using credentials from environment variables
   await page.getByRole('textbox', { name: 'Email Address' }).fill(userName)
   await page.getByRole('textbox', { name: 'Password' }).fill(password)
-  await page.locator('form').getByRole('button', { name: 'Login' }).click()
+  await page.locator('form').getByRole('button', { name: 'Login' }).click({ timeout: 5000 })
 
   // Explicit timeout: login API is hosted on Render.com free tier.
   // Cold-start can delay the authenticated nav from appearing by up to 30s.
+  await page.waitForLoadState('domcontentloaded', { timeout: 5000 })
   await page
     .getByRole('button', { name: 'My Orders' })
     .waitFor({ state: 'visible', timeout: 30_000 })

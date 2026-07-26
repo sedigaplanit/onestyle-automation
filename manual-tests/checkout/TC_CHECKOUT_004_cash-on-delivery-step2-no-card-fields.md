@@ -25,25 +25,17 @@ High
 
 1. Click the "💵 Cash on Delivery" payment method card on Step 1.
 2. Click the "Continue →" button.
-3. Observe the Step 2 modal header.
-4. Observe the form fields present in Step 2.
-5. Confirm no card detail fields are present.
-6. Confirm no PayPal redirect note is present.
-7. Observe the submit button label.
+3. Check the delivery address fields on Step 2.
+4. Check that no card detail fields and no PayPal redirect note are present.
+5. Check the submit button label.
 
 ### Expected Result
 
 1. The "💵 Cash on Delivery" option becomes the selected payment method.
-2. The modal advances to Step 2 (URL remains `/cart`).
-3. The modal heading reads "💵 Cash on Delivery".
-4. The form contains exactly three delivery address fields:
-   - Street Address (placeholder: "No. 12, Main Street")
-   - City (placeholder: "Colombo")
-   - Phone (placeholder: "+94 77 000 0000")
-5. **No** card detail fields are present (Cardholder Name, Card Number, Expiry Date, CVV are absent).
-6. **No** PayPal redirect note is present.
-7. The submit button label reads "Confirm Order".
-8. A "← Back" button and a "←" header button are both visible.
+2. The modal advances to Step 2 (URL remains `/cart`). The modal heading reads "💵 Cash on Delivery".
+3. The form contains exactly three delivery address fields: Street Address (placeholder: "No. 12, Main Street"), City (placeholder: "Colombo"), Phone (placeholder: "+94 77 000 0000").
+4. **No** card detail fields are present. **No** PayPal redirect note is present.
+5. The submit button label reads "Confirm Order". A "← Back" button and a "←" header button are both visible.
 
 ### Notes and Assumptions
 

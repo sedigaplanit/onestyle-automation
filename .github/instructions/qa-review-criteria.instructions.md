@@ -43,6 +43,20 @@ Run all checks against the attached TC file. For traceability checks, the user s
 - [ ] Every test step can be traced back to at least one acceptance criterion in the user story
 - [ ] No scenario invented beyond what the acceptance criteria explicitly state
 
+### Step Verb Quality
+
+- [ ] Every step begins with one of these approved verbs **only**: Click, Enter, Fill in, Select, Press, Hover over, Double-click, Scroll to, Drag, Drop onto, Attach, Wait for, Locate, Read, Note, Compare
+- [ ] No step starts with a banned word: Observe, Confirm, Check (without explicit named comparison), Verify, Ensure, Type, Open, Navigate, Go to, View, See, Inspect, Look, Find, Make sure, Validate
+- [ ] **One action per step** — each numbered step contains exactly one user action; compound instructions split across multiple steps
+- [ ] In-step page navigation uses UI elements (navbar links, buttons, clickable cards) — direct URL navigation in steps is only permitted for Direct URL Access tests
+
+### Priority
+
+- [ ] Priority is one of: High / Medium / Low
+- [ ] High = core user journey, auth gate, or data-integrity concern
+- [ ] Medium = important usability feature, not a blocker
+- [ ] Low = minor UX detail or edge case
+
 ### Regression Suitability
 
 - [ ] Expected Result is specific and verifiable — not vague ("page looks correct", "it works")
