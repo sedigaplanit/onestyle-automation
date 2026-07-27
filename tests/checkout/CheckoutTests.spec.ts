@@ -400,21 +400,18 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
     await modal.waitForSuccessScreen()
     await modal.waitForSuccessToClose()
 
-    // Wait for backend cleanup, then verify UI reflects the removal
-    await expect
-      .poll(
-        async () => (await apiContext.wishlist.getWishlist()).data.wishlist.length,
-        {
-          // cleanup can lag on remote backend cold starts; allow up to 30s
-          timeout: 30_000,
-          intervals: [500],
-          message: 'Waiting for server wishlist to be emptied after purchase',
-        }
-      )
-      .toBe(0)
-
     const wishlistAfter = await open(WishlistPage)
     expect(await wishlistAfter.isWishlistEmpty()).toBe(true)
+
+    // Wait for backend cleanup, then verify UI reflects the removal
+    await expect
+      .poll(async () => (await apiContext.wishlist.getWishlist()).data.wishlist.length, {
+        // cleanup can lag on remote backend cold starts; allow up to 30s
+        timeout: 30_000,
+        intervals: [500],
+        message: 'Waiting for server wishlist to be emptied after purchase',
+      })
+      .toBe(0)
   })
 })
 

@@ -19,35 +19,27 @@ Medium
 - Navigate to $BASE_URL
 - User is logged in as $USER_NAME
 - At least one item has been added to the cart
-- Checkout modal is open on Step 2 with PayPal selected (TC_CHECKOUT_003 has been executed)
+- Checkout modal is open on Step 2 with PayPal selected and delivery fields visible (TC_CHECKOUT_003 has been executed)
 
 ### Test Steps
 
-1. Confirm the checkout modal is on Step 2 with heading "🅿️ PayPal" and delivery address fields visible.
-2. Fill in the Street Address field with: "No. 45, Main Street"
-3. Fill in the City field with: "Colombo"
-4. Fill in the Phone field with: "+94 77 000 0000"
-5. Click the "Proceed to PayPal" button.
-6. Immediately observe the modal for a processing screen (Step 3).
-7. Wait approximately 2 seconds for processing to complete.
-8. Observe the modal content after processing completes (Step 4 — Success).
-9. Observe the order number and toast notification.
+1. Fill in the Street Address field with: "No. 45, Main Street".
+2. Fill in the City field with: "Colombo".
+3. Fill in the Phone field with: "+94 77 000 0000".
+4. Click the "Proceed to PayPal" button.
+5. Watch for the processing screen (Step 3) that appears immediately — look for the loading spinner.
+6. Wait approximately 2 seconds for processing to complete.
+7. Check the success screen content and toast notification.
 
 ### Expected Result
 
-1. Step 2 PayPal form is visible with the three delivery fields.
-2. Street Address accepts the entered value.
-3. City accepts the entered value.
-4. Phone accepts the entered value.
-5. Clicking "Proceed to PayPal" transitions the modal to a processing screen (Step 3).
-6. The processing screen displays a loading spinner, "Processing your payment...", and "Please do not close this window".
-7. After approximately 2 seconds the modal auto-advances to the success screen (Step 4).
-8. The success screen displays:
-   - Heading: "Order Placed Successfully!"
-   - A unique order number in format `ORD-XXXXXX`
-   - Message: "Thank you for shopping with OneStyle!"
-   - "View My Orders" and "Continue Shopping" buttons
-9. A toast notification confirms "Order ORD-XXXXXX placed successfully!"
+1. Street Address accepts the entered value.
+2. City accepts the entered value.
+3. Phone accepts the entered value.
+4. Clicking "Proceed to PayPal" transitions the modal to a processing screen (Step 3).
+5. The processing screen displays a loading spinner, "Processing your payment...", and "Please do not close this window".
+6. After approximately 2 seconds, the modal auto-advances to the success screen (Step 4).
+7. The success screen displays: heading "Order Placed Successfully!", a unique order number in format `ORD-XXXXXX`, message "Thank you for shopping with OneStyle!", and "View My Orders" / "Continue Shopping" buttons. A toast notification confirms "Order ORD-XXXXXX placed successfully!"
 
 ### Notes and Assumptions
 

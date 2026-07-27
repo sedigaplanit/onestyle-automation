@@ -1,5 +1,5 @@
 ---
-description: 'Use when writing Playwright spec files or page object classes for this project. Covers spec rules, page object patterns, timeout strategy, chain-breaking rules, and circular import handling.'
+description: 'Use when writing Playwright spec files or page object classes for this project. Covers spec rules, page object patterns, timeout strategy, chain-breaking rules, circular import handling, and interaction patterns for any web app.'
 applyTo: "tests/**/*.spec.ts, pages/**/*.ts"
 ---
 
@@ -292,3 +292,162 @@ await this.page.getByRole('button', { name: '✕' }).click()
 ```
 
 > **Why:** Emoji and Unicode symbols in source code cause encoding inconsistencies across editors, OS clipboard tools, and CI log renderers. They make grep/search unreliable and break automated linting pipelines that enforce ASCII-safe identifiers.
+
+---
+
+## Interaction Patterns — Domain-Agnostic Reference
+
+Use these patterns in page object methods for interactions not covered by the basic `click()` / `fill()` idioms.
+
+### Keyboard Navigation
+
+```typescript
+// Press a single key
+await this.page.keyboard.press('Escape')
+await this.page.keyboard.press('Tab')
+await this.page.keyboard.press('ArrowDown')
+
+// Key combination
+await this.page.keyboard.press('Control+A')
+
+// Tab into a field and type without click
+await this.page.getByLabel('Search').focus()
+await this.page.keyboard.type('query text')
+```
+
+### Hover (tooltips, hover menus)
+
+```typescript
+// Hover to reveal a tooltip or dropdown
+await this.page.getByRole('button', { name: 'More options' }).hover()
+// Then interact with the revealed element
+await this.page.getByRole('menuitem', { name: 'Delete' }).click()
+```
+
+Page object method pattern — hover is an intermediate step, not a final state:
+
+```typescript
+public async clickDeleteViaHoverMenu(): Promise<this> {
+  await this.page.getByRole('button', { name: 'More options' }).hover()
+  await this.page.getByRole('menuitem', { name: 'Delete' }).click()
+  return this
+}
+```
+
+### Double-click
+
+```typescript
+// Double-click to enter inline edit mode
+await this.page.getByText('Item label').dblclick()
+```
+
+### Scroll to Element
+
+```typescript
+// Scroll until an element is in the viewport before interacting
+await this.page.getByRole('button', { name: 'Load More' }).scrollIntoViewIfNeeded()
+await this.page.getByRole('button', { name: 'Load More' }).click()
+```
+
+### Drag and Drop
+
+```typescript
+// Playwright built-in drag-and-drop (works for HTML5 native drag)
+await this.page.getByText('Draggable item').dragTo(this.page.getByText('Drop zone'))
+
+// Manual drag for custom JS drag libraries (react-dnd, Sortable, etc.)
+const source = this.page.getByTestId('card-1')
+const target = this.page.getByTestId('card-3')
+await source.hover()
+await this.page.mouse.down()
+const targetBox = await target.boundingBox()
+if (targetBox) {
+  await this.page.mouse.move(targetBox.x + targetBox.width / 2, targetBox.y + targetBox.height / 2, { steps: 10 })
+}
+await this.page.mouse.up()
+```
+
+### File Upload
+
+```typescript
+// Standard <input type="file"> — set files directly (no OS dialog)
+await this.page.getByLabel('Upload file').setInputFiles('path/to/file.pdf')
+
+// Multiple files
+await this.page.getByLabel('Upload files').setInputFiles(['file1.pdf', 'file2.jpg'])
+
+// Clear a file input
+await this.page.getByLabel('Upload file').setInputFiles([])
+```
+
+### Select / Dropdown
+
+```typescript
+// Native <select> element
+await this.page.getByLabel('Country').selectOption('United Kingdom')
+await this.page.getByLabel('Country').selectOption({ value: 'GB' })
+
+// Custom dropdown (click-to-open pattern)
+await this.page.getByRole('combobox', { name: 'Category' }).click()
+await this.page.getByRole('option', { name: 'Electronics' }).click()
+
+// Multi-select
+await this.page.getByLabel('Tags').selectOption(['tag-1', 'tag-2'])
+```
+
+### Browser Dialogs (alert / confirm / prompt)
+
+```typescript
+// Handle a window.alert() or window.confirm() — register BEFORE the action that triggers it
+this.page.once('dialog', (dialog) => dialog.accept())
+await this.page.getByRole('button', { name: 'Delete account' }).click()
+
+// Dismiss (Cancel) a confirm dialog
+this.page.once('dialog', (dialog) => dialog.dismiss())
+await this.page.getByRole('button', { name: 'Delete account' }).click()
+
+// Accept a prompt with a value
+this.page.once('dialog', (dialog) => dialog.accept('My input'))
+await this.page.getByRole('button', { name: 'Rename' }).click()
+```
+
+### Multi-tab / New Window
+
+```typescript
+// Wait for a new page/tab to open and return a page object for it
+public async clickOpenInNewTab(): Promise<OtherPage> {
+  const [newPage] = await Promise.all([
+    this.page.context().waitForEvent('page'),
+    this.page.getByRole('link', { name: 'Open in new tab' }).click(),
+  ])
+  await newPage.waitForLoadState()
+  return new OtherPage(newPage).init()
+}
+```
+
+### Accessibility Assertions
+
+```typescript
+// Assert element is visible and focusable
+await expect(this.page.getByRole('button', { name: 'Submit' })).toBeVisible()
+await expect(this.page.getByRole('button', { name: 'Submit' })).toBeEnabled()
+
+// Assert ARIA attributes
+await expect(this.page.getByRole('checkbox', { name: 'Remember me' })).toBeChecked()
+await expect(this.page.getByRole('alert')).toHaveText('Error: field required')
+
+// Assert focus is on a specific element after keyboard navigation
+await this.page.keyboard.press('Tab')
+await expect(this.page.getByRole('button', { name: 'Next' })).toBeFocused()
+```
+
+### Visual / CSS State Verification
+
+```typescript
+// Assert a CSS class is applied (for active state, selected state, error state)
+await expect(this.page.getByRole('tab', { name: 'Reviews' })).toHaveClass(/active/)
+
+// Assert an attribute value
+await expect(this.page.getByRole('button', { name: 'Proceed' })).toHaveAttribute('disabled')
+await expect(this.page.getByRole('img', { name: 'Product thumbnail' })).toHaveAttribute('src', /product_\d+/)
+```

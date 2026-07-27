@@ -95,10 +95,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: playwright-${{ runner.os }}-
+
       - name: Install Playwright browser — ${{ matrix.browser }}
         # chromium is always required: the auth setup project has no browser override
         # and defaults to Chromium regardless of which test browser is selected
+        # Skip install when the exact cache key hit (browsers already present)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install chromium ${{ matrix.browser }} --with-deps
+
+      - name: Install Playwright system dependencies (cache hit path)
+        # When browsers are cached we still need OS-level system deps (fonts, libs)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium ${{ matrix.browser }}
 
       - name: Run Playwright tests
         # --grep @ui: explicitly limits to UI-tagged tests.

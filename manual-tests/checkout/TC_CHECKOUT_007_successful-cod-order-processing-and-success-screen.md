@@ -23,24 +23,19 @@ High
 
 ### Test Steps
 
-1. Fill in the Street Address field with: "No. 45, Main Street"
-2. Fill in the City field with: "Colombo"
-3. Fill in the Phone field with: "+94 77 000 0000"
+1. Fill in the Street Address field with: "No. 45, Main Street".
+2. Fill in the City field with: "Colombo".
+3. Fill in the Phone field with: "+94 77 000 0000".
 4. Click the "Confirm Order" button.
-5. Immediately observe the modal for a processing screen (Step 3).
+5. Watch for the processing screen (Step 3) that appears immediately — look for the loading spinner.
 6. Wait approximately 2 seconds for processing to complete.
-7. Observe the modal content after processing completes (Step 4).
-8. Observe the heading, order number, messages, and available buttons.
-9. Observe any toast notification that appears.
+7. Check the success screen content and any toast notification that appears.
 
 ### Expected Result
 
 1. All three delivery fields accept the entered values.
 2. Clicking "Confirm Order" immediately transitions the modal to a processing screen.
-3. The processing screen (Step 3) displays:
-   - A loading spinner
-   - The message "Processing your payment..."
-   - The message "Please do not close this window"
+3. The processing screen (Step 3) displays a loading spinner, "Processing your payment...", and "Please do not close this window".
 4. After approximately 2 seconds, the modal automatically transitions to Step 4 (Success).
 5. The success screen (Step 4) displays all of the following:
    - A "✓" checkmark icon
@@ -49,9 +44,7 @@ High
    - A unique order number in the format `ORD-XXXXXX` (6 digits, e.g., "ORD-748343")
    - Message: "Thank you for shopping with OneStyle!"
    - Message: "This page will redirect in a few seconds..."
-6. Two action buttons are visible:
-   - "View My Orders"
-   - "Continue Shopping"
+6. Two action buttons are visible: "View My Orders" and "Continue Shopping".
 7. A toast notification appears with the text: "Order ORD-XXXXXX placed successfully!" (where XXXXXX matches the displayed order number).
 
 ### Notes and Assumptions

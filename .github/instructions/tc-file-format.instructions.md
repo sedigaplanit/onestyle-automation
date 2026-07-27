@@ -22,6 +22,14 @@ Checkout, Dashboard, Notifications, End-to-End Journey, Negative and Edge Cases,
 ### Priority
 High / Medium / Low
 
+**Priority definitions:**
+
+| Priority | Assign when the scenario… | Examples |
+|---|---|---|
+| **High** | Covers a core user journey, auth gate, or data-integrity concern — failure blocks the app's primary value proposition | Login/Logout, Place order, Delete account, Payment flow, Protected route access |
+| **Medium** | Covers an important feature that affects usability but is not a blocker for the core journey | Sort order, Empty state display, Navigation from a secondary screen, Form field validation |
+| **Low** | Covers a minor UX detail, cosmetic element, or edge case unlikely to block a user | Auto-redirect timer, Minor label wording, Optional field behaviour, Browser-specific gotcha |
+
 ### Preconditions
 - Navigate to $BASE_URL
 - Concrete state descriptions (e.g. "User is not logged in", "Record has been created")
@@ -29,6 +37,44 @@ High / Medium / Low
 
 ### Test Steps
 Numbered steps using exact UI labels, button text, and field names from .playwright-mcp/ reference
+
+**Step writing rules — strictly enforced:**
+- Every step **must begin with one of these approved verbs — no other verb may start a step:**
+
+  | Category | Approved verbs | When to use |
+  |---|---|---|
+  | Basic interaction | **Click** | Buttons, links, checkboxes, radio buttons, menu items |
+  | Text input | **Enter**, **Fill in** | Text fields, textareas, search boxes |
+  | Selection | **Select** | Dropdowns (select elements), listboxes, comboboxes |
+  | Keyboard | **Press** | Single keys (Enter, Escape, Tab, F5, F12) and combinations (Ctrl+A) |
+  | Pointer | **Hover over** | Tooltips, dropdown menus that open on hover, context menus |
+  | Pointer | **Double-click** | Double-tap actions, inline edit triggers |
+  | Scrolling | **Scroll to** | Bring an off-screen element into view before interacting |
+  | Drag and drop | **Drag**, **Drop onto** | Kanban boards, sortable lists, file drop zones |
+  | File | **Attach** | File upload inputs (`<input type="file">`) |
+  | Timing | **Wait for** | Explicit pauses for async transitions, loading spinners to disappear |
+  | Content inspection | **Locate** | Find a specific element on screen before reading or noting its value |
+  | Content inspection | **Read** | Look at and record text content — use when the value is obvious without needing two values to compare |
+  | Value recording | **Note** | Capture a value that will be compared in a later step |
+  | Comparison | **Compare** | Evaluate two named values against each other |
+
+- **Any step beginning with a word not in the table above is a ❌ failure.** Common words that look active but are **banned**: *Observe, Confirm, Check, Verify, Ensure, Type, Open, Navigate, Go to, View, See, Inspect, Look, Find, Make sure, Ensure, Validate*.
+
+- **One action per step.** Each numbered step must contain exactly one user action. Split compound instructions across multiple numbered steps.
+  ```
+  ❌ "Click the Settings icon and select 'Account' from the menu."
+  ✅ 1. Click the Settings icon.
+     2. Click "Account" in the dropdown menu.
+  ```
+
+- Never write "Observe X", "Confirm X is visible", or "Look for X" as standalone steps — what the user sees after an action belongs in the Expected Result section.
+- State verification before an action (e.g. "Confirm the modal is open") is not a step — it belongs in Preconditions.
+- **"Check X" is banned as a standalone step.** Use the specific verb that describes the intent:
+  - To find and read content → **`Locate`** or **`Read`**: *"Locate the first order card and read its order number."*
+  - To record a value for later → **`Note`**: *"Note the order number on the topmost card."*
+  - To compare two values → **`Compare`**: *"Compare the noted order number against the value in Preconditions."*
+  - "Check" is only acceptable when it names two things being compared: *"Check that the order number matches the value noted in Preconditions."*
+- **Navigate between pages using UI elements** (navbar links, buttons, clickable cards) — never by typing a URL in steps. The two allowed exceptions are: (1) `Navigate to $BASE_URL` in Preconditions as the initial app entry point, and (2) steps in a Direct URL Access test that deliberately bypass normal navigation.
 
 ### Expected Result
 Numbered expected result per step, plus a summary of overall expected behaviour

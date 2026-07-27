@@ -20,21 +20,17 @@ Medium
 - User is logged in as $USER_NAME
 - At least one item has been added to the cart
 - A successful order has been placed (TC_CHECKOUT_007 has been executed)
-- The success screen (Step 4) is currently displayed
+- The success screen (Step 4) is currently displayed with the "Continue Shopping" button visible
 
 ### Test Steps
 
-1. Confirm the success screen is displayed with the "Continue Shopping" button visible.
-2. Click the "Continue Shopping" button.
-3. Observe the page URL after clicking.
-4. Observe the page content.
+1. Click the "Continue Shopping" button on the success screen.
+2. Check the resulting page URL and content.
 
 ### Expected Result
 
-1. The success screen displays the "Continue Shopping" button.
-2. Clicking "Continue Shopping" closes the modal and navigates to the home page.
-3. The URL changes to `/` (the home page / landing page).
-4. The home page loads and displays the store product listing.
+1. Clicking "Continue Shopping" closes the modal and navigates to the home page.
+2. The URL changes to `/` (the home page / landing page). The home page loads and displays the store product listing.
 
 ### Notes and Assumptions
 

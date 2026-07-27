@@ -26,29 +26,21 @@ High
 
 1. Without filling in any form fields, scroll down to find the "Pay LKR [amount]" button.
 2. Click the "Pay LKR [amount]" button.
-3. Observe whether the form is submitted or remains on Step 2.
-4. Observe each form field for inline error messages.
-5. Observe the Street Address field error message.
-6. Observe the City field error message.
-7. Observe the Phone field error message.
-8. Observe the Cardholder Name field error message.
-9. Observe the Card Number field error message.
-10. Observe the Expiry Date field error message.
-11. Observe the CVV field error message.
+3. Check each form field for inline validation error messages.
 
 ### Expected Result
 
-1. The form is **not submitted** — the modal remains on Step 2.
-2. No order is placed.
-3. Inline error messages appear next to each invalid field:
-4. Street Address error: "Required"
-5. City error: "Required"
-6. Phone error: "Required"
-7. Cardholder Name error: "Required"
-8. Card Number error: "Enter a valid 16-digit card number"
-9. Expiry Date error: "Enter MM/YY"
-10. CVV error: "Enter 3-digit CVV"
-11. A total of 7 inline error messages are displayed simultaneously.
+1. The form is **not submitted** — the modal remains on Step 2. No order is placed.
+2. Inline error messages appear next to each invalid field.
+3. Errors shown simultaneously:
+   - Street Address: "Required"
+   - City: "Required"
+   - Phone: "Required"
+   - Cardholder Name: "Required"
+   - Card Number: "Enter a valid 16-digit card number"
+   - Expiry Date: "Enter MM/YY"
+   - CVV: "Enter 3-digit CVV"
+   - A total of 7 inline error messages are displayed.
 
 ### Notes and Assumptions
 

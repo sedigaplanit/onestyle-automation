@@ -11,14 +11,49 @@
 
 ## Elements
 
-| Element             | Role/Locator                                                      | Notes                                                              |
-| ------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Page heading        | `getByRole('heading', { level: 1, name: 'Login' })`               |                                                                    |
-| Email field         | `getByRole('textbox', { name: 'Email Address' })`                 | `input[name="email"]`                                              |
-| Password field      | `getByRole('textbox', { name: 'Password' })`                      | `input[name="password"]`                                           |
-| Login submit button | `getByRole('button', { name: 'Login' })` inside `locator('form')` | i.e. `page.locator('form').getByRole('button', { name: 'Login' })` |
-| Error message       | `getByText('Invalid email or password.')`                         | Shown after failed submit                                          |
-| Sign Up link text   | `getByText("Don't have an account? Sign Up")`                     | Paragraph below form                                               |
+| Element             | Role/Locator                                                      | Notes                                                                                           |
+| ------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Page heading        | `getByRole('heading', { level: 1, name: 'Login' })`               |                                                                                                 |
+| Email field         | `getByRole('textbox', { name: 'Email Address' })`                 | `input[name="email"]`                                                                           |
+| Password field      | `getByRole('textbox', { name: 'Password' })`                      | `input[name="password"]`                                                                        |
+| Login submit button | `getByRole('button', { name: 'Login' })` inside `locator('form')` | i.e. `page.locator('form').getByRole('button', { name: 'Login' })`                              |
+| Error message       | `getByText('Invalid email or password.')`                         | Shown after failed submit                                                                       |
+| Sign Up link text   | `getByText("Don't have an account? Sign Up")`                     | Paragraph below form; click `locator('.loginsignup-switch span:has-text("Sign Up")')` to toggle |
+
+---
+
+## Sign Up Form (toggled state)
+
+Displayed on the same `/login` page after clicking the "Sign Up" span. Heading changes to "Sign Up".
+
+| Element                | Role/Locator                                              | Notes                                                                        |
+| ---------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Page heading           | `getByRole('heading', { level: 1, name: 'Sign Up' })`     |                                                                              |
+| Name field             | `getByRole('textbox', { name: 'Your Name' })`             | Required; min 3 chars                                                        |
+| Email field            | `getByRole('textbox', { name: 'Email Address' })`         | Required; email format                                                       |
+| Gender dropdown        | `getByRole('combobox')`                                   | Options: Select Gender / Male / Female / Other / Prefer not to say; required |
+| Mobile field           | `getByRole('textbox', { name: 'Mobile Number' })`         | Required; 7–20 chars, digits/+/spaces/brackets/dots/dashes                   |
+| Password field         | `getByRole('textbox', { name: 'Password', exact: true })` | Required; min 6 chars                                                        |
+| Confirm Password field | `getByRole('textbox', { name: 'Confirm Password' })`      | Required; must match Password                                                |
+| Address field          | `getByRole('textbox', { name: 'Address (optional)' })`    | Optional; no validation                                                      |
+| Sign Up submit button  | `getByRole('button', { name: 'Sign Up' })`                | Becomes "Creating Account..." + disabled during submission                   |
+| Toggle to Login text   | `getByText('Already have an account? Login')`             | Click `locator('.loginsignup-switch span:has-text("Login")')` to toggle      |
+
+### Sign Up Validation Error Messages (captured from live app 2026-07-24)
+
+| Field            | Trigger              | Error Message                |
+| ---------------- | -------------------- | ---------------------------- |
+| Name             | Empty                | Required                     |
+| Name             | < 3 characters       | Must be 3 characters or more |
+| Email            | Empty                | Required                     |
+| Email            | Invalid format       | Invalid email address        |
+| Gender           | Not selected         | Please select a gender       |
+| Mobile           | Empty                | Required                     |
+| Mobile           | Invalid format       | Enter a valid mobile number  |
+| Password         | Empty                | Required                     |
+| Password         | < 6 characters       | Must be 6 characters or more |
+| Confirm Password | Empty                | Required                     |
+| Confirm Password | Mismatch with Passw. | Passwords do not match       |
 
 ---
 

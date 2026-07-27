@@ -42,7 +42,9 @@ Read only the attached files. Do not scan `manual-tests/`, `tests/`, or `pages/`
 ### TC Review checklist
 - All 9 sections present and non-empty: ID, Title, Feature Area, Priority, Preconditions, Test Steps, Expected Result, Notes and Assumptions, Defect Opportunity
 - Preconditions include `$BASE_URL`; no literal URLs or credentials (`$USER_NAME` / `$PASSWORD` only)
-- Steps are numbered; use exact UI labels
+- Steps are numbered; use exact UI labels; **every step must begin with one of these approved verbs only**: Click, Enter, Fill in, Select, Press, Hover over, Double-click, Scroll to, Drag, Drop onto, Attach, Wait for, Locate, Read, Note, Compare — any step starting with a word outside this list is ❌; explicitly banned starting words include: Observe, Confirm, Check (unless containing an explicit named comparison), Verify, Ensure, Type, Open, Navigate, Go to, View, See, Inspect, Look, Find, Make sure, Validate
+- **One action per step** — each numbered step must contain exactly one user action; compound instructions in one step are ❌
+- In-step page navigation uses UI elements (navbar links, buttons, cards) — direct URL navigation in steps is only allowed for Direct URL Access tests
 - Expected Result has one numbered result per step
 - `Tags: Regression` present in Notes
 - Steps trace to an AC in the attached user story; no invented scenarios

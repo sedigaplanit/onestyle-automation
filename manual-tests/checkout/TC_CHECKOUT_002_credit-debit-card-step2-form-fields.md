@@ -24,31 +24,24 @@ High
 
 ### Test Steps
 
-1. Confirm "💳 Credit / Debit Card" is the currently selected payment method on Step 1.
-2. Click the "Continue →" button.
-3. Observe the Step 2 modal header.
-4. Observe the Delivery Address section of the form.
-5. Observe the Card Details section of the form.
-6. Observe the submit button label at the bottom of the form.
-7. Observe the back navigation options.
+1. Click the "Continue →" button on Step 1.
+2. Check the Street Address, City, and Phone fields in the Delivery Address section.
+3. Check the Cardholder Name, Card Number, Expiry Date, and CVV fields in the Card Details section.
+4. Check the submit button label and the back navigation buttons.
 
 ### Expected Result
 
-1. The "💳 Credit / Debit Card" option appears selected.
-2. The modal advances to Step 2 without page navigation (URL remains `/cart`).
-3. The modal heading reads "💳 Credit / Debit Card".
-4. An amount display is visible formatted as "Amount to pay: **LKR X.XX**".
-5. The Delivery Address section contains exactly three fields:
+1. The modal advances to Step 2 without page navigation (URL remains `/cart`). The modal heading reads "💳 Credit / Debit Card". An amount display is visible formatted as "Amount to pay: **LKR X.XX**".
+2. The Delivery Address section contains exactly three fields:
    - Street Address (placeholder: "No. 12, Main Street")
    - City (placeholder: "Colombo")
    - Phone (placeholder: "+94 77 000 0000")
-6. The Card Details section contains exactly four fields:
+3. The Card Details section contains exactly four fields:
    - Cardholder Name (placeholder: "John Doe")
    - Card Number (placeholder: "1234 5678 9012 3456")
    - Expiry Date (placeholder: "MM/YY")
    - CVV (placeholder: "123")
-7. The submit button label reads "Pay LKR [amount]" (e.g., "Pay LKR 50.00").
-8. A "← Back" button is visible at the bottom and a "←" button is visible in the modal header.
+4. The submit button label reads "Pay LKR [amount]" (e.g., "Pay LKR 50.00"). A "← Back" button is visible at the bottom and a "←" button is visible in the modal header.
 
 ### Notes and Assumptions
 

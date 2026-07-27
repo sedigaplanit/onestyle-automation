@@ -17,11 +17,16 @@ export default class CartApiClient extends BaseApiClient {
   }
 
   /** Replaces the entire cart with the provided items map. */
-  public async saveCart(cartItems: CartItems): Promise<FetchResponse<{ message: string }>> {
-    return this.makeRequest<{ message: string }, { cartItems: CartItems }>(ApiPaths.SaveCart, {
-      method: 'PUT',
-      data: { cartItems },
-    })
+  public async saveCart(
+    cartItems: CartItems
+  ): Promise<FetchResponse<{ message: string; cartItems: CartItems }>> {
+    return this.makeRequest<{ message: string; cartItems: CartItems }, { cartItems: CartItems }>(
+      ApiPaths.SaveCart,
+      {
+        method: 'PUT',
+        data: { cartItems },
+      }
+    )
   }
 
   public async clearCart(): Promise<FetchResponse<{ message: string }>> {

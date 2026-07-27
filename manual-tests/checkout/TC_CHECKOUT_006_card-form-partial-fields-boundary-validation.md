@@ -32,8 +32,7 @@ Medium
 4. Fill in the Expiry Date field with fewer than 5 characters (e.g., "12/2").
 5. Fill in the CVV field with fewer than 3 digits (e.g., "12").
 6. Click the "Pay LKR [amount]" button.
-7. Observe inline error messages for the Card Number, Expiry Date, and CVV fields.
-8. Observe that no error messages are shown for the delivery or cardholder name fields.
+7. Check the error messages shown next to the Card Number, Expiry Date, and CVV fields.
 
 ### Expected Result
 
