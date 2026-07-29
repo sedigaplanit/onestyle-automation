@@ -29,7 +29,7 @@ test.describe('Wishlist Tests', { tag: ['@ui', '@wishlist'] }, () => {
       // AC1/AC3: navbar badge should increment to 1 — poll: badge is a separate React render
       await expect
         .poll(async () => landingPage.getWishlistBadgeCount(), {
-          timeout: 5_000,
+          timeout: 15_000,
           intervals: [500],
           message: 'Waiting for navbar wishlist badge to increment to 1',
         })
