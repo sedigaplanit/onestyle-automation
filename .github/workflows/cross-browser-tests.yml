@@ -100,8 +100,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: playwright-${{ runner.os }}-
+          # Cache must include the selected browser because Firefox/WebKit jobs also need
+          # their own browser binary in addition to Chromium for the auth setup project.
+          key: playwright-${{ runner.os }}-${{ matrix.browser }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: playwright-${{ runner.os }}-${{ matrix.browser }}-
 
       - name: Install Playwright browser — ${{ matrix.browser }}
         # chromium is always required: the auth setup project has no browser override
