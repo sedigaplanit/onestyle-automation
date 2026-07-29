@@ -15,10 +15,14 @@
       "example": "291 orders placed"
     },
     "orderCard": {
-      "description": "One card per order — confirmed from live app 2026-07-26",
-      "orderIdAndDate": "ORD-XXXXXX DD Month YYYY — e.g. 'ORD-793662 26 July 2026' (order number is 6 digits)",
-      "statusBadge": "'Delivered'",
-      "orderTotal": "'LKR X.XX' — e.g. 'LKR 50.00'",
+      "description": "One card per order — confirmed from live app 2026-07-27",
+      "containerClass": ".orderhistory-card",
+      "listClass": ".orderhistory-list",
+      "headerClass": ".orderhistory-card-header",
+      "orderIdSpan": "span.orderhistory-order-id — e.g. 'ORD-793662' or 'ORD-20260727-DBRT'",
+      "dateSpan": "span.orderhistory-date — e.g. '27 July 2026'",
+      "statusSpan": "span.orderhistory-status — e.g. 'Delivered'",
+      "totalSpan": "span.orderhistory-total — e.g. 'LKR 50.00'",
       "itemRow": {
         "productImage": "img with product name as alt text",
         "productName": "paragraph — product name text",
@@ -50,6 +54,10 @@
   "locators": {
     "pageHeading": "getByRole('heading', { level: 1, name: 'Order History' })",
     "orderCountSubtitle": "locator('.orderhistory-subtitle')",
+    "orderCardList": "locator('.orderhistory-list')",
+    "orderCard": "locator('.orderhistory-card')",
+    "orderCardHeader": "locator('.orderhistory-card-header')",
+    "orderDate": "locator('.orderhistory-date')",
     "emptyHeading": "getByRole('heading', { level: 2, name: 'No orders yet' })",
     "shopNowButton": "getByRole('button', { name: 'Shop Now' })"
   }

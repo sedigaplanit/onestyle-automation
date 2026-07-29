@@ -29,8 +29,16 @@ export default abstract class BasePage {
     return cartCountText ? parseInt(cartCountText.trim(), 10) : 0
   }
 
+  public async getWishlistBadgeCount(): Promise<number> {
+    // .nav-wishlist-count is a <span> inside the navbar wishlist link; not rendered when count is 0
+    const el = this.page.locator('.nav-wishlist-count')
+    if ((await el.count()) === 0) return 0
+    const text = await el.textContent()
+    return text ? parseInt(text.trim(), 10) : 0
+  }
+
   public async clickNavWishlistLink(): Promise<WishlistPage> {
-    await this.page.getByRole('link', { name: /♡/ }).click()
+    await this.page.locator('.nav-wishlist-lnk').click()
     // Wait for URL to settle on /wishlist before handing off to WishlistPage.init()
     await this.page.waitForURL('**/wishlist')
     const { default: WishlistPageClass } = await import('@pages/wishlist/WishlistPage')

@@ -31,7 +31,6 @@ test.describe('Checkout Tests', { tag: ['@ui', '@checkout'] }, () => {
   }) => {
     // test.slow(): app is hosted on remote GitHub Pages; can exceed the 30s default
     test.slow()
-
     const modal = await open(CartPage).then((_) => _.clickProceedToCheckout())
 
     expect(await modal.isModalVisible()).toBe(true)
