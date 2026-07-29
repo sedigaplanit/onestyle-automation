@@ -38,7 +38,7 @@ export default abstract class BasePage {
   }
 
   public async clickNavWishlistLink(): Promise<WishlistPage> {
-    await this.page.locator('.nav-wishlist-lnk').click()
+    await this.page.locator('.nav-wishlist-link').click()
     // Wait for URL to settle on /wishlist before handing off to WishlistPage.init()
     await this.page.waitForURL('**/wishlist')
     const { default: WishlistPageClass } = await import('@pages/wishlist/WishlistPage')
