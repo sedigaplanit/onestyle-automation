@@ -26,4 +26,8 @@ export default class LandingPage extends BasePage {
       .waitFor({ state: 'visible' })
     return this
   }
+
+  public async isFirstProductWishlisted(): Promise<boolean> {
+    return this.page.locator('button.item-wishlist-btn.wishlisted').first().isVisible()
+  }
 }

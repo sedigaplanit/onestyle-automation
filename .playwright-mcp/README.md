@@ -67,17 +67,19 @@ This directory is the single source of truth for the live app's structure, selec
 
 ## Quick Reference: Key Locators
 
-| Element             | Locator                                                                                                      |
-| ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Cart ready marker   | `getByRole('heading', { level: 1, name: 'Cart Totals' })`                                                    |
-| Checkout modal open | `getByRole('heading', { level: 2, name: 'Checkout' })`                                                       |
-| Auth success marker | `getByRole('button', { name: 'My Orders' })`                                                                 |
-| Login error message | `getByText('Invalid email or password.')`                                                                    |
-| Size required error | `getByRole('heading', { name: 'Select Size — required' })`                                                   |
-| In Cart button      | `getByRole('button', { name: /In Cart.*View Cart/ })`                                                        |
-| Checkout disabled   | `getByRole('button', { name: 'Proceed to Checkout' })[disabled]`                                             |
-| Guest prompt        | `getByText('Sign in to proceed with checkout')`                                                              |
-| Cart count          | CSS `.nav-cart-count` — **only rendered when count > 0**; use `locator.count()` check before `textContent()` |
+| Element             | Locator                                                                                                                                           |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cart ready marker   | `getByRole('heading', { level: 1, name: 'Cart Totals' })`                                                                                         |
+| Checkout modal open | `getByRole('heading', { level: 2, name: 'Checkout' })`                                                                                            |
+| Auth success marker | `getByRole('button', { name: 'My Orders' })`                                                                                                      |
+| Login error message | `getByText('Invalid email or password.')`                                                                                                         |
+| Size required error | `getByRole('heading', { name: 'Select Size — required' })`                                                                                        |
+| In Cart button      | `getByRole('button', { name: /In Cart.*View Cart/ })`                                                                                             |
+| Checkout disabled   | `getByRole('button', { name: 'Proceed to Checkout' })[disabled]`                                                                                  |
+| Guest prompt        | `getByText('Sign in to proceed with checkout')`                                                                                                   |
+| Cart count          | CSS `.nav-cart-count` — **only rendered when count > 0**; use `locator.count()` check before `textContent()`                                      |
+| Wishlist link (nav) | `<a class="nav-wishlist-link">` — contains `.nav-wishlist-icon` (♡ span) and `.nav-wishlist-count` (badge span)                                   |
+| Wishlist badge      | CSS `.nav-wishlist-count` — `<span>` inside `.nav-wishlist-link`; not present when count is 0; use `locator.count()` check before `textContent()` |
 
 ---
 

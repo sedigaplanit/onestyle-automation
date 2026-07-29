@@ -64,8 +64,9 @@
       "Product card on category pages",
       "Product detail page"
     ],
-    "locator": "getByRole('button', { name: '♡' })",
+    "locator": "locator('.nav-wishlist-icon')",
     "behavior": "Toggles item in/out of wishlist"
   },
-  "screenshot": "snapshots/10-wishlist-empty.png"
+  "screenshot": "snapshots/10-wishlist-empty.png",
+  "notes": "BUG_CHECKOUT_003 fix applied as of 2026-07-29: wishlist page now re-fetches from API on every mount. Use expect.poll() when asserting wishlist page content after navigating to /wishlist, since the GET /api/wishlist may race with a preceding POST (heart click)."
 }
