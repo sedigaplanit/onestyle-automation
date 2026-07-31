@@ -27,19 +27,19 @@
         "type": "object",
         "required": ["id", "name", "email"],
         "properties": {
-          "id":      { "type": "integer", "example": 1 },
-          "name":    { "type": "string",  "example": "Jane Doe" },
-          "email":   { "type": "string",  "format": "email", "example": "jane@example.com" },
-          "gender":  { "type": "string",  "nullable": true, "example": "female" },
-          "mobile":  { "type": "string",  "nullable": true, "example": "+44 7700 900000" },
-          "address": { "type": "string",  "nullable": true, "example": "123 High St, London" }
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Jane Doe" },
+          "email": { "type": "string", "format": "email", "example": "jane@example.com" },
+          "gender": { "type": "string", "nullable": true, "example": "female" },
+          "mobile": { "type": "string", "nullable": true, "example": "+44 7700 900000" },
+          "address": { "type": "string", "nullable": true, "example": "123 High St, London" }
         }
       },
       "AuthResponse": {
         "type": "object",
         "required": ["user", "token"],
         "properties": {
-          "user":  { "$ref": "#/components/schemas/User" },
+          "user": { "$ref": "#/components/schemas/User" },
           "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
         }
       },
@@ -47,16 +47,20 @@
         "type": "object",
         "required": ["id", "name", "category", "image_url", "new_price", "old_price"],
         "properties": {
-          "id":                { "type": "integer", "example": 1 },
-          "name":              { "type": "string",  "example": "Casual Striped Blouse with Peplum Hem" },
-          "category":          { "type": "string",  "enum": ["women", "men", "kid"] },
-          "image_url":         { "type": "string",  "example": "product_1.png" },
-          "new_price":         { "type": "number",  "format": "float", "example": 50.0 },
-          "old_price":         { "type": "number",  "format": "float", "example": 80.5 },
-          "description":       { "type": "string",  "nullable": true, "example": "A stylish striped blouse..." },
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Casual Striped Blouse with Peplum Hem" },
+          "category": { "type": "string", "enum": ["women", "men", "kid"] },
+          "image_url": { "type": "string", "example": "product_1.png" },
+          "new_price": { "type": "number", "format": "float", "example": 50.0 },
+          "old_price": { "type": "number", "format": "float", "example": 80.5 },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "example": "A stylish striped blouse..."
+          },
           "is_new_collection": { "type": "boolean", "example": false },
-          "is_popular":        { "type": "boolean", "example": true },
-          "created_at":        { "type": "string",  "format": "date-time" }
+          "is_popular": { "type": "boolean", "example": true },
+          "created_at": { "type": "string", "format": "date-time" }
         }
       },
       "CartItems": {
@@ -69,20 +73,20 @@
         "type": "object",
         "required": ["id", "name", "price", "quantity"],
         "properties": {
-          "id":       { "type": "integer",  "example": 1 },
-          "name":     { "type": "string",   "example": "Classic T-Shirt" },
-          "image":    { "type": "string",   "example": "https://example.com/shirt.jpg" },
-          "price":    { "type": "number",   "format": "float", "example": 29.99 },
-          "quantity": { "type": "integer",  "minimum": 1, "example": 2 }
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Classic T-Shirt" },
+          "image": { "type": "string", "example": "https://example.com/shirt.jpg" },
+          "price": { "type": "number", "format": "float", "example": 29.99 },
+          "quantity": { "type": "integer", "minimum": 1, "example": 2 }
         }
       },
       "Order": {
         "type": "object",
         "required": ["id", "date", "total", "items"],
         "properties": {
-          "id":    { "type": "string",  "example": "ORD-20240101-ABCD" },
-          "date":  { "type": "string",  "format": "date-time" },
-          "total": { "type": "number",  "format": "float", "example": 89.99 },
+          "id": { "type": "string", "example": "ORD-20240101-ABCD" },
+          "date": { "type": "string", "format": "date-time" },
+          "total": { "type": "number", "format": "float", "example": 89.99 },
           "items": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/OrderItem" }
@@ -94,24 +98,24 @@
         "required": ["product_id", "name", "category", "image_url", "new_price", "old_price"],
         "properties": {
           "product_id": { "type": "integer", "example": 5 },
-          "name":       { "type": "string",  "example": "Chic Overlap Collar Blouse" },
-          "category":   { "type": "string",  "enum": ["women", "men", "kid"] },
-          "image_url":  { "type": "string",  "example": "product_5.png" },
-          "new_price":  { "type": "number",  "format": "float", "example": 85.0 },
-          "old_price":  { "type": "number",  "format": "float", "example": 120.5 }
+          "name": { "type": "string", "example": "Chic Overlap Collar Blouse" },
+          "category": { "type": "string", "enum": ["women", "men", "kid"] },
+          "image_url": { "type": "string", "example": "product_5.png" },
+          "new_price": { "type": "number", "format": "float", "example": 85.0 },
+          "old_price": { "type": "number", "format": "float", "example": 120.5 }
         }
       },
       "Review": {
         "type": "object",
         "required": ["id", "product_id", "user_id", "rating", "created_at"],
         "properties": {
-          "id":            { "type": "integer", "example": 1 },
-          "product_id":    { "type": "integer", "example": 3 },
-          "user_id":       { "type": "integer", "example": 7 },
-          "reviewer_name": { "type": "string",  "example": "Jane Doe" },
-          "rating":        { "type": "integer", "minimum": 1, "maximum": 5, "example": 4 },
-          "comment":       { "type": "string",  "nullable": true, "example": "Great quality!" },
-          "created_at":    { "type": "string",  "format": "date-time" }
+          "id": { "type": "integer", "example": 1 },
+          "product_id": { "type": "integer", "example": 3 },
+          "user_id": { "type": "integer", "example": 7 },
+          "reviewer_name": { "type": "string", "example": "Jane Doe" },
+          "rating": { "type": "integer", "minimum": 1, "maximum": 5, "example": 4 },
+          "comment": { "type": "string", "nullable": true, "example": "Great quality!" },
+          "created_at": { "type": "string", "format": "date-time" }
         }
       },
       "ErrorResponse": {
@@ -173,25 +177,104 @@
             "description": "Log file content",
             "content": {
               "text/plain": {
-                "schema": { "type": "string", "example": "{\"level\":\"info\",\"message\":\"Server running\"}\n" }
+                "schema": {
+                  "type": "string",
+                  "example": "{\"level\":\"info\",\"message\":\"Server running\"}\n"
+                }
               }
             }
           },
           "400": {
             "description": "Invalid date format",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "401": {
             "description": "Missing or incorrect LOG_SECRET",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "404": {
             "description": "No log file found for that date",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "503": {
             "description": "LOG_SECRET not configured on server",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/logs/download": {
+      "get": {
+        "operationId": "downloadRecentLogs",
+        "summary": "Download recent production logs as a .logs file",
+        "description": "Admin-only (JWT + is_admin). Filters today's log entries from the last N minutes and returns them as a downloadable .logs file.",
+        "tags": ["System"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "minutes",
+            "in": "query",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 1440, "default": 10 },
+            "description": "Mode A — last N minutes. Ignored when 'from' and 'to' are provided.",
+            "example": 20
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": { "type": "string", "format": "date-time" },
+            "description": "Mode B — custom range start (ISO 8601 UTC). Requires 'to'.",
+            "example": "2026-07-30T09:00:00Z"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": { "type": "string", "format": "date-time" },
+            "description": "Mode B — custom range end (ISO 8601 UTC). Requires 'from'.",
+            "example": "2026-07-30T10:30:00Z"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Log file download",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" }
+              }
+            },
+            "headers": {
+              "Content-Disposition": {
+                "schema": {
+                  "type": "string",
+                  "example": "attachment; filename=\"app-logs-last-10min-2026-07-30T10-00-00.logs\""
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "403": {
+            "description": "Forbidden — admin access required",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "404": {
+            "description": "No log file or no entries in the requested time window",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -231,12 +314,12 @@
                 "type": "object",
                 "required": ["name", "email", "password"],
                 "properties": {
-                  "name":     { "type": "string",  "example": "Jane Doe" },
-                  "email":    { "type": "string",  "format": "email", "example": "jane@example.com" },
-                  "password": { "type": "string",  "minLength": 6, "example": "SecurePass1!" },
-                  "gender":   { "type": "string",  "example": "female" },
-                  "mobile":   { "type": "string",  "example": "+44 7700 900000" },
-                  "address":  { "type": "string",  "example": "123 High St" }
+                  "name": { "type": "string", "example": "Jane Doe" },
+                  "email": { "type": "string", "format": "email", "example": "jane@example.com" },
+                  "password": { "type": "string", "minLength": 6, "example": "SecurePass1!" },
+                  "gender": { "type": "string", "example": "female" },
+                  "mobile": { "type": "string", "example": "+44 7700 900000" },
+                  "address": { "type": "string", "example": "123 High St" }
                 }
               }
             }
@@ -253,15 +336,21 @@
           },
           "400": {
             "description": "Missing required fields",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "409": {
             "description": "Email already registered",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -279,7 +368,7 @@
                 "type": "object",
                 "required": ["email", "password"],
                 "properties": {
-                  "email":    { "type": "string", "format": "email", "example": "jane@example.com" },
+                  "email": { "type": "string", "format": "email", "example": "jane@example.com" },
                   "password": { "type": "string", "example": "SecurePass1!" }
                 }
               }
@@ -297,15 +386,21 @@
           },
           "400": {
             "description": "Missing email or password",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "401": {
             "description": "Invalid credentials",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -350,15 +445,21 @@
           },
           "401": {
             "description": "Not authenticated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "404": {
             "description": "User not found",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -377,9 +478,9 @@
                 "type": "object",
                 "required": ["name"],
                 "properties": {
-                  "name":    { "type": "string", "minLength": 3, "example": "Jane Updated" },
-                  "gender":  { "type": "string", "example": "female" },
-                  "mobile":  { "type": "string", "example": "+44 7700 900000" },
+                  "name": { "type": "string", "minLength": 3, "example": "Jane Updated" },
+                  "gender": { "type": "string", "example": "female" },
+                  "mobile": { "type": "string", "example": "+44 7700 900000" },
                   "address": { "type": "string", "example": "456 New St" }
                 }
               }
@@ -397,15 +498,76 @@
           },
           "400": {
             "description": "Name too short or missing",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "401": {
             "description": "Not authenticated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/account": {
+      "delete": {
+        "operationId": "deleteAccount",
+        "summary": "Permanently delete the authenticated user's account",
+        "description": "Requires password confirmation. Deletes the user row and all associated data (orders, cart, wishlist, reviews) via database CASCADE. The client must discard its JWT after a successful response.",
+        "tags": ["Auth"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["password"],
+                "properties": {
+                  "password": { "type": "string", "example": "SecurePass1!" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account deleted",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "400": {
+            "description": "Password not provided",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "401": {
+            "description": "Not authenticated or incorrect password",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -433,11 +595,15 @@
           },
           "401": {
             "description": "Not authenticated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       },
@@ -470,7 +636,7 @@
                   "type": "object",
                   "required": ["message", "cartItems"],
                   "properties": {
-                    "message":   { "type": "string", "example": "Cart saved." },
+                    "message": { "type": "string", "example": "Cart saved." },
                     "cartItems": { "$ref": "#/components/schemas/CartItems" }
                   }
                 }
@@ -479,15 +645,21 @@
           },
           "400": {
             "description": "cartItems missing or invalid",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "401": {
             "description": "Not authenticated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       },
@@ -507,11 +679,15 @@
           },
           "401": {
             "description": "Not authenticated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -542,11 +718,15 @@
           },
           "401": {
             "description": "Not authenticated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       },
@@ -563,9 +743,9 @@
                 "type": "object",
                 "required": ["id", "total", "items"],
                 "properties": {
-                  "id":    { "type": "string",  "example": "ORD-20240101-ABCD" },
-                  "date":  { "type": "string",  "format": "date-time" },
-                  "total": { "type": "number",  "format": "float", "example": 89.99 },
+                  "id": { "type": "string", "example": "ORD-20240101-ABCD" },
+                  "date": { "type": "string", "format": "date-time" },
+                  "total": { "type": "number", "format": "float", "example": 89.99 },
                   "items": {
                     "type": "array",
                     "minItems": 1,
@@ -594,19 +774,27 @@
           },
           "400": {
             "description": "Invalid order data",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "401": {
             "description": "Not authenticated",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "409": {
             "description": "Duplicate order number",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           },
           "500": {
             "description": "Internal server error",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -624,18 +812,18 @@
                 "type": "object",
                 "required": ["event"],
                 "properties": {
-                  "event":       { "$ref": "#/components/schemas/EventType" },
-                  "page":        { "type": "string",  "example": "/shop" },
-                  "productId":   { "type": "integer", "example": 5 },
-                  "productName": { "type": "string",  "example": "Classic T-Shirt" },
-                  "category":    { "type": "string",  "example": "women" },
-                  "userId":      { "type": "integer", "example": 1 },
-                  "sessionId":   { "type": "string",  "example": "abc123" },
+                  "event": { "$ref": "#/components/schemas/EventType" },
+                  "page": { "type": "string", "example": "/shop" },
+                  "productId": { "type": "integer", "example": 5 },
+                  "productName": { "type": "string", "example": "Classic T-Shirt" },
+                  "category": { "type": "string", "example": "women" },
+                  "userId": { "type": "integer", "example": 1 },
+                  "sessionId": { "type": "string", "example": "abc123" },
                   "meta": {
                     "type": "object",
                     "properties": {
-                      "qty":   { "type": "integer", "example": 2 },
-                      "query": { "type": "string",  "example": "blue dress" }
+                      "qty": { "type": "integer", "example": 2 },
+                      "query": { "type": "string", "example": "blue dress" }
                     }
                   }
                 }
@@ -647,7 +835,9 @@
           "204": { "description": "Event recorded" },
           "400": {
             "description": "Unknown event type",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } }
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
           }
         }
       }
@@ -658,10 +848,30 @@
         "summary": "List products with optional filtering and sorting",
         "tags": ["Products"],
         "parameters": [
-          { "name": "category",   "in": "query", "schema": { "type": "string", "enum": ["women", "men", "kid"] }, "description": "Filter by category" },
-          { "name": "search",     "in": "query", "schema": { "type": "string" }, "description": "Full-text search on name and description" },
-          { "name": "priceRange", "in": "query", "schema": { "type": "string", "enum": ["low", "medium", "high"] }, "description": "low = under 100, medium = 100–200, high = over 200" },
-          { "name": "sort",       "in": "query", "schema": { "type": "string", "enum": ["price-asc", "price-desc", "name-asc"] }, "description": "Sort order" }
+          {
+            "name": "category",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["women", "men", "kid"] },
+            "description": "Filter by category"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Full-text search on name and description"
+          },
+          {
+            "name": "priceRange",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["low", "medium", "high"] },
+            "description": "low = under 100, medium = 100–200, high = over 200"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["price-asc", "price-desc", "name-asc"] },
+            "description": "Sort order"
+          }
         ],
         "responses": {
           "200": {
@@ -672,14 +882,27 @@
                   "type": "object",
                   "required": ["products"],
                   "properties": {
-                    "products": { "type": "array", "items": { "$ref": "#/components/schemas/Product" } }
+                    "products": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Product" }
+                    }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Invalid filter value", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "400": {
+            "description": "Invalid filter value",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -695,12 +918,22 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "products": { "type": "array", "items": { "$ref": "#/components/schemas/Product" } } }
+                  "properties": {
+                    "products": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Product" }
+                    }
+                  }
                 }
               }
             }
           },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -716,12 +949,22 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "products": { "type": "array", "items": { "$ref": "#/components/schemas/Product" } } }
+                  "properties": {
+                    "products": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Product" }
+                    }
+                  }
                 }
               }
             }
           },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -731,7 +974,13 @@
         "summary": "Get a single product by ID",
         "tags": ["Products"],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "example": 1 }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
         ],
         "responses": {
           "200": {
@@ -746,9 +995,24 @@
               }
             }
           },
-          "400": { "description": "Invalid id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "404": { "description": "Product not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "400": {
+            "description": "Invalid id",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -758,7 +1022,13 @@
         "summary": "Get reviews and aggregate rating for a product",
         "tags": ["Reviews"],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "example": 1 }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
         ],
         "responses": {
           "200": {
@@ -769,16 +1039,29 @@
                   "type": "object",
                   "required": ["reviews", "average_rating", "total_reviews"],
                   "properties": {
-                    "reviews":        { "type": "array", "items": { "$ref": "#/components/schemas/Review" } },
+                    "reviews": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Review" }
+                    },
                     "average_rating": { "type": "number", "format": "float", "example": 4.2 },
-                    "total_reviews":  { "type": "integer", "example": 15 }
+                    "total_reviews": { "type": "integer", "example": 15 }
                   }
                 }
               }
             }
           },
-          "400": { "description": "Invalid id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "400": {
+            "description": "Invalid id",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -798,26 +1081,54 @@
                   "type": "object",
                   "required": ["wishlist"],
                   "properties": {
-                    "wishlist": { "type": "array", "items": { "$ref": "#/components/schemas/WishlistItem" } }
+                    "wishlist": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/WishlistItem" }
+                    }
                   }
                 }
               }
             }
           },
-          "401": { "description": "Not authenticated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       },
       "delete": {
         "operationId": "clearWishlist",
         "summary": "Clear the entire wishlist",
-        "description": "Deletes every item from the user's wishlist in one call. Available but not used by the current frontend — individual items are removed via `DELETE /api/wishlist/{productId}` after checkout.",
+        "description": "Deletes every item from the user's wishlist in one call. Called by the frontend after checkout to clear the wishlist in a single request.",
         "tags": ["Wishlist"],
         "security": [{ "BearerAuth": [] }],
         "responses": {
-          "200": { "description": "Wishlist cleared", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } } } },
-          "401": { "description": "Not authenticated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "200": {
+            "description": "Wishlist cleared",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -829,14 +1140,45 @@
         "tags": ["Wishlist"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "name": "productId", "in": "path", "required": true, "schema": { "type": "integer" }, "example": 5 }
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 5
+          }
         ],
         "responses": {
-          "200": { "description": "Added to wishlist", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } } } },
-          "400": { "description": "Invalid productId", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "401": { "description": "Not authenticated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "404": { "description": "Product not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "200": {
+            "description": "Added to wishlist",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "400": {
+            "description": "Invalid productId",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       },
       "delete": {
@@ -846,14 +1188,45 @@
         "tags": ["Wishlist"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "name": "productId", "in": "path", "required": true, "schema": { "type": "integer" }, "example": 5 }
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 5
+          }
         ],
         "responses": {
-          "200": { "description": "Removed from wishlist", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } } } },
-          "400": { "description": "Invalid productId", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "401": { "description": "Not authenticated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "404": { "description": "Item not in wishlist", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "200": {
+            "description": "Removed from wishlist",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "400": {
+            "description": "Invalid productId",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "404": {
+            "description": "Item not in wishlist",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -872,8 +1245,8 @@
                 "required": ["productId", "rating"],
                 "properties": {
                   "productId": { "type": "integer", "example": 3 },
-                  "rating":    { "type": "integer", "minimum": 1, "maximum": 5, "example": 4 },
-                  "comment":   { "type": "string",  "example": "Great fit and quality!" }
+                  "rating": { "type": "integer", "minimum": 1, "maximum": 5, "example": 4 },
+                  "comment": { "type": "string", "example": "Great fit and quality!" }
                 }
               }
             }
@@ -892,10 +1265,30 @@
               }
             }
           },
-          "400": { "description": "Invalid productId or rating", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "401": { "description": "Not authenticated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "404": { "description": "Product not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "400": {
+            "description": "Invalid productId or rating",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     },
@@ -906,14 +1299,45 @@
         "tags": ["Reviews"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "name": "reviewId", "in": "path", "required": true, "schema": { "type": "integer" }, "example": 7 }
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 7
+          }
         ],
         "responses": {
-          "200": { "description": "Review deleted", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } } } },
-          "400": { "description": "Invalid reviewId", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "401": { "description": "Not authenticated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "404": { "description": "Review not found or not owned by you", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } },
-          "500": { "description": "Internal server error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+          "200": {
+            "description": "Review deleted",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "400": {
+            "description": "Invalid reviewId",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "404": {
+            "description": "Review not found or not owned by you",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
         }
       }
     }

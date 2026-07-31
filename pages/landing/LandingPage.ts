@@ -18,12 +18,21 @@ export default class LandingPage extends BasePage {
   }
 
   public async clickFirstProductWishlistButton(): Promise<this> {
-    await this.page.getByRole('button', { name: '♡' }).first().click()
-    // Wait for the heart to flip to filled — confirms the wishlist write has been applied
+    // Start listening for the wishlist POST before clicking — avoids a race where the
+    // response arrives before waitForResponse() is registered
+    const wishlistResponsePromise = this.page.waitForResponse(
+      (response) =>
+        response.url().includes('/api/wishlist/') && response.request().method() === 'POST',
+      { timeout: 10_000 }
+    )
+    await this.page.locator('.item-wishlist-btn').first().click()
+    // Wait for the server to confirm the wishlist write before any further navigation
+    await wishlistResponsePromise
+    // Wait for the heart to flip to filled — UI feedback that the write was acknowledged
     await this.page
       .locator('button.item-wishlist-btn.wishlisted')
       .first()
-      .waitFor({ state: 'visible' })
+      .waitFor({ state: 'visible', timeout: 10_000 })
     return this
   }
 

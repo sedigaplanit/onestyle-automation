@@ -38,6 +38,7 @@ export default abstract class BasePage {
   }
 
   public async clickNavWishlistLink(): Promise<WishlistPage> {
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 10_000 })
     await this.page.locator('.nav-wishlist-link').click()
     // Wait for URL to settle on /wishlist before handing off to WishlistPage.init()
     await this.page.waitForURL('**/wishlist')
