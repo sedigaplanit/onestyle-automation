@@ -3,168 +3,181 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/api/admin/logs": {
+  '/api/admin/logs': {
     /**
      * Retrieve server log file for a given date
      * @description Admin-only endpoint protected by LOG_SECRET. Returns the raw Winston log file. Only available when LOG_SECRET is configured on the server.
      */
-    get: operations["getAdminLogs"];
-  };
-  "/api/health": {
+    get: operations['getAdminLogs']
+  }
+  '/api/admin/logs/download': {
+    /**
+     * Download recent production logs as a .logs file
+     * @description Admin-only (JWT + is_admin). Filters today's log entries from the last N minutes and returns them as a downloadable .logs file.
+     */
+    get: operations['downloadRecentLogs']
+  }
+  '/api/health': {
     /** Health check */
-    get: operations["getHealth"];
-  };
-  "/api/auth/signup": {
+    get: operations['getHealth']
+  }
+  '/api/auth/signup': {
     /** Register a new user */
-    post: operations["signup"];
-  };
-  "/api/auth/login": {
+    post: operations['signup']
+  }
+  '/api/auth/login': {
     /** Authenticate and receive a JWT */
-    post: operations["login"];
-  };
-  "/api/auth/logout": {
+    post: operations['login']
+  }
+  '/api/auth/logout': {
     /** Logout (client discards JWT) */
-    post: operations["logout"];
-  };
-  "/api/auth/me": {
+    post: operations['logout']
+  }
+  '/api/auth/me': {
     /** Get the authenticated user's profile */
-    get: operations["getMe"];
-  };
-  "/api/auth/profile": {
+    get: operations['getMe']
+  }
+  '/api/auth/profile': {
     /** Update the authenticated user's profile */
-    put: operations["updateProfile"];
-  };
-  "/api/cart": {
+    put: operations['updateProfile']
+  }
+  '/api/auth/account': {
+    /**
+     * Permanently delete the authenticated user's account
+     * @description Requires password confirmation. Deletes the user row and all associated data (orders, cart, wishlist, reviews) via database CASCADE. The client must discard its JWT after a successful response.
+     */
+    delete: operations['deleteAccount']
+  }
+  '/api/cart': {
     /** Fetch the authenticated user's cart */
-    get: operations["getCart"];
+    get: operations['getCart']
     /**
      * Replace the entire cart (full sync)
      * @description Replaces the user's cart with the provided snapshot. Called on every cart mutation (add to cart, remove, quantity update) so the server is always current. Also called on logout to persist the final state.
      */
-    put: operations["saveCart"];
+    put: operations['saveCart']
     /** Clear all items from the cart */
-    delete: operations["clearCart"];
-  };
-  "/api/orders": {
+    delete: operations['clearCart']
+  }
+  '/api/orders': {
     /** Get order history for the authenticated user */
-    get: operations["getOrders"];
+    get: operations['getOrders']
     /** Place a new order */
-    post: operations["createOrder"];
-  };
-  "/api/events": {
+    post: operations['createOrder']
+  }
+  '/api/events': {
     /** Fire-and-forget frontend analytics event */
-    post: operations["trackEvent"];
-  };
-  "/api/products": {
+    post: operations['trackEvent']
+  }
+  '/api/products': {
     /** List products with optional filtering and sorting */
-    get: operations["getProducts"];
-  };
-  "/api/products/new-collections": {
+    get: operations['getProducts']
+  }
+  '/api/products/new-collections': {
     /** Get products flagged as new collection */
-    get: operations["getNewCollections"];
-  };
-  "/api/products/popular": {
+    get: operations['getNewCollections']
+  }
+  '/api/products/popular': {
     /** Get products flagged as popular */
-    get: operations["getPopularProducts"];
-  };
-  "/api/products/{id}": {
+    get: operations['getPopularProducts']
+  }
+  '/api/products/{id}': {
     /** Get a single product by ID */
-    get: operations["getProductById"];
-  };
-  "/api/products/{id}/reviews": {
+    get: operations['getProductById']
+  }
+  '/api/products/{id}/reviews': {
     /** Get reviews and aggregate rating for a product */
-    get: operations["getProductReviews"];
-  };
-  "/api/wishlist": {
+    get: operations['getProductReviews']
+  }
+  '/api/wishlist': {
     /**
      * Get the authenticated user's wishlist
      * @description Returns all wishlisted products with full product details. Called on Wishlist page mount and immediately after login to hydrate client state.
      */
-    get: operations["getWishlist"];
+    get: operations['getWishlist']
     /**
      * Clear the entire wishlist
-     * @description Deletes every item from the user's wishlist in one call. Available but not used by the current frontend — individual items are removed via `DELETE /api/wishlist/{productId}` after checkout.
+     * @description Deletes every item from the user's wishlist in one call. Called by the frontend after checkout to clear the wishlist in a single request.
      */
-    delete: operations["clearWishlist"];
-  };
-  "/api/wishlist/{productId}": {
+    delete: operations['clearWishlist']
+  }
+  '/api/wishlist/{productId}': {
     /**
      * Add a product to the wishlist (idempotent)
      * @description Called immediately when the user toggles the heart icon on any product card or detail page. Idempotent — re-adding an already-wishlisted item returns 200 without error.
      */
-    post: operations["addToWishlist"];
+    post: operations['addToWishlist']
     /**
      * Remove a product from the wishlist
      * @description Called immediately when the user untoggle the heart icon, and for each purchased product after a successful checkout (to remove bought items from the wishlist).
      */
-    delete: operations["removeFromWishlist"];
-  };
-  "/api/reviews": {
+    delete: operations['removeFromWishlist']
+  }
+  '/api/reviews': {
     /** Submit or update a product review (one per user per product) */
-    post: operations["submitReview"];
-  };
-  "/api/reviews/{reviewId}": {
+    post: operations['submitReview']
+  }
+  '/api/reviews/{reviewId}': {
     /** Delete the authenticated user's own review */
-    delete: operations["deleteReview"];
-  };
+    delete: operations['deleteReview']
+  }
 }
 
-export type webhooks = Record<string, never>;
+export type webhooks = Record<string, never>
 
 export interface components {
   schemas: {
     User: {
       /** @example 1 */
-      id: number;
+      id: number
       /** @example Jane Doe */
-      name: string;
+      name: string
       /**
        * Format: email
        * @example jane@example.com
        */
-      email: string;
+      email: string
       /** @example female */
-      gender?: string | null;
+      gender?: string | null
       /** @example +44 7700 900000 */
-      mobile?: string | null;
+      mobile?: string | null
       /** @example 123 High St, London */
-      address?: string | null;
-    };
+      address?: string | null
+    }
     AuthResponse: {
-      user: components["schemas"]["User"];
+      user: components['schemas']['User']
       /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
-      token: string;
-    };
+      token: string
+    }
     Product: {
       /** @example 1 */
-      id: number;
+      id: number
       /** @example Casual Striped Blouse with Peplum Hem */
-      name: string;
+      name: string
       /** @enum {string} */
-      category: "women" | "men" | "kid";
+      category: 'women' | 'men' | 'kid'
       /** @example product_1.png */
-      image_url: string;
+      image_url: string
       /**
        * Format: float
        * @example 50
        */
-      new_price: number;
+      new_price: number
       /**
        * Format: float
        * @example 80.5
        */
-      old_price: number;
+      old_price: number
       /** @example A stylish striped blouse... */
-      description?: string | null;
+      description?: string | null
       /** @example false */
-      is_new_collection?: boolean;
+      is_new_collection?: boolean
       /** @example true */
-      is_popular?: boolean;
+      is_popular?: boolean
       /** Format: date-time */
-      created_at?: string;
-    };
+      created_at?: string
+    }
     /**
      * @description Map of product_id (string key) to quantity
      * @example {
@@ -174,95 +187,103 @@ export interface components {
      * }
      */
     CartItems: {
-      [key: string]: number;
-    };
+      [key: string]: number
+    }
     OrderItem: {
       /** @example 1 */
-      id: number;
+      id: number
       /** @example Classic T-Shirt */
-      name: string;
+      name: string
       /** @example https://example.com/shirt.jpg */
-      image?: string;
+      image?: string
       /**
        * Format: float
        * @example 29.99
        */
-      price: number;
+      price: number
       /** @example 2 */
-      quantity: number;
-    };
+      quantity: number
+    }
     Order: {
       /** @example ORD-20240101-ABCD */
-      id: string;
+      id: string
       /** Format: date-time */
-      date: string;
+      date: string
       /**
        * Format: float
        * @example 89.99
        */
-      total: number;
-      items: components["schemas"]["OrderItem"][];
-    };
+      total: number
+      items: components['schemas']['OrderItem'][]
+    }
     WishlistItem: {
       /** @example 5 */
-      product_id: number;
+      product_id: number
       /** @example Chic Overlap Collar Blouse */
-      name: string;
+      name: string
       /** @enum {string} */
-      category: "women" | "men" | "kid";
+      category: 'women' | 'men' | 'kid'
       /** @example product_5.png */
-      image_url: string;
+      image_url: string
       /**
        * Format: float
        * @example 85
        */
-      new_price: number;
+      new_price: number
       /**
        * Format: float
        * @example 120.5
        */
-      old_price: number;
-    };
+      old_price: number
+    }
     Review: {
       /** @example 1 */
-      id: number;
+      id: number
       /** @example 3 */
-      product_id: number;
+      product_id: number
       /** @example 7 */
-      user_id: number;
+      user_id: number
       /** @example Jane Doe */
-      reviewer_name?: string;
+      reviewer_name?: string
       /** @example 4 */
-      rating: number;
+      rating: number
       /** @example Great quality! */
-      comment?: string | null;
+      comment?: string | null
       /** Format: date-time */
-      created_at: string;
-    };
+      created_at: string
+    }
     ErrorResponse: {
       /** @example Something went wrong. */
-      message: string;
-    };
+      message: string
+    }
     MessageResponse: {
       /** @example Success. */
-      message: string;
-    };
+      message: string
+    }
     /** @enum {string} */
-    EventType: "PAGE_VIEW" | "PRODUCT_VIEW" | "WISHLIST_ADD" | "WISHLIST_REMOVE" | "CART_ADD" | "CART_REMOVE" | "CATEGORY_BROWSE" | "SEARCH" | "CHECKOUT_START";
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    EventType:
+      | 'PAGE_VIEW'
+      | 'PRODUCT_VIEW'
+      | 'WISHLIST_ADD'
+      | 'WISHLIST_REMOVE'
+      | 'CART_ADD'
+      | 'CART_REMOVE'
+      | 'CATEGORY_BROWSE'
+      | 'SEARCH'
+      | 'CHECKOUT_START'
+  }
+  responses: never
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
 }
 
-export type $defs = Record<string, never>;
+export type $defs = Record<string, never>
 
-export type external = Record<string, never>;
+export type external = Record<string, never>
 
 export interface operations {
-
   /**
    * Retrieve server log file for a given date
    * @description Admin-only endpoint protected by LOG_SECRET. Returns the raw Winston log file. Only available when LOG_SECRET is configured on the server.
@@ -274,263 +295,366 @@ export interface operations {
          * @description Log date in YYYY-MM-DD format. Defaults to today.
          * @example 2026-07-21
          */
-        date?: string;
+        date?: string
         /**
          * @description Return only the last N lines. Omit to return the full file.
          * @example 200
          */
-        lines?: number;
-      };
-    };
+        lines?: number
+      }
+    }
     responses: {
       /** @description Log file content */
       200: {
         content: {
-          "text/plain": string;
-        };
-      };
+          'text/plain': string
+        }
+      }
       /** @description Invalid date format */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Missing or incorrect LOG_SECRET */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description No log file found for that date */
       404: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description LOG_SECRET not configured on server */
       503: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Download recent production logs as a .logs file
+   * @description Admin-only (JWT + is_admin). Filters today's log entries from the last N minutes and returns them as a downloadable .logs file.
+   */
+  downloadRecentLogs: {
+    parameters: {
+      query?: {
+        /**
+         * @description Mode A — last N minutes. Ignored when 'from' and 'to' are provided.
+         * @example 20
+         */
+        minutes?: number
+        /**
+         * Format: date-time
+         * @description Mode B — custom range start (ISO 8601 UTC). Requires 'to'.
+         * @example 2026-07-30T09:00:00Z
+         */
+        from?: string
+        /**
+         * Format: date-time
+         * @description Mode B — custom range end (ISO 8601 UTC). Requires 'from'.
+         * @example 2026-07-30T10:30:00Z
+         */
+        to?: string
+      }
+    }
+    responses: {
+      /** @description Log file download */
+      200: {
+        headers: {
+          /** @example attachment; filename="app-logs-last-10min-2026-07-30T10-00-00.logs" */
+          'Content-Disposition'?: string
+        }
+        content: {
+          'text/plain': string
+        }
+      }
+      /** @description Not authenticated */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden — admin access required */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No log file or no entries in the requested time window */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Health check */
   getHealth: {
     responses: {
       /** @description Server is running */
       200: {
         content: {
-          "application/json": {
+          'application/json': {
             /** @example ok */
-            status?: string;
-          };
-        };
-      };
-    };
-  };
+            status?: string
+          }
+        }
+      }
+    }
+  }
   /** Register a new user */
   signup: {
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           /** @example Jane Doe */
-          name: string;
+          name: string
           /**
            * Format: email
            * @example jane@example.com
            */
-          email: string;
+          email: string
           /** @example SecurePass1! */
-          password: string;
+          password: string
           /** @example female */
-          gender?: string;
+          gender?: string
           /** @example +44 7700 900000 */
-          mobile?: string;
+          mobile?: string
           /** @example 123 High St */
-          address?: string;
-        };
-      };
-    };
+          address?: string
+        }
+      }
+    }
     responses: {
       /** @description User created successfully */
       201: {
         content: {
-          "application/json": components["schemas"]["AuthResponse"];
-        };
-      };
+          'application/json': components['schemas']['AuthResponse']
+        }
+      }
       /** @description Missing required fields */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Email already registered */
       409: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Authenticate and receive a JWT */
   login: {
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           /**
            * Format: email
            * @example jane@example.com
            */
-          email: string;
+          email: string
           /** @example SecurePass1! */
-          password: string;
-        };
-      };
-    };
+          password: string
+        }
+      }
+    }
     responses: {
       /** @description Login successful */
       200: {
         content: {
-          "application/json": components["schemas"]["AuthResponse"];
-        };
-      };
+          'application/json': components['schemas']['AuthResponse']
+        }
+      }
       /** @description Missing email or password */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Invalid credentials */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Logout (client discards JWT) */
   logout: {
     responses: {
       /** @description Logged out */
       200: {
         content: {
-          "application/json": components["schemas"]["MessageResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['MessageResponse']
+        }
+      }
+    }
+  }
   /** Get the authenticated user's profile */
   getMe: {
     responses: {
       /** @description User profile */
       200: {
         content: {
-          "application/json": {
-            user: components["schemas"]["User"];
-          };
-        };
-      };
+          'application/json': {
+            user: components['schemas']['User']
+          }
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description User not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Update the authenticated user's profile */
   updateProfile: {
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           /** @example Jane Updated */
-          name: string;
+          name: string
           /** @example female */
-          gender?: string;
+          gender?: string
           /** @example +44 7700 900000 */
-          mobile?: string;
+          mobile?: string
           /** @example 456 New St */
-          address?: string;
-        };
-      };
-    };
+          address?: string
+        }
+      }
+    }
     responses: {
       /** @description Profile updated, new JWT issued */
       200: {
         content: {
-          "application/json": components["schemas"]["AuthResponse"];
-        };
-      };
+          'application/json': components['schemas']['AuthResponse']
+        }
+      }
       /** @description Name too short or missing */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Permanently delete the authenticated user's account
+   * @description Requires password confirmation. Deletes the user row and all associated data (orders, cart, wishlist, reviews) via database CASCADE. The client must discard its JWT after a successful response.
+   */
+  deleteAccount: {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @example SecurePass1! */
+          password: string
+        }
+      }
+    }
+    responses: {
+      /** @description Account deleted */
+      200: {
+        content: {
+          'application/json': components['schemas']['MessageResponse']
+        }
+      }
+      /** @description Password not provided */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not authenticated or incorrect password */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description User not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Fetch the authenticated user's cart */
   getCart: {
     responses: {
       /** @description Cart contents */
       200: {
         content: {
-          "application/json": {
-            cartItems: components["schemas"]["CartItems"];
-          };
-        };
-      };
+          'application/json': {
+            cartItems: components['schemas']['CartItems']
+          }
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /**
    * Replace the entire cart (full sync)
    * @description Replaces the user's cart with the provided snapshot. Called on every cart mutation (add to cart, remove, quantity update) so the server is always current. Also called on logout to persist the final state.
@@ -538,336 +662,336 @@ export interface operations {
   saveCart: {
     requestBody: {
       content: {
-        "application/json": {
-          cartItems: components["schemas"]["CartItems"];
-        };
-      };
-    };
+        'application/json': {
+          cartItems: components['schemas']['CartItems']
+        }
+      }
+    }
     responses: {
       /** @description Cart saved — returns the persisted cartItems for immediate client sync */
       200: {
         content: {
-          "application/json": {
+          'application/json': {
             /** @example Cart saved. */
-            message: string;
-            cartItems: components["schemas"]["CartItems"];
-          };
-        };
-      };
+            message: string
+            cartItems: components['schemas']['CartItems']
+          }
+        }
+      }
       /** @description cartItems missing or invalid */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Clear all items from the cart */
   clearCart: {
     responses: {
       /** @description Cart cleared */
       200: {
         content: {
-          "application/json": components["schemas"]["MessageResponse"];
-        };
-      };
+          'application/json': components['schemas']['MessageResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Get order history for the authenticated user */
   getOrders: {
     responses: {
       /** @description Order history */
       200: {
         content: {
-          "application/json": {
-            orders: components["schemas"]["Order"][];
-          };
-        };
-      };
+          'application/json': {
+            orders: components['schemas']['Order'][]
+          }
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Place a new order */
   createOrder: {
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           /** @example ORD-20240101-ABCD */
-          id: string;
+          id: string
           /** Format: date-time */
-          date?: string;
+          date?: string
           /**
            * Format: float
            * @example 89.99
            */
-          total: number;
-          items: components["schemas"]["OrderItem"][];
-        };
-      };
-    };
+          total: number
+          items: components['schemas']['OrderItem'][]
+        }
+      }
+    }
     responses: {
       /** @description Order created */
       201: {
         content: {
-          "application/json": {
+          'application/json': {
             /** @example Order saved. */
-            message: string;
+            message: string
             /** @example 42 */
-            orderId: number;
-          };
-        };
-      };
+            orderId: number
+          }
+        }
+      }
       /** @description Invalid order data */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Duplicate order number */
       409: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Fire-and-forget frontend analytics event */
   trackEvent: {
     requestBody: {
       content: {
-        "application/json": {
-          event: components["schemas"]["EventType"];
+        'application/json': {
+          event: components['schemas']['EventType']
           /** @example /shop */
-          page?: string;
+          page?: string
           /** @example 5 */
-          productId?: number;
+          productId?: number
           /** @example Classic T-Shirt */
-          productName?: string;
+          productName?: string
           /** @example women */
-          category?: string;
+          category?: string
           /** @example 1 */
-          userId?: number;
+          userId?: number
           /** @example abc123 */
-          sessionId?: string;
+          sessionId?: string
           meta?: {
             /** @example 2 */
-            qty?: number;
+            qty?: number
             /** @example blue dress */
-            query?: string;
-          };
-        };
-      };
-    };
+            query?: string
+          }
+        }
+      }
+    }
     responses: {
       /** @description Event recorded */
       204: {
-        content: never;
-      };
+        content: never
+      }
       /** @description Unknown event type */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** List products with optional filtering and sorting */
   getProducts: {
     parameters: {
       query?: {
         /** @description Filter by category */
-        category?: "women" | "men" | "kid";
+        category?: 'women' | 'men' | 'kid'
         /** @description Full-text search on name and description */
-        search?: string;
+        search?: string
         /** @description low = under 100, medium = 100–200, high = over 200 */
-        priceRange?: "low" | "medium" | "high";
+        priceRange?: 'low' | 'medium' | 'high'
         /** @description Sort order */
-        sort?: "price-asc" | "price-desc" | "name-asc";
-      };
-    };
+        sort?: 'price-asc' | 'price-desc' | 'name-asc'
+      }
+    }
     responses: {
       /** @description Product list */
       200: {
         content: {
-          "application/json": {
-            products: components["schemas"]["Product"][];
-          };
-        };
-      };
+          'application/json': {
+            products: components['schemas']['Product'][]
+          }
+        }
+      }
       /** @description Invalid filter value */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Get products flagged as new collection */
   getNewCollections: {
     responses: {
       /** @description New collection products */
       200: {
         content: {
-          "application/json": {
-            products?: components["schemas"]["Product"][];
-          };
-        };
-      };
+          'application/json': {
+            products?: components['schemas']['Product'][]
+          }
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Get products flagged as popular */
   getPopularProducts: {
     responses: {
       /** @description Popular products */
       200: {
         content: {
-          "application/json": {
-            products?: components["schemas"]["Product"][];
-          };
-        };
-      };
+          'application/json': {
+            products?: components['schemas']['Product'][]
+          }
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Get a single product by ID */
   getProductById: {
     parameters: {
       path: {
         /** @example 1 */
-        id: number;
-      };
-    };
+        id: number
+      }
+    }
     responses: {
       /** @description Product detail */
       200: {
         content: {
-          "application/json": {
-            product: components["schemas"]["Product"];
-          };
-        };
-      };
+          'application/json': {
+            product: components['schemas']['Product']
+          }
+        }
+      }
       /** @description Invalid id */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Product not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Get reviews and aggregate rating for a product */
   getProductReviews: {
     parameters: {
       path: {
         /** @example 1 */
-        id: number;
-      };
-    };
+        id: number
+      }
+    }
     responses: {
       /** @description Reviews and aggregate */
       200: {
         content: {
-          "application/json": {
-            reviews: components["schemas"]["Review"][];
+          'application/json': {
+            reviews: components['schemas']['Review'][]
             /**
              * Format: float
              * @example 4.2
              */
-            average_rating: number;
+            average_rating: number
             /** @example 15 */
-            total_reviews: number;
-          };
-        };
-      };
+            total_reviews: number
+          }
+        }
+      }
       /** @description Invalid id */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /**
    * Get the authenticated user's wishlist
    * @description Returns all wishlisted products with full product details. Called on Wishlist page mount and immediately after login to hydrate client state.
@@ -877,51 +1001,51 @@ export interface operations {
       /** @description Wishlist items with product details */
       200: {
         content: {
-          "application/json": {
-            wishlist: components["schemas"]["WishlistItem"][];
-          };
-        };
-      };
+          'application/json': {
+            wishlist: components['schemas']['WishlistItem'][]
+          }
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /**
    * Clear the entire wishlist
-   * @description Deletes every item from the user's wishlist in one call. Available but not used by the current frontend — individual items are removed via `DELETE /api/wishlist/{productId}` after checkout.
+   * @description Deletes every item from the user's wishlist in one call. Called by the frontend after checkout to clear the wishlist in a single request.
    */
   clearWishlist: {
     responses: {
       /** @description Wishlist cleared */
       200: {
         content: {
-          "application/json": components["schemas"]["MessageResponse"];
-        };
-      };
+          'application/json': components['schemas']['MessageResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /**
    * Add a product to the wishlist (idempotent)
    * @description Called immediately when the user toggles the heart icon on any product card or detail page. Idempotent — re-adding an already-wishlisted item returns 200 without error.
@@ -930,42 +1054,42 @@ export interface operations {
     parameters: {
       path: {
         /** @example 5 */
-        productId: number;
-      };
-    };
+        productId: number
+      }
+    }
     responses: {
       /** @description Added to wishlist */
       200: {
         content: {
-          "application/json": components["schemas"]["MessageResponse"];
-        };
-      };
+          'application/json': components['schemas']['MessageResponse']
+        }
+      }
       /** @description Invalid productId */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Product not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /**
    * Remove a product from the wishlist
    * @description Called immediately when the user untoggle the heart icon, and for each purchased product after a successful checkout (to remove bought items from the wishlist).
@@ -974,142 +1098,144 @@ export interface operations {
     parameters: {
       path: {
         /** @example 5 */
-        productId: number;
-      };
-    };
+        productId: number
+      }
+    }
     responses: {
       /** @description Removed from wishlist */
       200: {
         content: {
-          "application/json": components["schemas"]["MessageResponse"];
-        };
-      };
+          'application/json': components['schemas']['MessageResponse']
+        }
+      }
       /** @description Invalid productId */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Item not in wishlist */
       404: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Submit or update a product review (one per user per product) */
   submitReview: {
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           /** @example 3 */
-          productId: number;
+          productId: number
           /** @example 4 */
-          rating: number;
+          rating: number
           /** @example Great fit and quality! */
-          comment?: string;
-        };
-      };
-    };
+          comment?: string
+        }
+      }
+    }
     responses: {
       /** @description Review created or updated */
       201: {
         content: {
-          "application/json": {
-            review: components["schemas"]["Review"];
-          };
-        };
-      };
+          'application/json': {
+            review: components['schemas']['Review']
+          }
+        }
+      }
       /** @description Invalid productId or rating */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Product not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Delete the authenticated user's own review */
   deleteReview: {
     parameters: {
       path: {
         /** @example 7 */
-        reviewId: number;
-      };
-    };
+        reviewId: number
+      }
+    }
     responses: {
       /** @description Review deleted */
       200: {
         content: {
-          "application/json": components["schemas"]["MessageResponse"];
-        };
-      };
+          'application/json': components['schemas']['MessageResponse']
+        }
+      }
       /** @description Invalid reviewId */
       400: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Not authenticated */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Review not found or not owned by you */
       404: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** @description Internal server error */
       500: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
 }
 
 export enum ApiPaths {
   GetAdminLogs = '/api/admin/logs',
+  DownloadRecentLogs = '/api/admin/logs/download',
   GetHealth = '/api/health',
   Signup = '/api/auth/signup',
   Login = '/api/auth/login',
   Logout = '/api/auth/logout',
   GetMe = '/api/auth/me',
   UpdateProfile = '/api/auth/profile',
+  DeleteAccount = '/api/auth/account',
   GetCart = '/api/cart',
   SaveCart = '/api/cart',
   ClearCart = '/api/cart',
