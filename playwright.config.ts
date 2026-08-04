@@ -25,7 +25,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : 1,
+  workers: process.env.CI ? 1 : undefined,
 
   timeout: 30_000, // Hard cap: every test must finish within 30s
   reporter: process.env.CI

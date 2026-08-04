@@ -26,10 +26,21 @@ export default class CheckoutModalPage extends BasePage {
     return this.page.locator('.checkout-total').textContent()
   }
 
+  private getPaymentOptionMatcher(method: 'credit-card' | 'paypal' | 'cod'): RegExp {
+    switch (method) {
+      case 'credit-card':
+        return /Credit\s*(\/|-)\s*Debit\s*Card/i
+      case 'paypal':
+        return /PayPal/i
+      case 'cod':
+        return /Cash on Delivery|COD/i
+    }
+  }
+
   public async areAllPaymentOptionsVisible(): Promise<boolean> {
-    const card = await this.page.getByText('Credit / Debit Card').isVisible()
-    const paypal = await this.page.getByText('PayPal').isVisible()
-    const cod = await this.page.getByText('Cash on Delivery').isVisible()
+    const card = await this.page.getByText(this.getPaymentOptionMatcher('credit-card')).isVisible()
+    const paypal = await this.page.getByText(this.getPaymentOptionMatcher('paypal')).isVisible()
+    const cod = await this.page.getByText(this.getPaymentOptionMatcher('cod')).isVisible()
     return card && paypal && cod
   }
 
@@ -47,13 +58,7 @@ export default class CheckoutModalPage extends BasePage {
   }
 
   public async selectPaymentMethod(method: 'credit-card' | 'paypal' | 'cod'): Promise<this> {
-    const labelMap: Record<string, string> = {
-      'credit-card': 'Credit / Debit Card',
-      paypal: 'PayPal',
-      cod: 'Cash on Delivery',
-    }
-    // getByText does substring matching — matches the emoji-prefixed option labels in the app UI
-    await this.page.getByText(labelMap[method]).click()
+    await this.page.getByText(this.getPaymentOptionMatcher(method)).click()
     return this
   }
 
@@ -101,7 +106,7 @@ export default class CheckoutModalPage extends BasePage {
   public async isCODStep2Visible(): Promise<boolean> {
     return this.page
       .getByRole('heading', { level: 2 })
-      .filter({ hasText: 'Cash on Delivery' })
+      .filter({ hasText: /Cash on Delivery|COD/i })
       .isVisible()
   }
 

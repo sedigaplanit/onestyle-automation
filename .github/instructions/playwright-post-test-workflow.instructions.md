@@ -8,6 +8,14 @@ After every new or updated test is written, run it immediately.
 
 ## Step 1 — Run the Test
 
+Start with the specific test that was just changed or is being debugged.
+
+```
+npx playwright test tests/{feature-folder}/{SpecFile}.spec.ts --reporter=list --bail=1 --grep "exact test title"
+```
+
+If the test title is not yet known, run the whole spec file once:
+
 ```
 npx playwright test tests/{feature-folder}/{SpecFile}.spec.ts --reporter=list --bail=1
 ```
@@ -20,7 +28,7 @@ Report success and stop.
 
 ## Step 3 — On Failure: Fix Loop (max 3 attempts)
 
-Re-run **only the failing test** using `--grep`. Never re-run the full spec file — already-passing tests must not be executed again during a fix loop.
+Re-run **only the failing test** using `--grep`. Never re-run the full spec file or the entire suite during a fix loop — already-passing tests must not be executed again during a fix loop.
 
 ```
 npx playwright test tests/{feature-folder}/{SpecFile}.spec.ts --reporter=list --bail=1 --grep "exact failing test title"

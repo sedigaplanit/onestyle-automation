@@ -2,6 +2,7 @@ import { Page } from '@playwright/test'
 import type LandingPage from '@pages/landing/LandingPage'
 import type WishlistPage from '@pages/wishlist/WishlistPage'
 import type OrdersPage from '@pages/orders/OrdersPage'
+import type ProfilePage from '@pages/user-profile/ProfilePage'
 
 export default abstract class BasePage {
   protected page: Page
@@ -54,6 +55,13 @@ export default abstract class BasePage {
     await this.page.waitForURL('**/orders')
     const { default: OrdersPageClass } = await import('@pages/orders/OrdersPage')
     return new OrdersPageClass(this.page).init()
+  }
+
+  public async clickProfile(): Promise<ProfilePage> {
+    await this.page.getByRole('button', { name: 'Profile' }).click()
+    await this.page.waitForURL('**/profile')
+    const { default: ProfilePageClass } = await import('@pages/user-profile/ProfilePage')
+    return new ProfilePageClass(this.page).init()
   }
 
   public async clickLogout(): Promise<LandingPage> {

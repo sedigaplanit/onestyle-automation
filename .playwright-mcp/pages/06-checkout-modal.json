@@ -19,15 +19,15 @@
       "paymentLabel": { "text": "Select Payment Method" },
       "paymentOptions": {
         "creditDebitCard": {
-          "locator": "getByText('💳Credit / Debit Card')",
+          "locator": "getByText(/Credit\\s*(\\/|-)\\s*Debit\\s*Card/i)",
           "elementType": "generic/div (not button)"
         },
         "paypal": {
-          "locator": "getByText('🅿️PayPal')",
+          "locator": "getByText(/PayPal/i)",
           "elementType": "generic/div (not button)"
         },
         "cashOnDelivery": {
-          "locator": "getByText('💵Cash on Delivery')",
+          "locator": "getByText(/Cash on Delivery|COD/i)",
           "elementType": "generic/div (not button)"
         }
       },

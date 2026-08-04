@@ -18,9 +18,9 @@
 | Close button (✕)     | `getByRole('button', { name: '✕' })`                   | Closes modal, returns to cart |
 | Total display        | `getByText(/Total:.*LKR/)`                             | Format: "Total: **LKR X.XX**" |
 | Payment method label | `getByText('Select Payment Method')`                   |                               |
-| Credit/Debit Card    | `getByText('💳Credit / Debit Card')`                   | Generic/div, not button       |
-| PayPal               | `getByText('🅿️PayPal')`                                | Generic/div                   |
-| Cash on Delivery     | `getByText('💵Cash on Delivery')`                      | Generic/div                   |
+| Credit/Debit Card    | `getByText(/Credit\s*(\/                               | -)\s*Debit\s*Card/i)`         | Generic/div, not button |
+| PayPal               | `getByText(/PayPal/i)`                                 | Generic/div                   |
+| Cash on Delivery     | `getByText(/Cash on Delivery                           | COD/i)`                       | Generic/div             |
 | Continue button      | `getByRole('button', { name: 'Continue →' })`          | Proceeds to Step 2            |
 | Cancel button        | `getByRole('button', { name: 'Cancel' })`              | Closes modal, returns to cart |
 
