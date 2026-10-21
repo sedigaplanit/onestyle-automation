@@ -1,0 +1,9 @@
+.auth/
+.env
+.git/
+.github/
+.playwright-mcp/
+blob-report/
+node_modules/
+playwright-report/
+test-results/

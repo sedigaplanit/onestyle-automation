@@ -5,7 +5,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate:schemas": "node scripts/generate-schemas.mjs"
+    "generate:schemas": "node scripts/generate-schemas.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --grep @ui --workers=1",
+    "test:ui:chromium": "playwright test --project=chromium --grep @ui --workers=1",
+    "test:ui:firefox": "playwright test --project=firefox --grep @ui --workers=1",
+    "test:ui:webkit": "playwright test --project=webkit --grep @ui --workers=1"
   },
   "keywords": [],
   "author": "",

@@ -13,3 +13,5 @@ node_modules/
 # MCP session snapshots (timestamped working files)
 .playwright-mcp/page-*.yml
 .playwright-mcp/console-*.log
+
+opencode.json

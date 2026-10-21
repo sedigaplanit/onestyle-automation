@@ -1,0 +1,60 @@
+x-runner: &runner
+  build:
+    context: .
+  image: ai-rnd-automation-suite
+  working_dir: /app
+  init: true
+  shm_size: 1gb
+  volumes:
+    - ./blob-report:/app/blob-report
+    - ./playwright-report:/app/playwright-report
+    - ./test-results:/app/test-results
+
+x-test-runner: &test-runner
+  <<: *runner
+  env_file:
+    - .env
+  environment:
+    CI: ${CI:-false}
+
+services:
+  lint:
+    <<: *runner
+    command: npm run lint
+
+  typecheck:
+    <<: *runner
+    command: npm run typecheck
+
+  full-suite:
+    <<: *test-runner
+    command: npm test
+
+  api-tests:
+    <<: *test-runner
+    command: npm run test:api
+
+  ui-all:
+    <<: *test-runner
+    command: npm run test:ui
+
+  ui-chromium:
+    <<: *test-runner
+    environment:
+      BROWSER: chromium
+      CI: ${CI:-false}
+    command: npm run test:ui:chromium
+
+  ui-firefox:
+    <<: *test-runner
+    environment:
+      BROWSER: firefox
+      CI: ${CI:-false}
+    command: npm run test:ui:firefox
+
+  ui-webkit:
+    <<: *test-runner
+    environment:
+      BROWSER: webkit
+      CI: ${CI:-false}
+    command: npm run test:ui:webkit
