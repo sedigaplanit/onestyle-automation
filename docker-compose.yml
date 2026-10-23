@@ -6,8 +6,8 @@ x-runner: &runner
   init: true
   shm_size: 1gb
   volumes:
-    - ./blob-report:/app/blob-report
-    - ./playwright-report:/app/playwright-report
+    - ./.reporting-labs:/app/.reporting-labs
+    - ./reporting-labs:/app/reporting-labs
     - ./test-results:/app/test-results
 
 x-test-runner: &test-runner

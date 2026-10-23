@@ -1,7 +1,9 @@
+import 'reporting-labs/auto'
 import { defineConfig, devices } from '@playwright/test'
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import reportingLabs from './reporting-labs.config'
 
 // 1. Load the .env file
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -19,18 +21,19 @@ if (!process.env.API_URL) {
 // 3. Cast string configurations into their correct primitive types
 // Default: headless=true in CI (HEADLESS is not set); headless=false only when explicitly HEADLESS=false
 const isHeadless = process.env.HEADLESS !== 'false'
+const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true'
 
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : 1,
+  forbidOnly: isCI,
+  retries: isCI ? 1 : 0,
+  workers: isCI ? 1 : 1,
 
   timeout: 30_000, // Hard cap: every test must finish within 30s
-  reporter: process.env.CI
-    ? [['blob'], ['github'], ['json', { outputFile: 'test-results/results.json' }]]
-    : 'html',
+  reporter: isCI
+    ? [['github'], ['json', { outputFile: 'test-results/results.json' }], ['reporting-labs', reportingLabs]]
+    : [['list'], ['reporting-labs', reportingLabs]],
 
   // Global settings for all tests
   use: {

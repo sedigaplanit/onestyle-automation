@@ -2,8 +2,10 @@
 .env
 .git/
 .github/
+.reporting-labs/
 .playwright-mcp/
 blob-report/
 node_modules/
 playwright-report/
+reporting-labs/
 test-results/

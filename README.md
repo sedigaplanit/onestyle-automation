@@ -29,6 +29,9 @@ docker compose run --rm ui-all
 docker compose run --rm full-suite
 ```
 
-Reports are written back to `playwright-report/`, `test-results/`, and `blob-report/` on the host.
+Reports are written back to `reporting-labs/` and `test-results/` on the host.
+Run history is persisted in `.reporting-labs/` so the report can show trends across runs.
+
+Open the generated report from `reporting-labs/index.html`.
 
 If you want CI-style reporters and retry behavior locally, prefix any command with `CI=true`.

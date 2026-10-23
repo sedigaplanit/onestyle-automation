@@ -27,6 +27,7 @@
     "eslint-plugin-playwright": "^2.10.5",
     "openapi-typescript": "^6.7.6",
     "prettier": "^3.9.4",
+    "reporting-labs": "^0.6.21",
     "typescript": "^7.0.2"
   }
 }

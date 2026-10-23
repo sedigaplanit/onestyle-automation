@@ -4,12 +4,14 @@ node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
+/reporting-labs/
 /playwright/.cache/
 /playwright/.auth/
 
 #Environments and secrets
 .env
 .auth/
+.reporting-labs/
 # MCP session snapshots (timestamped working files)
 .playwright-mcp/page-*.yml
 .playwright-mcp/console-*.log
