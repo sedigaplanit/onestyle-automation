@@ -1,0 +1,84 @@
+name: Build Automation Image
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: automation-image-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-image:
+    name: Build And Tag Automation Image
+    runs-on: [self-hosted, linux, x64, wsl, docker, automation]
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    env:
+      IMAGE_NAME: ai-rnd-automation-suite
+
+    steps:
+      - name: Checkout automation repo
+        uses: actions/checkout@v4
+
+      - name: Derive Docker tags
+        id: tags
+        run: |
+          branch_tag="$(printf '%s' "$GITHUB_REF_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g; s#-+#-#g; s#^[.-]+##; s#[.-]+$##')"
+          if [ -z "$branch_tag" ]; then
+            branch_tag=manual
+          fi
+
+          echo "sha_tag=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          echo "branch_tag=$branch_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Build image from current commit
+        run: docker build -t "$IMAGE_NAME:${{ steps.tags.outputs.sha_tag }}" .
+
+      - name: Validate built image
+        run: |
+          docker run --rm "$IMAGE_NAME:${{ steps.tags.outputs.sha_tag }}" npm run typecheck
+          docker run --rm "$IMAGE_NAME:${{ steps.tags.outputs.sha_tag }}" npm run lint
+          docker run --rm \
+            -e CI=true \
+            -e BASE_URL=http://example.test \
+            -e API_URL=http://example.test \
+            -e USER_NAME=test@test.com \
+            -e PASSWORD=Test@123 \
+            "$IMAGE_NAME:${{ steps.tags.outputs.sha_tag }}" \
+            npx playwright test --project=api --list
+
+      - name: Tag branch image
+        run: docker tag "$IMAGE_NAME:${{ steps.tags.outputs.sha_tag }}" "$IMAGE_NAME:${{ steps.tags.outputs.branch_tag }}"
+
+      - name: Tag latest on main
+        if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+        run: docker tag "$IMAGE_NAME:${{ steps.tags.outputs.sha_tag }}" "$IMAGE_NAME:latest"
+
+      - name: Show resulting image tags
+        run: docker image ls "$IMAGE_NAME" --format "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedSince}}"
+
+      - name: Prune dangling images
+        if: ${{ always() }}
+        run: docker image prune -f
+
+      - name: Write job summary
+        if: ${{ always() }}
+        run: |
+          {
+            echo "## Automation Image"
+            echo
+            echo "- SHA tag: $IMAGE_NAME:${{ steps.tags.outputs.sha_tag }}"
+            echo "- Branch tag: $IMAGE_NAME:${{ steps.tags.outputs.branch_tag }}"
+            if [ "${GITHUB_REF_NAME}" = "main" ] || [ "${GITHUB_REF_NAME}" = "master" ]; then
+              echo "- Latest tag refreshed: $IMAGE_NAME:latest"
+            else
+              echo "- Latest tag refreshed: no"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
